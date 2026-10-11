@@ -42,7 +42,7 @@ npm run build
 
 - [Ethereal Beams Hero](https://21st.dev/@muhammad-binsalman/components/ethereal-beams-hero) — идея световых лучей
 - [Meteors](https://21st.dev/@manuarora700/components/meteors) — диагональные штрихи
-- [Background Beams](https://ui.aceternity.com/components/background-beams) — кривые, вдоль которых идёт свет
+- [Background Beams](https://21st.dev/@manuarora700/components/background-beams) — кривые, вдоль которых идёт свет
 - [Animated Shiny Text](https://21st.dev/@dillionverma/components/animated-shiny-text) — блик на заголовке
 
 Готовый реестр shadcn не подключался: в проекте Tailwind v4 без `components.json`. Направление стиля сверено со скиллом [UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (`.cursor/skills`): просторная сетка, сложное но спокойное движение, контраст и `prefers-reduced-motion`. Цвета скилла (камень и золото) не использованы — оставлены бирюза, серебро и тёплое золото школы.
