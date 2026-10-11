@@ -1,0 +1,30 @@
+{
+  "nameLabel": "Имя и фамилия",
+  "phoneLabel": "Номер WhatsApp",
+  "courseLabel": "Интересующий курс",
+  "coursePlaceholder": "Выберите курс",
+  "formatLabel": "Формат",
+  "formats": [
+    {
+      "value": "online",
+      "label": "онлайн"
+    },
+    {
+      "value": "offline",
+      "label": "очно"
+    },
+    {
+      "value": "undecided",
+      "label": "пока не определилась"
+    }
+  ],
+  "consentLabel": "Согласие на обработку заявки",
+  "privacyLinkLabel": "Политика конфиденциальности",
+  "hint": "Для записи достаточно номера WhatsApp.",
+  "submitLabel": "Отправить заявку",
+  "submittingLabel": "Отправляем…",
+  "whatsappCta": "Оставить заявку в WhatsApp",
+  "successTitle": "Заявка отправлена",
+  "successText": "Менеджер свяжется с вами в WhatsApp, когда откроется набор по выбранному направлению.",
+  "errorText": "Не получилось отправить заявку. Напишите, пожалуйста, в WhatsApp — так заявка точно дойдёт."
+}
