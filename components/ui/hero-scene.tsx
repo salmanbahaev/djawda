@@ -2,7 +2,6 @@
 
 import { Environment, Lightformer } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { DepthOfField, EffectComposer } from "@react-three/postprocessing";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
@@ -19,7 +18,7 @@ function detectQuality(): Quality {
 
 function Sculpture({ quality }: { quality: Quality }) {
   const group = useRef<THREE.Group>(null);
-  const tubular = quality === "high" ? 220 : 96;
+  const tubular = quality === "high" ? 140 : 80;
   const radial = quality === "high" ? 24 : 12;
 
   useFrame((_, delta) => {
@@ -30,23 +29,20 @@ function Sculpture({ quality }: { quality: Quality }) {
   });
 
   return (
-    <group ref={group} position={[1.15, 0.05, 0]}>
+    <group ref={group} position={[1.45, 0.08, 0]}>
       <mesh>
         <torusKnotGeometry args={[1.05, 0.3, tubular, radial, 2, 3]} />
         {quality === "high" ? (
           <meshPhysicalMaterial
-            color="#e7eef2"
-            metalness={0.22}
-            roughness={0.08}
-            transmission={0.78}
-            thickness={1.35}
-            ior={1.45}
+            color="#f7fbfc"
+            metalness={1}
+            roughness={0.16}
             clearcoat={1}
-            clearcoatRoughness={0.08}
+            clearcoatRoughness={0.04}
             iridescence={1}
-            iridescenceIOR={1.35}
-            iridescenceThicknessRange={[120, 420]}
-            envMapIntensity={1.35}
+            iridescenceIOR={1.4}
+            iridescenceThicknessRange={[180, 520]}
+            envMapIntensity={2.4}
           />
         ) : (
           <meshPhysicalMaterial
@@ -206,11 +202,16 @@ function FpsWatch({ onLow }: { onLow: () => void }) {
 
   useFrame((_, delta) => {
     if (done.current) return;
+    if (elapsed.current < 0.7) {
+      elapsed.current += delta;
+      return;
+    }
     frames.current += 1;
     elapsed.current += delta;
-    if (elapsed.current < 2.4) return;
+    if (elapsed.current < 2.2) return;
     done.current = true;
-    if (frames.current / elapsed.current < 18) onLow();
+    const fps = frames.current / (elapsed.current - 0.7);
+    if (fps < 8) onLow();
   });
 
   return null;
@@ -221,35 +222,27 @@ function Scene({ quality, onLow }: { quality: Quality; onLow: () => void }) {
     <>
       <color attach="background" args={["#021920"]} />
       <fog attach="fog" args={["#021920", 7, 16]} />
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[4, 5, 4]} intensity={1.8} color="#f7f9fb" />
-      <directionalLight position={[-4, -1, 2]} intensity={0.45} color="#e6d3a4" />
+      <ambientLight intensity={0.55} />
+      <hemisphereLight intensity={0.85} color="#f4f7f8" groundColor="#0c5168" />
+      <directionalLight position={[4, 5, 5]} intensity={3.4} color="#ffffff" />
+      <directionalLight position={[-3, -1, 3]} intensity={1.3} color="#e6d3a4" />
+      <pointLight position={[1.2, 0.6, 2.2]} intensity={12} color="#ffffff" distance={9} />
       <Aurora />
       <PointerParallax>
         <Sculpture quality={quality} />
         <Particles count={quality === "high" ? 160 : 64} />
       </PointerParallax>
-      <Environment resolution={128} environmentIntensity={1.15} frames={1}>
-        <Lightformer form="circle" intensity={3} color="#f7f9fb" position={[0, 2, 4]} scale={5} />
-        <Lightformer form="ring" intensity={1.4} color="#e6d3a4" position={[-4, -1, 2]} scale={3} />
+      <Environment resolution={128} environmentIntensity={1.6} frames={1}>
+        <Lightformer form="circle" intensity={8} color="#ffffff" position={[0, 2, 4]} scale={6} />
+        <Lightformer form="ring" intensity={3} color="#e6d3a4" position={[-4, -1, 2]} scale={3} />
         <Lightformer
           form="circle"
-          intensity={0.7}
-          color="#1a6a82"
-          position={[4, 1, -2]}
+          intensity={2.2}
+          color="#d5dee4"
+          position={[4, 1, -1]}
           scale={4}
         />
       </Environment>
-      {quality === "high" ? (
-        <EffectComposer enableNormalPass={false} multisampling={0}>
-          <DepthOfField
-            focusDistance={5.4}
-            focusRange={1.8}
-            bokehScale={2.2}
-            resolutionScale={0.45}
-          />
-        </EffectComposer>
-      ) : null}
       <FpsWatch onLow={onLow} />
     </>
   );
@@ -279,6 +272,7 @@ export function HeroScene({ onLow }: { onLow: () => void }) {
       }}
       onCreated={({ gl }) => {
         gl.setClearColor("#021920");
+        gl.toneMappingExposure = 1.35;
         gl.domElement.addEventListener(
           "webglcontextlost",
           (event) => {

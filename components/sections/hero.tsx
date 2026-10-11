@@ -10,7 +10,7 @@ export function HeroSection({ home, settings }: { home: HomeContent; settings: S
   return (
     <section id="hero" className="relative scroll-mt-20 overflow-hidden bg-teal-950 text-white">
       <HeroCanvas />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-teal-950 via-teal-950/75 to-teal-950/10" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-teal-950 via-teal-950/70 to-transparent lg:w-[58%]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(2,25,32,0.45)_100%)]" />
       <Container className="relative z-10 grid min-h-[calc(100svh-4.5rem)] items-center gap-12 py-16 lg:grid-cols-[1.15fr_0.85fr] lg:py-20">
         <div>
