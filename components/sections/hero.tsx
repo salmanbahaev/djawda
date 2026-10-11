@@ -1,4 +1,6 @@
+import { HeroAtmosphere } from "@/components/ui/hero-atmosphere";
 import { HeroCanvas } from "@/components/ui/hero-canvas";
+import { HeroMotionPlayer } from "@/components/ui/hero-motion-lazy";
 import { KineticHeading } from "@/components/ui/kinetic-heading";
 import { Magnetic } from "@/components/ui/magnetic";
 import { Mark } from "@/components/ui/mark";
@@ -10,8 +12,10 @@ export function HeroSection({ home, settings }: { home: HomeContent; settings: S
   return (
     <section id="hero" className="relative scroll-mt-20 overflow-hidden bg-teal-950 text-white">
       <HeroCanvas />
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-teal-950 via-teal-950/70 to-transparent lg:w-[58%]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(2,25,32,0.45)_100%)]" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-full bg-gradient-to-r from-teal-950 via-teal-950/80 to-teal-950/15 lg:w-[58%] lg:via-teal-950/65 lg:to-transparent" />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,transparent_42%,rgba(2,25,32,0.42)_100%)]" />
+      <HeroMotionPlayer />
+      <HeroAtmosphere />
       <Container className="relative z-10 flex min-h-[calc(100svh-4.5rem)] items-center py-16 lg:py-20">
         <div className="w-full max-w-xl">
           <Mark

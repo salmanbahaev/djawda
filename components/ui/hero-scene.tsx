@@ -16,20 +16,24 @@ function detectQuality(): Quality {
   return "high";
 }
 
-function Sculpture({ quality }: { quality: Quality }) {
+function Sculpture({ quality, mobile }: { quality: Quality; mobile: boolean }) {
   const group = useRef<THREE.Group>(null);
-  const tubular = quality === "high" ? 140 : 80;
-  const radial = quality === "high" ? 24 : 12;
+  const tubular = quality === "high" ? 140 : 72;
+  const radial = quality === "high" ? 24 : 10;
 
   useFrame((_, delta) => {
     const node = group.current;
     if (!node) return;
-    node.rotation.y += delta * 0.16;
-    node.rotation.x = Math.sin(node.rotation.y * 0.65) * 0.12;
+    node.rotation.y += delta * (mobile ? 0.22 : 0.18);
+    node.rotation.x = Math.sin(node.rotation.y * 0.65) * 0.14;
   });
 
   return (
-    <group ref={group} position={[1.45, 0.08, 0]}>
+    <group
+      ref={group}
+      position={mobile ? [0.15, 0.12, 0] : [0.72, 0.02, 0]}
+      scale={mobile ? 1.18 : 1.36}
+    >
       <mesh>
         <torusKnotGeometry args={[1.05, 0.3, tubular, radial, 2, 3]} />
         {quality === "high" ? (
@@ -169,6 +173,54 @@ function Aurora() {
   );
 }
 
+function CameraDrift() {
+  useFrame((state, delta) => {
+    const t = state.clock.elapsedTime;
+    const camera = state.camera;
+    camera.position.x = THREE.MathUtils.damp(
+      camera.position.x,
+      Math.sin(t * 0.17) * 0.22,
+      1.5,
+      delta,
+    );
+    camera.position.y = THREE.MathUtils.damp(
+      camera.position.y,
+      0.12 + Math.cos(t * 0.13) * 0.1,
+      1.5,
+      delta,
+    );
+    camera.lookAt(0.28, 0, 0);
+  });
+
+  return null;
+}
+
+function ScrollShift({ children }: { children: React.ReactNode }) {
+  const group = useRef<THREE.Group>(null);
+  const progress = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const hero = document.getElementById("hero");
+      if (!hero) return;
+      const rect = hero.getBoundingClientRect();
+      progress.current = Math.min(1, Math.max(0, -rect.top / Math.max(rect.height, 1)));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useFrame((_, delta) => {
+    const node = group.current;
+    if (!node) return;
+    node.position.y = THREE.MathUtils.damp(node.position.y, progress.current * 0.85, 2.2, delta);
+    node.rotation.z = THREE.MathUtils.damp(node.rotation.z, progress.current * -0.18, 2.2, delta);
+  });
+
+  return <group ref={group}>{children}</group>;
+}
+
 function PointerParallax({ children }: { children: React.ReactNode }) {
   const group = useRef<THREE.Group>(null);
   const target = useRef({ x: 0, y: 0 });
@@ -186,10 +238,10 @@ function PointerParallax({ children }: { children: React.ReactNode }) {
   useFrame((_, delta) => {
     const node = group.current;
     if (!node) return;
-    node.position.x = THREE.MathUtils.damp(node.position.x, target.current.x * 0.35, 2.4, delta);
-    node.position.y = THREE.MathUtils.damp(node.position.y, -target.current.y * 0.22, 2.4, delta);
-    node.rotation.y = THREE.MathUtils.damp(node.rotation.y, target.current.x * 0.22, 2.4, delta);
-    node.rotation.x = THREE.MathUtils.damp(node.rotation.x, target.current.y * 0.12, 2.4, delta);
+    node.position.x = THREE.MathUtils.damp(node.position.x, target.current.x * 0.55, 2.6, delta);
+    node.position.y = THREE.MathUtils.damp(node.position.y, -target.current.y * 0.32, 2.6, delta);
+    node.rotation.y = THREE.MathUtils.damp(node.rotation.y, target.current.x * 0.32, 2.6, delta);
+    node.rotation.x = THREE.MathUtils.damp(node.rotation.x, target.current.y * 0.16, 2.6, delta);
   });
 
   return <group ref={group}>{children}</group>;
@@ -211,13 +263,21 @@ function FpsWatch({ onLow }: { onLow: () => void }) {
     if (elapsed.current < 2.2) return;
     done.current = true;
     const fps = frames.current / (elapsed.current - 0.7);
-    if (fps < 8) onLow();
+    if (fps < 5) onLow();
   });
 
   return null;
 }
 
-function Scene({ quality, onLow }: { quality: Quality; onLow: () => void }) {
+function Scene({
+  quality,
+  mobile,
+  onLow,
+}: {
+  quality: Quality;
+  mobile: boolean;
+  onLow: () => void;
+}) {
   return (
     <>
       <color attach="background" args={["#021920"]} />
@@ -228,10 +288,13 @@ function Scene({ quality, onLow }: { quality: Quality; onLow: () => void }) {
       <directionalLight position={[-3, -1, 3]} intensity={1.3} color="#e6d3a4" />
       <pointLight position={[1.2, 0.6, 2.2]} intensity={12} color="#ffffff" distance={9} />
       <Aurora />
-      <PointerParallax>
-        <Sculpture quality={quality} />
-        <Particles count={quality === "high" ? 160 : 64} />
-      </PointerParallax>
+      <CameraDrift />
+      <ScrollShift>
+        <PointerParallax>
+          <Sculpture quality={quality} mobile={mobile} />
+          <Particles count={quality === "high" ? 160 : 48} />
+        </PointerParallax>
+      </ScrollShift>
       <Environment resolution={128} environmentIntensity={1.6} frames={1}>
         <Lightformer form="circle" intensity={8} color="#ffffff" position={[0, 2, 4]} scale={6} />
         <Lightformer form="ring" intensity={3} color="#e6d3a4" position={[-4, -1, 2]} scale={3} />
@@ -250,6 +313,7 @@ function Scene({ quality, onLow }: { quality: Quality; onLow: () => void }) {
 
 export function HeroScene({ onLow }: { onLow: () => void }) {
   const [quality] = useState(detectQuality);
+  const [mobile] = useState(() => window.matchMedia("(max-width: 767px)").matches);
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
@@ -262,7 +326,7 @@ export function HeroScene({ onLow }: { onLow: () => void }) {
     <Canvas
       className="h-full w-full touch-pan-y"
       dpr={quality === "high" ? [1, 1.5] : [1, 1.15]}
-      camera={{ position: [0.2, 0.15, 5.6], fov: 34 }}
+      camera={{ position: [0.15, 0.12, mobile ? 4.7 : 4.55], fov: mobile ? 38 : 32 }}
       frameloop={hidden ? "demand" : "always"}
       gl={{
         antialias: quality === "high",
@@ -283,7 +347,7 @@ export function HeroScene({ onLow }: { onLow: () => void }) {
         );
       }}
     >
-      <Scene quality={quality} onLow={onLow} />
+      <Scene quality={quality} mobile={mobile} onLow={onLow} />
     </Canvas>
   );
 }
