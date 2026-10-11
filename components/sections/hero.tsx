@@ -12,14 +12,20 @@ export function HeroSection({ home, settings }: { home: HomeContent; settings: S
       <HeroCanvas />
       <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-teal-950 via-teal-950/70 to-transparent lg:w-[58%]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(2,25,32,0.45)_100%)]" />
-      <Container className="relative z-10 grid min-h-[calc(100svh-4.5rem)] items-center gap-12 py-16 lg:grid-cols-[1.15fr_0.85fr] lg:py-20">
-        <div>
-          <p className="text-xs font-semibold tracking-[0.22em] text-gold-2 uppercase">
+      <Container className="relative z-10 flex min-h-[calc(100svh-4.5rem)] items-center py-16 lg:py-20">
+        <div className="w-full max-w-xl">
+          <Mark
+            src={settings.logo}
+            alt={settings.logoAlt || ""}
+            priority
+            className="h-24 sm:h-28 lg:h-32"
+          />
+          <p className="mt-5 text-xs font-semibold tracking-[0.22em] text-gold-2 uppercase">
             {settings.audienceNote}
           </p>
           <KineticHeading
             text={home.heroTitle}
-            className="mt-5 max-w-xl text-5xl font-medium tracking-tight text-balance sm:text-6xl lg:text-7xl"
+            className="mt-4 max-w-xl text-5xl font-medium tracking-tight text-balance sm:text-6xl lg:text-7xl"
           />
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80">{home.heroSubtitle}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -39,11 +45,6 @@ export function HeroSection({ home, settings }: { home: HomeContent; settings: S
                 {home.heroSecondaryLabel}
               </Link>
             </Magnetic>
-          </div>
-        </div>
-        <div className="flex justify-center lg:justify-end">
-          <div className="relative rounded-[2rem] border border-white/15 bg-white/5 p-6 shadow-[0_30px_80px_-36px_rgba(0,0,0,0.65)] backdrop-blur-md">
-            <Mark src={settings.logo} alt={settings.logoAlt || ""} height={240} priority />
           </div>
         </div>
       </Container>

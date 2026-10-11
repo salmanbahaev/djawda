@@ -51,7 +51,8 @@ export default config({
         }),
         logo: fields.image({
           label: "Каллиграфический знак",
-          description: "Только знак над словом. Фон прозрачный.",
+          description:
+            "Только знак над словом, файл SVG. На сайте у него серебряный градиент; в шапке тот же файл рисуется плоским серебром.",
           directory: "public/brand",
           publicPath: "/brand/",
         }),

@@ -26,6 +26,14 @@ export type LeadFormCopy = {
 
 type CourseOption = { slug: string; title: string };
 
+const controlClass =
+  "field-control w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-base text-ink outline-none transition duration-200 placeholder:text-transparent focus:border-teal-900 focus:placeholder:text-[#3a5560]";
+
+const labelBase =
+  "float-label pointer-events-none absolute left-4 z-10 max-w-[calc(100%-2.75rem)] origin-left truncate transition-all duration-200 ease-out";
+
+const peerLabel = `${labelBase} top-1/2 -translate-y-1/2 text-base text-[#3a5560] peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:bg-white peer-focus:px-1 peer-focus:text-xs peer-focus:font-medium peer-focus:text-ink peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:font-medium peer-[:not(:placeholder-shown)]:text-ink`;
+
 export function LeadForm({
   copy,
   courses,
@@ -99,9 +107,9 @@ export function LeadForm({
 
   if (status === "success") {
     return (
-      <div className="rounded-3xl border border-line bg-paper-2 p-6 sm:p-8" role="status">
+      <div className="rounded-3xl border border-line bg-paper-2 p-6 text-ink sm:p-8" role="status">
         <h3 className="text-2xl font-medium tracking-tight">{copy.successTitle}</h3>
-        <p className="mt-3 leading-relaxed text-muted">{message}</p>
+        <p className="mt-3 leading-relaxed text-[#3a5560]">{message}</p>
         <a
           href={whatsappUrl}
           target="_blank"
@@ -118,80 +126,70 @@ export function LeadForm({
     <form
       id={id}
       onSubmit={onSubmit}
-      className="relative rounded-3xl border border-line bg-paper-2 p-6 sm:p-8"
+      className="relative rounded-3xl border border-line bg-paper-2 p-6 text-ink scheme-light sm:p-8"
       noValidate
     >
       <div className="grid gap-5">
-        <Field label={copy.nameLabel} htmlFor={`${id}-name`} error={fieldErrors.name}>
-          <input
-            id={`${id}-name`}
-            name="name"
-            autoComplete="name"
-            required
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            className={inputClass}
-            placeholder="Имя Фамилия"
-          />
-        </Field>
-        <Field label={copy.phoneLabel} htmlFor={`${id}-phone`} error={fieldErrors.phone}>
-          <input
-            id={`${id}-phone`}
-            name="phone"
-            type="tel"
-            inputMode="tel"
-            autoComplete="tel"
-            required
-            value={phone}
-            onChange={(event) => setPhone(formatRuPhoneInput(event.target.value))}
-            className={inputClass}
-            placeholder="+7 (900) 000-00-00"
-          />
-        </Field>
-        <Field label={copy.courseLabel} htmlFor={`${id}-course`} error={fieldErrors.course}>
-          <select
-            id={`${id}-course`}
-            name="course"
-            required
-            value={course}
-            onChange={(event) => setCourse(event.target.value)}
-            className={inputClass}
-          >
-            <option value="">{copy.coursePlaceholder}</option>
-            {courses.map((item) => (
-              <option key={item.slug} value={item.slug}>
-                {item.title}
-              </option>
-            ))}
-          </select>
-        </Field>
+        <TextField
+          id={`${id}-name`}
+          label={copy.nameLabel}
+          error={fieldErrors.name}
+          name="name"
+          autoComplete="name"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+        />
+        <TextField
+          id={`${id}-phone`}
+          label={copy.phoneLabel}
+          error={fieldErrors.phone}
+          name="phone"
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          placeholder="+7 (900) 000-00-00"
+          value={phone}
+          onChange={(event) => setPhone(formatRuPhoneInput(event.target.value))}
+        />
+        <SelectField
+          id={`${id}-course`}
+          label={copy.courseLabel}
+          error={fieldErrors.course}
+          value={course}
+          onChange={setCourse}
+          placeholder={copy.coursePlaceholder}
+          options={courses.map((item) => ({ value: item.slug, label: item.title }))}
+        />
         <fieldset>
-          <legend className="text-sm font-medium">{copy.formatLabel}</legend>
+          <legend className="text-sm font-medium text-ink">{copy.formatLabel}</legend>
           <div className="mt-3 grid gap-2 sm:grid-cols-3">
-            {copy.formats.map((item) => (
-              <label
-                key={item.value}
-                className={`cursor-pointer rounded-2xl border px-3 py-3 text-sm ${
-                  format === item.value
-                    ? "border-teal-900 bg-teal-900 text-white"
-                    : "border-line bg-white"
-                }`}
-              >
-                <input
-                  className="sr-only"
-                  type="radio"
-                  name={`${id}-format`}
-                  value={item.value}
-                  checked={format === item.value}
-                  onChange={() => setFormat(item.value)}
-                  required
-                />
-                {item.label}
-              </label>
-            ))}
+            {copy.formats.map((item) => {
+              const selected = format === item.value;
+              return (
+                <label
+                  key={item.value}
+                  className={`pill cursor-pointer rounded-2xl border px-3 py-3 text-sm font-medium transition duration-200 ${
+                    selected
+                      ? "border-teal-900 bg-teal-900 text-white"
+                      : "border-line bg-white text-ink hover:border-teal-800"
+                  }`}
+                >
+                  <input
+                    className="sr-only"
+                    type="radio"
+                    name={`${id}-format`}
+                    value={item.value}
+                    checked={selected}
+                    onChange={() => setFormat(item.value)}
+                    required
+                  />
+                  {item.label}
+                </label>
+              );
+            })}
           </div>
           {fieldErrors.format ? (
-            <p className="mt-2 text-sm text-red-800">{fieldErrors.format}</p>
+            <p className="mt-2 text-sm font-medium text-red-800">{fieldErrors.format}</p>
           ) : null}
         </fieldset>
         <div>
@@ -199,22 +197,29 @@ export function LeadForm({
             <input
               id={`${id}-consent`}
               type="checkbox"
-              className="mt-1 h-4 w-4 accent-teal-900"
+              className="field-control mt-1 h-4 w-4 accent-teal-900"
               checked={consent}
               onChange={(event) => setConsent(event.target.checked)}
               required
+              aria-invalid={fieldErrors.consent ? true : undefined}
+              aria-describedby={fieldErrors.consent ? `${id}-consent-error` : undefined}
             />
-            <label htmlFor={`${id}-consent`} className="text-sm leading-relaxed">
+            <label htmlFor={`${id}-consent`} className="text-sm leading-relaxed text-ink">
               {copy.consentLabel}
             </label>
           </div>
           <p className="mt-2 pl-7 text-sm">
-            <Link href="/privacy" className="underline decoration-gold/70 underline-offset-4">
+            <Link
+              href="/privacy"
+              className="font-medium text-teal-900 underline decoration-teal-900/40 underline-offset-4"
+            >
               {copy.privacyLinkLabel}
             </Link>
           </p>
           {fieldErrors.consent ? (
-            <p className="mt-2 text-sm text-red-800">{fieldErrors.consent}</p>
+            <p id={`${id}-consent-error`} className="mt-2 text-sm font-medium text-red-800">
+              {fieldErrors.consent}
+            </p>
           ) : null}
         </div>
         <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden>
@@ -229,7 +234,7 @@ export function LeadForm({
           </label>
         </div>
         {status === "error" ? (
-          <p role="alert" className="text-sm text-red-800">
+          <p role="alert" className="text-sm font-medium text-red-800">
             {message}
           </p>
         ) : null}
@@ -245,38 +250,121 @@ export function LeadForm({
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border border-teal-900/20 px-5 py-3 text-center text-sm font-medium text-teal-900 transition duration-200 hover:border-teal-900/50"
+            className="rounded-full border border-teal-900/30 px-5 py-3 text-center text-sm font-medium text-teal-900 transition duration-200 hover:border-teal-900"
           >
             {copy.whatsappCta}
           </a>
         </div>
-        <p className="text-sm text-muted">{copy.hint}</p>
+        <p className="text-sm text-[#3a5560]">{copy.hint}</p>
       </div>
     </form>
   );
 }
 
-const inputClass =
-  "mt-2 w-full rounded-2xl border border-line bg-white px-4 py-3 text-base outline-none ring-teal-900/20 focus:ring-2";
-
-function Field({
+function TextField({
+  id,
   label,
-  htmlFor,
   error,
-  children,
+  ...props
 }: {
+  id: string;
   label: string;
-  htmlFor: string;
   error?: string;
-  children: React.ReactNode;
-}) {
+} & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div>
-      <label htmlFor={htmlFor} className="text-sm font-medium">
-        {label}
-      </label>
-      {children}
-      {error ? <p className="mt-2 text-sm text-red-800">{error}</p> : null}
+      <div className="relative">
+        <input
+          id={id}
+          required
+          placeholder=" "
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${id}-error` : undefined}
+          className={`${controlClass} peer ${error ? "border-red-800" : ""}`}
+          {...props}
+        />
+        <label htmlFor={id} className={peerLabel}>
+          {label}
+        </label>
+      </div>
+      {error ? (
+        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-800">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function SelectField({
+  id,
+  label,
+  error,
+  value,
+  onChange,
+  placeholder,
+  options,
+}: {
+  id: string;
+  label: string;
+  error?: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  options: { value: string; label: string }[];
+}) {
+  const [focused, setFocused] = useState(false);
+  const floated = focused || value !== "";
+
+  return (
+    <div>
+      <div className="relative">
+        <select
+          id={id}
+          name="course"
+          required
+          value={value}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${id}-error` : undefined}
+          onChange={(event) => onChange(event.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          className={`${controlClass} appearance-none pr-12 ${error ? "border-red-800" : ""}`}
+        >
+          <option value="">{floated ? placeholder : "\u00a0"}</option>
+          {options.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+        <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-ink">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
+            <path
+              d="M5 7.5 10 12.5 15 7.5"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+        <label
+          htmlFor={id}
+          className={`${labelBase} ${
+            floated
+              ? "top-0 -translate-y-1/2 bg-white px-1 text-xs font-medium text-ink"
+              : "top-1/2 -translate-y-1/2 text-base text-[#3a5560]"
+          }`}
+        >
+          {label}
+        </label>
+      </div>
+      {error ? (
+        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-800">
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }

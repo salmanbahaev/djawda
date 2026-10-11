@@ -66,7 +66,7 @@ export function Header(props: HeaderProps) {
           className="flex shrink-0 items-center gap-3"
           onClick={() => setOpen(false)}
         >
-          <Mark src={props.logo} alt={props.logoAlt} height={46} priority />
+          <Mark src={props.logo} alt={props.logoAlt} height={46} priority tone="flat" />
           <span className="flex flex-col leading-none">
             <span className="font-display text-2xl leading-none font-medium tracking-wide">
               {props.wordmark}
