@@ -37,8 +37,8 @@ export function HeroMotionPlayer() {
         component={HeroMotion}
         inputProps={{ density }}
         durationInFrames={heroMotion.durationInFrames}
-        compositionWidth={heroMotion.width}
-        compositionHeight={heroMotion.height}
+        compositionWidth={heroMotion.frames[density].width}
+        compositionHeight={heroMotion.frames[density].height}
         fps={heroMotion.fps}
         loop
         autoPlay

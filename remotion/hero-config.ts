@@ -2,12 +2,13 @@
 export const heroMotion = {
   fps: 30,
   durationInFrames: 240,
-  width: 1600,
-  height: 900,
+  frames: {
+    full: { width: 1440, height: 860 },
+    lite: { width: 390, height: 780 },
+  },
   colors: {
-    silver: "#e7ebef",
+    silver: "#f4f7f8",
     gold: "#e6d3a4",
-    teal: "#0c5168",
   },
 } as const;
 

@@ -33,15 +33,15 @@ export function HeroAtmosphere() {
   return (
     <div className="pointer-events-none absolute inset-0 z-[3] overflow-hidden" aria-hidden>
       <motion.div
-        className="absolute top-[8%] left-[6%] h-40 w-40 rounded-full border border-silver/30 sm:h-56 sm:w-56"
+        className="absolute top-[18%] right-[-4%] h-44 w-44 rounded-full border border-silver/25 sm:h-64 sm:w-64"
         style={{ x: springX, y: springY }}
         animate={{ rotate: 360 }}
-        transition={{ duration: 48, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
       />
       <motion.div
         className="absolute right-[6%] bottom-[12%] h-28 w-28 rounded-full border border-gold-2/30 sm:h-40 sm:w-40"
         animate={{ y: [0, -18, 0], rotate: [-8, 8, -8] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute hidden h-72 w-72 rounded-full sm:block"
