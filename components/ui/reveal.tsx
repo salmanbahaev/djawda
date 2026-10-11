@@ -14,11 +14,11 @@ export function Reveal({
 }) {
   return (
     <motion.div
-      className={className}
-      initial={{ y: 18 }}
-      whileInView={{ y: 0 }}
+      className={`reveal ${className}`}
+      initial={{ y: 28, scale: 0.985, filter: "blur(8px)" }}
+      whileInView={{ y: 0, scale: 1, filter: "blur(0px)" }}
       viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.75, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>

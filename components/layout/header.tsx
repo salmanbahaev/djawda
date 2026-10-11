@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useMotionValue, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Mark } from "@/components/ui/mark";
@@ -23,7 +23,22 @@ export function Header(props: HeaderProps) {
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const progress = useMotionValue(0);
   const links = props.nav.map((item) => ({ ...item, href: siteHref(item.href) }));
+
+  useEffect(() => {
+    function onScroll() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.set(max > 0 ? window.scrollY / max : 0);
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [progress]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -44,7 +59,7 @@ export function Header(props: HeaderProps) {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-teal-900 text-white">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-teal-950/75 text-white backdrop-blur-xl">
       <div className="mx-auto flex h-[4.5rem] w-full max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
         <Link
           href="/#hero"
@@ -53,7 +68,9 @@ export function Header(props: HeaderProps) {
         >
           <Mark src={props.logo} alt={props.logoAlt} height={46} priority />
           <span className="flex flex-col leading-none">
-            <span className="text-lg font-semibold tracking-wide">{props.wordmark}</span>
+            <span className="font-display text-2xl leading-none font-medium tracking-wide">
+              {props.wordmark}
+            </span>
             <span className="mt-1 text-[0.68rem] tracking-[0.18em] text-white/70">
               {props.wordmarkRu}
             </span>
@@ -68,14 +85,14 @@ export function Header(props: HeaderProps) {
             <Link
               key={link.href}
               href={link.href}
-              className="whitespace-nowrap transition hover:text-white"
+              className="whitespace-nowrap transition-colors duration-200 hover:text-white"
             >
               {link.label}
             </Link>
           ))}
           <Link
             href="/#lead"
-            className="whitespace-nowrap rounded-full bg-white px-4 py-2 font-medium text-teal-900 transition hover:bg-silver"
+            className="whitespace-nowrap rounded-full bg-white px-4 py-2 font-medium text-teal-900 transition duration-200 hover:bg-gold-2"
           >
             {props.navCta}
           </Link>
@@ -134,6 +151,11 @@ export function Header(props: HeaderProps) {
           </motion.nav>
         ) : null}
       </AnimatePresence>
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left bg-gold"
+        style={{ scaleX: progress }}
+      />
     </header>
   );
 }

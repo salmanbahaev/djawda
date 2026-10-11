@@ -3,7 +3,7 @@ import type { HomeContent } from "@/lib/cms/content";
 
 export function FormatsSection({ home }: { home: HomeContent }) {
   return (
-    <section id="formats" className="scroll-mt-20 py-20 md:py-28">
+    <section id="formats" className="scroll-mt-20 py-24 md:py-32">
       <Container>
         <Eyebrow>{home.formatsEyebrow}</Eyebrow>
         <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">
@@ -12,7 +12,10 @@ export function FormatsSection({ home }: { home: HomeContent }) {
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{home.formatsLead}</p>
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {home.formats.map((item) => (
-            <article key={item.title} className="rounded-3xl border border-line bg-white p-6">
+            <article
+              key={item.title}
+              className="rounded-3xl border border-line bg-white p-6 transition duration-300 hover:-translate-y-1 hover:border-gold/40 hover:shadow-[0_24px_50px_-36px_rgba(0,61,82,0.4)]"
+            >
               <h3 className="text-xl font-medium">{item.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted">{item.text}</p>
             </article>

@@ -106,7 +106,7 @@ export function LeadForm({
           href={whatsappUrl}
           target="_blank"
           rel="noreferrer"
-          className="mt-6 inline-flex rounded-full bg-teal-900 px-5 py-3 text-sm font-medium text-white"
+          className="mt-6 inline-flex rounded-full bg-teal-900 px-5 py-3 text-sm font-medium text-white transition duration-200 hover:bg-teal-800"
         >
           {copy.whatsappCta}
         </a>
@@ -237,7 +237,7 @@ export function LeadForm({
           <button
             type="submit"
             disabled={status === "sending"}
-            className="rounded-full bg-teal-900 px-5 py-3 text-sm font-medium text-white disabled:opacity-60"
+            className="rounded-full bg-teal-900 px-5 py-3 text-sm font-medium text-white transition duration-200 hover:bg-teal-800 disabled:opacity-60"
           >
             {status === "sending" ? copy.submittingLabel : copy.submitLabel}
           </button>
@@ -245,7 +245,7 @@ export function LeadForm({
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border border-teal-900/20 px-5 py-3 text-center text-sm font-medium text-teal-900"
+            className="rounded-full border border-teal-900/20 px-5 py-3 text-center text-sm font-medium text-teal-900 transition duration-200 hover:border-teal-900/50"
           >
             {copy.whatsappCta}
           </a>

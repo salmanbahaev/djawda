@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Cormorant, Manrope } from "next/font/google";
 import { ReaderRefresh } from "@keystatic/next/reader-refresh";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { MotionProvider } from "@/components/layout/motion-provider";
+import { SmoothScroll } from "@/components/ui/smooth-scroll";
 import { getFooter, getSettings, reader } from "@/lib/cms/content";
 import "./globals.css";
 
@@ -11,6 +12,13 @@ const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
   display: "swap",
   variable: "--font-manrope",
+});
+
+const cormorant = Cormorant({
+  subsets: ["latin", "cyrillic"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+  variable: "--font-cormorant",
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -49,9 +57,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const [settings, footer] = await Promise.all([getSettings(), getFooter()]);
 
   return (
-    <html lang="ru" className={manrope.variable}>
+    <html lang="ru" className={`${manrope.variable} ${cormorant.variable}`}>
       <body className="font-sans antialiased">
         <MotionProvider>
+          <SmoothScroll />
           <Header
             logo={settings.logo}
             logoAlt={settings.logoAlt || ""}

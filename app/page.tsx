@@ -8,6 +8,7 @@ import { FormatsSection } from "@/components/sections/formats";
 import { HeroSection } from "@/components/sections/hero";
 import { LeadSection } from "@/components/sections/lead";
 import { TeachersSection } from "@/components/sections/teachers";
+import { Marquee } from "@/components/ui/marquee";
 import { getAbout, getCourses, getFormCopy, getHome, getSettings } from "@/lib/cms/content";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -56,6 +57,7 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <HeroSection home={home} settings={settings} />
+      <Marquee items={courses.map((course) => course.title)} />
       <ApproachSection home={home} />
       <AudienceSection home={home} />
       <CoursesSection home={home} courses={courses} />

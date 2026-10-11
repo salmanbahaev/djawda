@@ -24,15 +24,20 @@ export function FaqList({
               <button
                 id={buttonId}
                 type="button"
-                className="flex w-full items-center justify-between gap-6 py-5 text-left text-lg font-medium"
+                className="flex w-full cursor-pointer items-center justify-between gap-6 py-5 text-left text-lg font-medium"
                 aria-expanded={expanded}
                 aria-controls={panelId}
                 onClick={() => setOpen(expanded ? null : index)}
               >
-                {item.question}
-                <span aria-hidden className="text-gold">
-                  {expanded ? "–" : "+"}
-                </span>
+                <span>{item.question}</span>
+                <motion.span
+                  aria-hidden
+                  animate={{ rotate: expanded ? 45 : 0 }}
+                  transition={{ duration: reduce ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gold/30 text-xl leading-none text-gold"
+                >
+                  +
+                </motion.span>
               </button>
             </h3>
             <AnimatePresence initial={false}>
