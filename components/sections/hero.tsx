@@ -1,4 +1,4 @@
-import { HeroWaves } from "@/components/ui/hero-waves";
+import { HeroThreads } from "@/components/ui/backgrounds/hero-threads";
 import { Magnetic } from "@/components/ui/magnetic";
 import { Mark } from "@/components/ui/mark";
 import { Container } from "@/components/ui/container";
@@ -12,7 +12,11 @@ export function HeroSection({ home, settings }: { home: HomeContent; settings: S
       data-surface="dark"
       className="relative overflow-hidden bg-[var(--ink)] text-white"
     >
-      <HeroWaves />
+      <HeroThreads />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(15,15,16,0.78)_0%,rgba(15,15,16,0.4)_48%,rgba(15,15,16,0.16)_100%)]"
+      />
       <Container className="relative z-10 flex min-h-[calc(100svh-4.5rem)] items-center py-20 lg:py-24">
         <div className="grid w-full items-center md:grid-cols-[minmax(0,auto)_1fr]">
           <Mark
