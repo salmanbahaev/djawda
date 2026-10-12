@@ -42,11 +42,31 @@ export interface WebThreadsProps {
 }
 
 const STATIC_TIME = 3.2;
+/** Desktop ceiling. Phones stay at 1 so a 390px screen is not a 3× buffer. */
+const DPR_CAP = 1.5;
+/**
+ * Fill-rate budget for software GL (SwiftShader and similar). A 1440px hero at
+ * 1.5× is ~2.7M pixels and stretches frames past 100ms; ~180k stays inside one
+ * refresh. Real GPUs still start at the DPR cap and only step down if frames slip.
+ */
+const PIXEL_BUDGET = 180_000;
 
-function cappedDpr() {
-  const pixels = window.devicePixelRatio || 1;
-  const cap = window.innerWidth < 768 ? 1 : 1.5;
-  return Math.min(pixels, cap);
+function deviceCap(cssWidth: number) {
+  const cap = cssWidth < 768 ? 1 : DPR_CAP;
+  return Math.min(window.devicePixelRatio || 1, cap);
+}
+
+function budgetScale(cssWidth: number, cssHeight: number) {
+  const pixels = Math.max(1, cssWidth * cssHeight);
+  return Math.min(deviceCap(cssWidth), Math.sqrt(PIXEL_BUDGET / pixels));
+}
+
+function isSoftwareRenderer(gl: WebGLRenderingContext) {
+  const ext = gl.getExtension("WEBGL_debug_renderer_info");
+  if (!ext) return false;
+  const vendor = String(gl.getParameter(ext.UNMASKED_VENDOR_WEBGL) ?? "");
+  const rendererName = String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) ?? "");
+  return /swiftshader|llvmpipe|softpipe|software|basic render/i.test(`${vendor} ${rendererName}`);
 }
 
 const hexToRgb = (hex: string): [number, number, number] => {
@@ -234,7 +254,7 @@ function WebThreads({
       premultipliedAlpha: true,
       antialias: false,
       powerPreference: "low-power",
-      dpr: cappedDpr(),
+      dpr: 1,
     });
 
     const gl = renderer.gl;
@@ -284,14 +304,25 @@ function WebThreads({
     const mesh = new Mesh(gl, { geometry, program });
     ctxMap.set(container, { renderer, program, mesh });
 
+    const software = isSoftwareRenderer(gl);
+    let scale = 1;
+    let locked = false;
+    let slowFrames = 0;
+    let skipGap = true;
+
     const setSize = () => {
       const rect = container.getBoundingClientRect();
       const w = Math.max(1, Math.floor(rect.width));
       const h = Math.max(1, Math.floor(rect.height));
+      const cap = deviceCap(w);
+      if (!locked) scale = software ? budgetScale(w, h) : cap;
+      else scale = Math.min(scale, cap);
+      renderer.dpr = scale;
       renderer.setSize(w, h);
       const res = (program.uniforms.iResolution as { value: Float32Array }).value;
       res[0] = gl.drawingBufferWidth;
       res[1] = gl.drawingBufferHeight;
+      skipGap = true;
       renderer.render({ scene: mesh });
     };
 
@@ -324,6 +355,7 @@ function WebThreads({
     let running = false;
     let isVisible = true;
     let isPageVisible = !document.hidden;
+    let lastTick = 0;
     const t0 = performance.now();
 
     const draw = (timeSeconds: number) => {
@@ -344,6 +376,28 @@ function WebThreads({
 
     const loop = (t: number) => {
       if (!running) return;
+      const ignoreGap = skipGap;
+      skipGap = false;
+      if (!ignoreGap && lastTick !== 0) {
+        const gap = t - lastTick;
+        if (gap > 28 && gap < 400) {
+          slowFrames += 1;
+          if (slowFrames >= 2) {
+            const rect = container.getBoundingClientRect();
+            const floor = budgetScale(rect.width, rect.height) * 0.5;
+            const next = Math.max(floor, scale * 0.75);
+            slowFrames = 0;
+            if (next < scale - 0.015) {
+              scale = next;
+              locked = true;
+              setSize();
+            }
+          }
+        } else if (gap < 22) {
+          slowFrames = 0;
+        }
+      }
+      lastTick = t;
       draw((t - t0) * 0.001);
       raf = requestAnimationFrame(loop);
     };
@@ -351,6 +405,9 @@ function WebThreads({
     const tryStart = () => {
       if (reduce || !isVisible || !isPageVisible || raf !== 0) return;
       running = true;
+      lastTick = 0;
+      slowFrames = 0;
+      skipGap = true;
       raf = requestAnimationFrame(loop);
     };
     const tryStop = () => {
@@ -444,7 +501,7 @@ function WebThreads({
     u.uEnableMouse.value = mouseInteraction ? 1.0 : 0.0;
     mouseRef.current.enabled = mouseInteraction;
     mouseRef.current.strength = mouseStrength;
-    if (reduce) renderer.render({ scene: ctx.mesh });
+    renderer.render({ scene: ctx.mesh });
   }, [
     reduce,
     color1,
