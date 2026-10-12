@@ -111,9 +111,19 @@ button:disabled {
 .course-glare {
   background: radial-gradient(
     420px circle at var(--gx, 50%) var(--gy, 18%),
-    rgba(23, 23, 26, 0.06),
+    rgba(255, 255, 255, 0.14),
     transparent 42%
   );
+}
+
+.rail-tip {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rail-tip {
+    display: block;
+  }
 }
 
 @keyframes select-in {

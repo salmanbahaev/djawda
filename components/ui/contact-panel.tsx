@@ -48,7 +48,7 @@ export function ContactPanel({
         <ul className={`${lead ? "mt-6" : ""} space-y-3 text-base`}>
           <li>
             <a
-              className="font-medium text-ink underline decoration-[#17171a]/30 underline-offset-4"
+              className="font-medium text-[#f4f4f5] underline decoration-white/40 underline-offset-4"
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
@@ -81,7 +81,7 @@ export function ContactPanel({
         <div className="mt-6 flex flex-wrap gap-3">
           <a
             href={routeHref}
-            className="rounded-full bg-[#17171a] px-5 py-3 text-sm font-medium text-[#f5f5f4]"
+            className="rounded-full bg-[#f4f4f5] px-5 py-3 text-sm font-medium text-[#141416]"
             target="_blank"
             rel="noreferrer"
           >
@@ -89,7 +89,7 @@ export function ContactPanel({
           </a>
           <a
             href={mapUrl}
-            className="rounded-full border border-[#17171a]/20 px-5 py-3 text-sm font-medium text-[#17171a]"
+            className="rounded-full border border-white/25 px-5 py-3 text-sm font-medium text-[#f4f4f5]"
             target="_blank"
             rel="noreferrer"
           >
@@ -97,7 +97,7 @@ export function ContactPanel({
           </a>
         </div>
       </div>
-      <div className="overflow-hidden rounded-3xl border border-line bg-white shadow-[0_1px_2px_rgba(23,23,26,0.04)]">
+      <div className="overflow-hidden rounded-3xl border border-line bg-[#18181a]">
         <iframe
           title={mapFrameTitle}
           src={iframeSrc}

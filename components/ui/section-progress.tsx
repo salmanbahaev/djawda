@@ -112,7 +112,7 @@ export function SectionProgress() {
                     className={`block rounded-full ${reduce ? "" : "transition-[width,height,background-color,box-shadow] duration-200"} ${dotClass(light, reached, current)}`}
                   />
                   <span
-                    className={`pointer-events-none absolute top-1/2 right-full mr-2 hidden -translate-y-1/2 rounded-full px-2 py-0.5 text-[10px] font-medium tracking-wide whitespace-nowrap opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:hover)]:block ${
+                    className={`rail-tip pointer-events-none absolute top-1/2 right-full mr-2 -translate-y-1/2 rounded-full px-2 py-0.5 text-[10px] font-medium tracking-wide whitespace-nowrap opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 ${
                       light ? "bg-[#17171a] text-[#f5f5f4]" : "bg-[#f4f4f5] text-[#17171a]"
                     }`}
                   >

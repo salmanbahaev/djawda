@@ -5,23 +5,23 @@ import { paragraphs } from "@/lib/cms/text";
 export function TeachersSection({ home, about }: { home: HomeContent; about: AboutContent }) {
   return (
     <section id="teachers" className="scroll-mt-20">
-      <div data-surface="dark" className="bg-[#0f0f10] py-24 text-white md:py-32">
+      <div data-surface="light" className="tone-light py-24 md:py-32">
         <Container>
-          <Eyebrow light>{home.teachersEyebrow}</Eyebrow>
+          <Eyebrow>{home.teachersEyebrow}</Eyebrow>
           <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">
             {home.teachersTitle}
           </h2>
           {home.teachersLead ? (
-            <p className="mt-5 max-w-2xl text-white/75">{home.teachersLead}</p>
+            <p className="mt-5 max-w-2xl text-muted">{home.teachersLead}</p>
           ) : null}
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             {about.teachers.map((teacher) => (
               <article
                 key={teacher.name}
-                className="rounded-3xl border border-white/10 bg-white/5 p-6 transition duration-300 hover:-translate-y-1 hover:border-white/25 hover:bg-white/10 sm:p-8"
+                className="rounded-3xl border border-line bg-white p-6 shadow-[0_1px_2px_rgba(23,23,26,0.04)] transition duration-300 hover:-translate-y-1 hover:border-[#b0b0ab] sm:p-8"
               >
                 <h3 className="text-2xl font-medium">{teacher.name}</h3>
-                <ul className="mt-5 space-y-3 text-sm leading-relaxed text-white/80">
+                <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted">
                   {teacher.lines.map((line) => (
                     <li key={line}>{line}</li>
                   ))}
@@ -31,7 +31,7 @@ export function TeachersSection({ home, about }: { home: HomeContent; about: Abo
           </div>
         </Container>
       </div>
-      <div data-surface="light" className="tone-light py-24 md:py-32">
+      <div data-surface="light" className="tone-light surface-3 py-24 md:py-32">
         <Container>
           <Eyebrow>{about.eyebrow}</Eyebrow>
           <h2 className="mt-3 max-w-3xl text-3xl font-medium tracking-tight sm:text-5xl">

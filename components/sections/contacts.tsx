@@ -10,7 +10,7 @@ export function ContactsSection({
   settings: SettingsContent;
 }) {
   return (
-    <section id="contacts" data-surface="light" className="tone-light scroll-mt-20 py-24 md:py-32">
+    <section id="contacts" data-surface="dark" className="scroll-mt-20 bg-[#0f0f10] py-24 md:py-32">
       <Container>
         <Eyebrow>{home.contactsEyebrow}</Eyebrow>
         <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">
