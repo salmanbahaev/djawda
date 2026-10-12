@@ -252,6 +252,75 @@ html[data-scroll-lock] {
   outline-offset: 2px;
 }
 
+/* Classroom: warmer slate behind the photos, deep at the edges. Static paint only. */
+.classroom-section {
+  position: relative;
+  background-color: #081820;
+  background-image: radial-gradient(
+    ellipse 64% 78% at 74% 46%,
+    #4d636e 0%,
+    #1c4452 36%,
+    #0f2f3a 66%,
+    #081820 100%
+  );
+}
+
+.classroom-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(245, 239, 228, 0.05) 0.85px, transparent 0.95px);
+  background-size: 18px 18px;
+  -webkit-mask-image: radial-gradient(ellipse 72% 70% at 74% 46%, #000 12%, transparent 70%);
+  mask-image: radial-gradient(ellipse 72% 70% at 74% 46%, #000 12%, transparent 70%);
+}
+
+.classroom-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+.classroom-collage::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  inset: -8% -10% -6% -4%;
+  background: radial-gradient(
+    ellipse 72% 68% at 58% 46%,
+    rgba(245, 239, 228, 0.5) 0%,
+    rgba(232, 218, 196, 0.26) 34%,
+    rgba(61, 92, 108, 0.08) 58%,
+    transparent 74%
+  );
+}
+
+.classroom-frame {
+  position: relative;
+  z-index: 1;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 22px 48px rgba(4, 10, 16, 0.46);
+}
+
+@media (max-width: 1023px) {
+  .classroom-section {
+    background-image: radial-gradient(
+      ellipse 100% 58% at 50% 78%,
+      #4d636e 0%,
+      #1c4452 38%,
+      #0f2f3a 68%,
+      #081820 100%
+    );
+  }
+
+  .classroom-section::before {
+    -webkit-mask-image: radial-gradient(ellipse 90% 52% at 50% 76%, #000 8%, transparent 72%);
+    mask-image: radial-gradient(ellipse 90% 52% at 50% 76%, #000 8%, transparent 72%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;

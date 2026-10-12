@@ -9,7 +9,7 @@ export function ClassroomSection({ home }: { home: HomeContent }) {
   const portrait = home.classroomPortraitImage;
 
   return (
-    <section id="classroom" data-surface="dark" className="bg-[var(--accent)] py-24 md:py-32">
+    <section id="classroom" data-surface="dark" className="classroom-section py-24 md:py-32">
       <Container>
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-16">
           <Reveal from="left">
@@ -66,9 +66,9 @@ function ClassroomPhotos({
   portraitAlt: string;
 }) {
   return (
-    <div className={wide && portrait ? "relative lg:pb-24" : ""}>
+    <div className={`classroom-collage relative ${wide && portrait ? "lg:pb-24" : ""}`}>
       {wide ? (
-        <div className="overflow-hidden rounded-3xl shadow-[0_16px_40px_rgba(6,16,22,0.32)] lg:w-[84%]">
+        <div className="classroom-frame overflow-hidden rounded-3xl lg:w-[84%]">
           <div className="relative aspect-[4/3]">
             <Image
               src={wide}
@@ -84,8 +84,8 @@ function ClassroomPhotos({
         <div
           className={
             wide
-              ? "mt-4 overflow-hidden rounded-3xl shadow-[0_16px_36px_rgba(6,16,22,0.38)] lg:absolute lg:right-0 lg:bottom-0 lg:mt-0 lg:w-[46%] lg:ring-[7px] lg:ring-[var(--accent)]"
-              : "overflow-hidden rounded-3xl shadow-[0_16px_36px_rgba(6,16,22,0.38)] lg:ml-auto lg:w-[62%]"
+              ? "classroom-frame mt-4 overflow-hidden rounded-3xl lg:absolute lg:right-0 lg:bottom-0 lg:mt-0 lg:w-[46%]"
+              : "classroom-frame overflow-hidden rounded-3xl lg:ml-auto lg:w-[62%]"
           }
         >
           <div className="relative aspect-[3/4]">
