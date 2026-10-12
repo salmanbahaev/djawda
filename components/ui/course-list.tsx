@@ -141,7 +141,7 @@ export function CourseList({
               <Reveal className="h-full" from="right" delay={index * 0.08}>
                 <article
                   id={courseDomId(course.slug)}
-                  className="course-card flex h-full flex-col overflow-hidden rounded-3xl border border-[#e7dccb] bg-[#fffdf8] shadow-[0_12px_32px_rgba(15,47,58,0.05)]"
+                  className="course-card flex h-full flex-col overflow-hidden rounded-3xl border border-accent/10 bg-[var(--paper-raised)] shadow-[0_12px_32px_rgba(15,47,58,0.05)]"
                   style={{
                     backgroundImage: `linear-gradient(180deg, ${accent.color}1f, transparent 5.5rem)`,
                   }}
@@ -153,11 +153,11 @@ export function CourseList({
                   />
                   <div className="flex h-full flex-col p-5 sm:p-6">
                     <CourseStatusChip status={course.status} />
-                    <h3 className="mt-4 text-2xl font-medium tracking-tight text-balance text-[#0f2f3a]">
+                    <h3 className="mt-4 text-2xl font-medium tracking-tight text-balance text-accent">
                       {course.title}
                     </h3>
                     <p
-                      className="mt-2 line-clamp-1 text-sm leading-relaxed text-[#3e5662]"
+                      className="mt-2 line-clamp-1 text-sm leading-relaxed text-accent-muted"
                       title={course.shortDescription}
                     >
                       {course.shortDescription}
@@ -167,7 +167,7 @@ export function CourseList({
                         {facts.map((fact) => (
                           <li
                             key={fact}
-                            className="rounded-full border border-[#0f2f3a]/10 bg-[#f5efe4] px-2.5 py-1 text-xs leading-5 text-[#3e5662]"
+                            className="rounded-full border border-accent/10 bg-[var(--paper)] px-2.5 py-1 text-xs leading-5 text-accent-muted"
                           >
                             {fact}
                           </li>
@@ -175,13 +175,13 @@ export function CourseList({
                       </ul>
                     ) : null}
                     <div className="mt-auto pt-6">
-                      <p className="text-xl font-medium tracking-tight text-[#0f2f3a]">
+                      <p className="text-xl font-medium tracking-tight text-accent">
                         {course.priceText}
                       </p>
                       <div className="mt-4 grid grid-cols-2 gap-2">
                         <button
                           type="button"
-                          className="min-h-11 rounded-full border border-[#0f2f3a]/15 px-3 py-2.5 text-sm font-medium text-[#0f2f3a] transition hover:bg-[#0f2f3a]/5"
+                          className="min-h-11 rounded-full border border-accent/15 px-3 py-2.5 text-sm font-medium text-accent transition hover:bg-accent/5"
                           aria-haspopup="dialog"
                           aria-expanded={open}
                           aria-controls={open ? "course-dialog" : undefined}

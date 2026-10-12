@@ -48,7 +48,7 @@ export function ContactPanel({
         <ul className={`${lead ? "mt-6" : ""} space-y-3 text-base`}>
           <li>
             <a
-              className="font-medium text-[#f4f4f5] underline decoration-white/40 underline-offset-4"
+              className="font-medium text-accent-faint underline decoration-accent-faint/50 underline-offset-4"
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
@@ -58,7 +58,7 @@ export function ContactPanel({
           </li>
           <li>
             <a
-              className="underline decoration-line underline-offset-4"
+              className="text-accent-faint underline decoration-accent-faint/50 underline-offset-4"
               href={telegramUrl}
               target="_blank"
               rel="noreferrer"
@@ -68,7 +68,7 @@ export function ContactPanel({
           </li>
           <li>
             <a
-              className="underline decoration-line underline-offset-4"
+              className="text-accent-faint underline decoration-accent-faint/50 underline-offset-4"
               href={instagramUrl}
               target="_blank"
               rel="noreferrer"

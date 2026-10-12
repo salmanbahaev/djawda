@@ -588,9 +588,9 @@ export default config({
         accent: fields.select({
           label: "Цвет карточки",
           description:
-            "Тонкая полоска сверху карточки в каталоге. У соседних курсов лучше разные цвета.",
+            "Тонкая полоска сверху карточки: оттенок синего или серого. У соседних курсов лучше разные.",
           options: COURSE_ACCENTS.map((item) => ({ label: item.label, value: item.value })),
-          defaultValue: "teal",
+          defaultValue: "deep",
         }),
         order: fields.integer({
           label: "Порядок на главной",

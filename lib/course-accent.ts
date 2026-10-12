@@ -1,13 +1,12 @@
 /**
- * Тонкая цветная полоска карточки в каталоге.
+ * Тонкая полоска карточки в каталоге: оттенки акцентного синего и серого.
  * Новое значение: допишите пункт сюда — оно появится в Keystatic.
- * Золото кнопки заявки сюда не входит: у карточек свои спокойные цвета.
  */
 export const COURSE_ACCENTS = [
-  { value: "teal", label: "Бирюза", color: "#1b6e78" },
-  { value: "slate", label: "Серебро", color: "#5e7384" },
-  { value: "bronze", label: "Бронза", color: "#8a6240" },
-  { value: "ink", label: "Глубокий синий", color: "#23425c" },
+  { value: "deep", label: "Глубокий синий", color: "#0f2f3a" },
+  { value: "slate", label: "Синий", color: "#2f5162" },
+  { value: "mist", label: "Серо-синий", color: "#5d7888" },
+  { value: "gray", label: "Серый", color: "#8d9499" },
 ] as const;
 
 export type CourseAccentValue = (typeof COURSE_ACCENTS)[number]["value"];

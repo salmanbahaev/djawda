@@ -8,7 +8,7 @@ type Particle = {
   y: number;
   r: number;
   a: number;
-  gold: boolean;
+  accent: boolean;
   phase: number;
 };
 
@@ -46,7 +46,7 @@ export function FlowField({ variant = "full", className = "" }: FlowFieldProps) 
         y: Math.random() * height,
         r: 0.45 + Math.random() * 1.35,
         a: 0.16 + Math.random() * 0.42,
-        gold: index % 19 === 0,
+        accent: index % 19 === 0,
         phase: Math.random() * Math.PI * 2,
       }));
     };
@@ -165,8 +165,8 @@ export function FlowField({ variant = "full", className = "" }: FlowFieldProps) 
 
       for (const particle of particles) {
         ctx.beginPath();
-        ctx.fillStyle = particle.gold
-          ? `rgba(214, 214, 219, ${particle.a * 0.8})`
+        ctx.fillStyle = particle.accent
+          ? `rgba(158, 180, 194, ${particle.a})`
           : `rgba(236, 239, 242, ${particle.a})`;
         ctx.arc(particle.x + shiftX, particle.y + shiftY, particle.r, 0, Math.PI * 2);
         ctx.fill();

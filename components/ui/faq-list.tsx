@@ -34,7 +34,7 @@ export function FaqList({
                   aria-hidden
                   animate={{ rotate: expanded ? 45 : 0 }}
                   transition={{ duration: reduce ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
-                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gold/30 text-xl leading-none text-gold"
+                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-accent/30 text-xl leading-none text-accent"
                 >
                   +
                 </motion.span>

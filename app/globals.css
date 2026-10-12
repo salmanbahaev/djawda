@@ -13,8 +13,29 @@
   --color-paper-2: #2a2a2e;
   --color-line: #3c3c42;
   --color-silver: #e6e6ea;
-  --color-gold: #c8c8ce;
-  --color-gold-2: #d6d6db;
+}
+
+/*
+  Brand palette. --ink / --paper / --accent are fixed.
+  --color-ink and --color-paper stay adaptive text and surface colors.
+*/
+:root {
+  --ink: #0f0f10;
+  --paper: #f5efe4;
+  --paper-raised: #fffdf8;
+  --accent: #0f2f3a;
+  --accent-hover: #0a242c;
+  --accent-muted: #3d5c6c;
+  --accent-soft: #d7e4ea;
+  --accent-faint: #9eb4c2;
+}
+
+@theme inline {
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-muted: var(--accent-muted);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-faint: var(--accent-faint);
 }
 
 html {
@@ -94,7 +115,7 @@ button:disabled {
 }
 
 :focus-visible {
-  outline: 2px solid #d6d6db;
+  outline: 2px solid var(--accent-faint);
   outline-offset: 3px;
 }
 
@@ -125,9 +146,8 @@ button:disabled {
   --color-paper: #ffffff;
   --color-paper-2: #f4f4f2;
   --color-line: #d8d8d4;
-  --color-gold: #3a3a40;
-  --color-gold-2: #3a3a40;
   --color-silver: #3a3a40;
+  --accent-faint: #3d5c6c;
   background-color: #f5f5f4;
   color: #17171a;
 }
@@ -145,35 +165,35 @@ button:disabled {
   color: #17171a;
 }
 
-.tone-light :focus-visible {
-  outline-color: #17171a;
-}
-
 .catalog-cream {
-  --color-ink: #0f2f3a;
-  --color-muted: #3e5662;
-  --color-gold: #3e5662;
+  --color-ink: var(--accent);
+  --color-muted: var(--accent-muted);
+  --accent-faint: var(--accent-muted);
   --color-line: #e4d7c6;
-  background-color: #f5efe4;
-  color: #0f2f3a;
+  background-color: var(--paper);
+  color: var(--accent);
 }
 
-.catalog-cream ::selection {
-  background: #e7d3ae;
-  color: #0f2f3a;
+.catalog-cream ::selection,
+.course-drawer ::selection {
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .catalog-cta {
-  background-color: #e4c27a;
-  color: #0f2f3a;
+  background-color: var(--accent);
+  color: var(--paper);
+  transition: background-color 200ms ease;
 }
 
 .catalog-cta:hover {
-  background-color: #efd09a;
+  background-color: var(--accent-hover);
 }
 
+.tone-light :focus-visible,
+.catalog-cream :focus-visible,
 .course-drawer :focus-visible {
-  outline-color: #0f2f3a;
+  outline-color: var(--accent);
 }
 
 html[data-scroll-lock] {
@@ -227,7 +247,7 @@ html[data-scroll-lock] {
 
 .field-control:focus-visible,
 .pill:has(:focus-visible) {
-  outline: 2px solid #d6d6db;
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 

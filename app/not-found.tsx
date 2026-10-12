@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <section className="bg-[#0f0f10] py-24">
       <Container>
-        <p className="text-xs font-semibold tracking-[0.22em] text-gold uppercase">404</p>
+        <p className="text-xs font-semibold tracking-[0.22em] text-accent-faint uppercase">404</p>
         <h1 className="mt-3 text-4xl font-medium tracking-tight">Такой страницы нет</h1>
         <p className="mt-4 max-w-md text-muted">
           Возможно, адрес изменился. Направления школы собраны на главной.

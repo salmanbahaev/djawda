@@ -32,11 +32,11 @@ function focusable(root: HTMLElement) {
 export function CourseStatusChip({ status }: { status: string }) {
   const open = status === "open";
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-[#0f2f3a]/15 bg-[#0f2f3a]/5 px-2.5 py-1 text-xs font-medium text-[#0f2f3a]">
+    <span className="inline-flex items-center gap-2 rounded-full border border-accent/15 bg-accent/5 px-2.5 py-1 text-xs font-medium text-accent">
       <span
         aria-hidden
         className="h-1.5 w-1.5 rounded-full"
-        style={{ backgroundColor: open ? "#1b6e78" : "#8a6240" }}
+        style={{ backgroundColor: open ? "var(--accent)" : "var(--accent-muted)" }}
       />
       {courseStatusLabel(status)}
     </span>
@@ -76,16 +76,16 @@ function SectionBlock({
   const body = paragraphs(section.body);
   return (
     <section className="rounded-2xl border border-[#eadfce] bg-white/80 px-5 py-5 sm:px-6">
-      <h3 className="text-xl font-medium tracking-tight text-[#0f2f3a]">{section.title}</h3>
+      <h3 className="text-xl font-medium tracking-tight text-accent">{section.title}</h3>
       {body.map((paragraph) => (
-        <p key={paragraph} className="mt-3 max-w-[65ch] leading-relaxed text-[#3e5662]">
+        <p key={paragraph} className="mt-3 max-w-[65ch] leading-relaxed text-accent-muted">
           {paragraph}
         </p>
       ))}
       {section.items.length ? (
         <ul className="mt-4 space-y-2.5">
           {section.items.map((item) => (
-            <li key={item} className="flex max-w-[65ch] gap-3 leading-relaxed text-[#0f2f3a]">
+            <li key={item} className="flex max-w-[65ch] gap-3 leading-relaxed text-accent">
               <BulletIcon color={accent} />
               <span>{item}</span>
             </li>
@@ -94,7 +94,7 @@ function SectionBlock({
       ) : null}
       {section.note ? (
         <p
-          className="mt-4 max-w-[65ch] border-l-2 pl-4 text-sm leading-relaxed text-[#3e5662]"
+          className="mt-4 max-w-[65ch] border-l-2 pl-4 text-sm leading-relaxed text-accent-muted"
           style={{ borderColor: accent }}
         >
           {section.note}
@@ -122,11 +122,11 @@ function DrawerFaq({ items }: { items: readonly { question: string; answer: stri
   const baseId = useId();
 
   return (
-    <div className="rounded-2xl border-2 border-[#c9b79a] bg-[#fffdf8] px-4 py-2 sm:px-5">
-      <h3 className="px-1 pt-3 text-xl font-medium tracking-tight text-[#0f2f3a]">
+    <div className="rounded-2xl border-2 border-accent/20 bg-[var(--paper-raised)] px-4 py-2 sm:px-5">
+      <h3 className="px-1 pt-3 text-xl font-medium tracking-tight text-accent">
         Вопросы по этому курсу
       </h3>
-      <div className="mt-1 divide-y divide-[#e4d5c0]">
+      <div className="mt-1 divide-y divide-accent/10">
         {items.map((item, index) => {
           const expanded = open === index;
           const panelId = `${baseId}-panel-${index}`;
@@ -137,7 +137,7 @@ function DrawerFaq({ items }: { items: readonly { question: string; answer: stri
                 <button
                   id={buttonId}
                   type="button"
-                  className="flex w-full items-center justify-between gap-4 py-4 text-left text-base font-medium text-[#0f2f3a]"
+                  className="flex w-full items-center justify-between gap-4 py-4 text-left text-base font-medium text-accent"
                   aria-expanded={expanded}
                   aria-controls={panelId}
                   onClick={() => setOpen(expanded ? null : index)}
@@ -147,7 +147,7 @@ function DrawerFaq({ items }: { items: readonly { question: string; answer: stri
                     aria-hidden
                     animate={{ rotate: expanded ? 45 : 0 }}
                     transition={{ duration: reduce ? 0 : 0.28, ease: PANEL_EASE }}
-                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#c9b79a] text-xl leading-none text-[#8a6240]"
+                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-accent/25 text-xl leading-none text-accent"
                   >
                     +
                   </motion.span>
@@ -168,7 +168,7 @@ function DrawerFaq({ items }: { items: readonly { question: string; answer: stri
                     {paragraphs(item.answer).map((paragraph) => (
                       <p
                         key={paragraph}
-                        className="max-w-[65ch] pb-4 leading-relaxed text-[#3e5662] first:pt-0"
+                        className="max-w-[65ch] pb-4 leading-relaxed text-accent-muted first:pt-0"
                       >
                         {paragraph}
                       </p>
@@ -320,7 +320,7 @@ function CourseDrawerPanel({
   return (
     <div data-course-drawer-root="" className="fixed inset-0 z-[60]">
       <motion.div
-        className="absolute inset-0 bg-[#0f2f3a]/45"
+        className="absolute inset-0 bg-accent/45"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -334,7 +334,7 @@ function CourseDrawerPanel({
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className="course-drawer absolute flex h-dvh max-h-dvh flex-col bg-[#fbf7f0] text-[#0f2f3a] shadow-[0_0_0_1px_rgba(15,47,58,0.06),-24px_0_60px_rgba(15,47,58,0.2)] outline-none max-md:inset-x-0 max-md:bottom-0 md:inset-y-0 md:right-0 md:w-[680px] md:max-w-[720px]"
+        className="course-drawer absolute flex h-dvh max-h-dvh flex-col bg-[var(--paper)] text-accent shadow-[0_0_0_1px_rgba(15,47,58,0.06),-24px_0_60px_rgba(15,47,58,0.2)] outline-none max-md:inset-x-0 max-md:bottom-0 md:inset-y-0 md:right-0 md:w-[680px] md:max-w-[720px]"
         initial={hiddenMotion}
         animate={shownMotion}
         exit={hiddenMotion}
@@ -344,16 +344,16 @@ function CourseDrawerPanel({
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
               <CourseStatusChip status={course.status} />
-              <h2 id={titleId} className="mt-3 text-3xl tracking-tight text-[#0f2f3a] sm:text-4xl">
+              <h2 id={titleId} className="mt-3 text-3xl tracking-tight text-accent sm:text-4xl">
                 {course.title}
               </h2>
-              <p className="mt-2 text-xl font-medium tracking-tight text-[#0f2f3a]">
+              <p className="mt-2 text-xl font-medium tracking-tight text-accent">
                 {course.priceText}
               </p>
             </div>
             <button
               type="button"
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#0f2f3a]/15 text-2xl leading-none text-[#0f2f3a]"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-accent/15 text-2xl leading-none text-accent"
               aria-label={closeLabel}
               onClick={onClose}
             >
@@ -374,7 +374,9 @@ function CourseDrawerPanel({
                   key={tab.id}
                   type="button"
                   className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-medium ${
-                    selected ? "bg-[#0f2f3a] text-[#f5efe4]" : "text-[#3e5662] hover:bg-[#0f2f3a]/5"
+                    selected
+                      ? "bg-accent text-[var(--paper)]"
+                      : "text-accent-muted hover:bg-accent/5"
                   }`}
                   aria-current={selected ? "true" : undefined}
                   onClick={() => scrollToTab(tab.id)}
@@ -392,16 +394,16 @@ function CourseDrawerPanel({
           className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-6 sm:px-8 sm:py-8"
         >
           <div className="max-w-[65ch]">
-            <p className="text-lg leading-relaxed text-[#0f2f3a]">{course.shortDescription}</p>
+            <p className="text-lg leading-relaxed text-accent">{course.shortDescription}</p>
             {showSubtitle ? (
-              <p className="mt-3 leading-relaxed text-[#3e5662]">{course.subtitle}</p>
+              <p className="mt-3 leading-relaxed text-accent-muted">{course.subtitle}</p>
             ) : null}
             {facts.length ? (
               <ul className="mt-4 flex flex-wrap gap-2">
                 {facts.map((fact) => (
                   <li
                     key={fact}
-                    className="rounded-full border border-[#0f2f3a]/10 bg-[#f5efe4] px-2.5 py-1 text-xs text-[#3e5662]"
+                    className="rounded-full border border-accent/10 bg-[var(--paper)] px-2.5 py-1 text-xs text-accent-muted"
                   >
                     {fact}
                   </li>

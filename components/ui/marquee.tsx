@@ -16,7 +16,7 @@ export function Marquee({ items }: { items: readonly string[] }) {
                 <span className="text-[0.72rem] font-medium tracking-[0.28em] text-[#3a3a40] uppercase">
                   {item}
                 </span>
-                <span aria-hidden className="h-1 w-1 rounded-full bg-gold" />
+                <span aria-hidden className="h-1 w-1 rounded-full bg-accent" />
               </li>
             ))}
           </ul>

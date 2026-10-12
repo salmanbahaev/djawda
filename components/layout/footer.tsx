@@ -48,45 +48,64 @@ export function Footer({
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/75">{blurb}</p>
         </div>
         <div>
-          <p className="text-xs font-semibold tracking-[0.18em] text-gold-2 uppercase">Связь</p>
+          <p className="text-xs font-semibold tracking-[0.18em] text-accent-faint uppercase">
+            Связь
+          </p>
           <ul className="mt-4 space-y-2 text-sm">
             <li>
-              <a className="hover:text-gold-2" href={whatsappUrl} target="_blank" rel="noreferrer">
+              <a
+                className="hover:text-accent-faint"
+                href={whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
                 WhatsApp · {phone}
               </a>
             </li>
             <li>
-              <a className="hover:text-gold-2" href={telegramUrl} target="_blank" rel="noreferrer">
+              <a
+                className="hover:text-accent-faint"
+                href={telegramUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {telegramLabel}
               </a>
             </li>
             <li>
-              <a className="hover:text-gold-2" href={instagramUrl} target="_blank" rel="noreferrer">
+              <a
+                className="hover:text-accent-faint"
+                href={instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {instagramLabel}
               </a>
             </li>
           </ul>
         </div>
         <div>
-          <p className="text-xs font-semibold tracking-[0.18em] text-gold-2 uppercase">Школа</p>
+          <p className="text-xs font-semibold tracking-[0.18em] text-accent-faint uppercase">
+            Школа
+          </p>
           <ul className="mt-4 space-y-2 text-sm">
             <li>
-              <Link className="hover:text-gold-2" href="/#courses">
+              <Link className="hover:text-accent-faint" href="/#courses">
                 Направления
               </Link>
             </li>
             <li>
-              <Link className="hover:text-gold-2" href="/#teachers">
+              <Link className="hover:text-accent-faint" href="/#teachers">
                 Преподаватели
               </Link>
             </li>
             <li>
-              <Link className="hover:text-gold-2" href="/#contacts">
+              <Link className="hover:text-accent-faint" href="/#contacts">
                 Контакты
               </Link>
             </li>
             <li>
-              <Link className="hover:text-gold-2" href="/privacy">
+              <Link className="hover:text-accent-faint" href="/privacy">
                 {privacyLabel}
               </Link>
             </li>
