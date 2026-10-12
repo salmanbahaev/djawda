@@ -78,6 +78,35 @@
     "Оплата через менеджера, не на сайте",
     "Добавление в группу"
   ],
+  "classroomEyebrow": "Офлайн",
+  "classroomTitle": "Где проходят занятия",
+  "classroomLead": "Светлый класс в центре Грозного, ул. Нурсултана Назарбаева, 23А. Группы до 10 учениц.",
+  "classroomFeatures": [
+    {
+      "icon": "board",
+      "title": "Интерактивная доска",
+      "text": "Преподаватель пишет и разбирает материал прямо на экране"
+    },
+    {
+      "icon": "group",
+      "title": "Небольшие группы до 10 учениц",
+      "text": "Внимание каждой"
+    },
+    {
+      "icon": "room",
+      "title": "Комфортный класс",
+      "text": "Кондиционер, удобные места"
+    },
+    {
+      "icon": "books",
+      "title": "Пособия под рукой",
+      "text": "Книги и материалы в классе"
+    }
+  ],
+  "classroomWideImage": "/images/classroom/angle-wide.jpg",
+  "classroomWideAlt": "Светлый класс: интерактивная доска, ряды столов и чёрные стулья",
+  "classroomPortraitImage": "/images/classroom/angle-portrait.jpg",
+  "classroomPortraitAlt": "Класс ближе к доске: кондиционер, полки с книгами и места для группы",
   "faqEyebrow": "Вопросы",
   "faqTitle": "Коротко о школе",
   "faq": [

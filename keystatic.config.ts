@@ -1,4 +1,5 @@
 import { collection, config, fields, singleton } from "@keystatic/core";
+import { CLASSROOM_ICONS } from "@/lib/classroom-icons";
 import { COURSE_ACCENTS } from "@/lib/course-accent";
 import { COURSE_STATUSES } from "@/lib/course-status";
 import { FORMAT_OPTIONS } from "@/lib/formats";
@@ -302,6 +303,58 @@ export default config({
           validation: { isRequired: true },
         }),
         enrollmentSteps: textList("Шаги записи"),
+        classroomEyebrow: fields.text({
+          label: "Класс: надзаголовок",
+          validation: { isRequired: true },
+        }),
+        classroomTitle: fields.text({
+          label: "Класс: заголовок",
+          validation: { isRequired: true },
+        }),
+        classroomLead: fields.text({
+          label: "Класс: вступление",
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+        classroomFeatures: fields.array(
+          fields.object({
+            icon: fields.select({
+              label: "Значок",
+              options: CLASSROOM_ICONS.map((item) => ({ label: item.label, value: item.value })),
+              defaultValue: "board",
+            }),
+            title: fields.text({ label: "Заголовок", validation: { isRequired: true } }),
+            text: fields.text({
+              label: "Текст",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
+          }),
+          {
+            label: "Класс: особенности",
+            itemLabel: (props) => props.fields.title.value || "Пункт",
+          },
+        ),
+        classroomWideImage: fields.image({
+          label: "Класс: широкий снимок",
+          description: "Большое фото в коллаже. На телефоне показывается первым.",
+          directory: "public/images/classroom",
+          publicPath: "/images/classroom/",
+        }),
+        classroomWideAlt: fields.text({
+          label: "Класс: подпись широкого снимка",
+          validation: { isRequired: true },
+        }),
+        classroomPortraitImage: fields.image({
+          label: "Класс: вертикальный снимок",
+          description: "Меньшее фото. На широком экране перекрывает широкий снимок справа снизу.",
+          directory: "public/images/classroom",
+          publicPath: "/images/classroom/",
+        }),
+        classroomPortraitAlt: fields.text({
+          label: "Класс: подпись вертикального снимка",
+          validation: { isRequired: true },
+        }),
         faqEyebrow: fields.text({ label: "FAQ: надзаголовок", validation: { isRequired: true } }),
         faqTitle: fields.text({ label: "FAQ: заголовок", validation: { isRequired: true } }),
         faq: fields.array(
