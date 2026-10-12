@@ -16,14 +16,14 @@ export function HeroSection({ home, settings }: { home: HomeContent; settings: S
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_45%,transparent_0%,rgba(0,0,0,0.28)_55%,rgba(0,0,0,0.62)_100%)]" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/55" />
       <Container className="relative z-10 flex min-h-[calc(100svh-4.5rem)] items-center py-20 lg:py-24">
-        <div className="grid w-full items-center md:grid-cols-[minmax(0,1fr)_auto] md:gap-x-8 lg:gap-x-12 xl:gap-x-16">
+        <div className="grid w-full items-center md:grid-cols-[minmax(0,auto)_1fr] md:gap-x-8 lg:gap-x-12 xl:gap-x-16">
           <Mark
             src={settings.logo}
             alt={settings.logoAlt || ""}
             priority
-            className="hero-mark h-14 sm:h-16 md:pointer-events-none md:col-start-2 md:row-start-1 md:mr-3 md:h-[clamp(11.25rem,calc(11.25rem+(100vw-48rem)*25/144),23.75rem)] md:justify-self-end lg:mr-4"
+            className="hero-mark h-14 sm:h-16 md:pointer-events-none md:col-start-2 md:row-start-1 md:h-[clamp(11.25rem,calc(11.25rem+(100vw-48rem)*25/144),23.75rem)] md:justify-self-center"
           />
-          <div className="w-full max-w-2xl md:col-start-1 md:row-start-1">
+          <div className="w-full max-w-2xl md:col-start-1 md:row-start-1 md:w-fit md:min-w-0">
             <p className="mt-8 text-[0.72rem] font-medium tracking-[0.34em] text-[#b9b9be] uppercase">
               {settings.audienceNote}
             </p>
