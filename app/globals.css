@@ -120,9 +120,14 @@ button:disabled {
   display: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
+@media (min-width: 768px) {
   .rail-tip {
     display: block;
+  }
+
+  .section-rail a:hover .rail-tip,
+  .section-rail a:focus-visible .rail-tip {
+    opacity: 1;
   }
 }
 
