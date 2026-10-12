@@ -1,6 +1,6 @@
 export const FORMAT_OPTIONS = [
   { value: "online", label: "онлайн" },
-  { value: "offline", label: "очно" },
+  { value: "offline", label: "офлайн" },
   { value: "undecided", label: "пока не определилась" },
 ] as const;
 

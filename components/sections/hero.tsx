@@ -10,7 +10,7 @@ export function HeroSection({ home, settings }: { home: HomeContent; settings: S
     <section
       id="hero"
       data-surface="dark"
-      className="relative scroll-mt-20 overflow-hidden bg-[#070708] text-white"
+      className="relative overflow-hidden bg-[#070708] text-white"
     >
       <SilkBackground />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_45%,transparent_0%,rgba(0,0,0,0.28)_55%,rgba(0,0,0,0.62)_100%)]" />

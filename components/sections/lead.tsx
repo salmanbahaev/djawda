@@ -17,7 +17,7 @@ export function LeadSection({
     <section
       id="lead"
       data-surface="light"
-      className="tone-light surface-3 relative scroll-mt-20 py-24 md:py-32"
+      className="tone-light surface-3 relative py-24 md:py-32"
     >
       <Container className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
         <div>

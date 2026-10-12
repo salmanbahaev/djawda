@@ -5,8 +5,9 @@ import Image from "next/image";
 import { useEffect, useId, useState } from "react";
 import { CountUp } from "@/components/ui/count-up";
 import { FaqList } from "@/components/ui/faq-list";
-import { courseStatusLabel } from "@/lib/course-status";
+import { scrollToId } from "@/lib/anchor-scroll";
 import { paragraphs } from "@/lib/cms/text";
+import { courseStatusLabel } from "@/lib/course-status";
 import { COURSE_SELECT_EVENT } from "@/lib/forms/course-event";
 
 type Section = {
@@ -117,7 +118,7 @@ function CourseCard({
     <div className="[perspective:1100px]">
       <motion.article
         id={courseId(course.slug)}
-        className="course-card relative scroll-mt-24 overflow-hidden rounded-3xl border border-line bg-[#18181a] [transform-style:preserve-3d]"
+        className="course-card relative overflow-hidden rounded-3xl border border-line bg-[#18181a] [transform-style:preserve-3d]"
         style={{ rotateX, rotateY }}
         onPointerMove={onMove}
         onPointerLeave={resetTilt}
@@ -261,6 +262,7 @@ function CourseCard({
 
             <a
               href="#lead"
+              data-course={course.slug}
               className="mt-6 inline-flex rounded-full bg-[#f4f4f5] px-5 py-3 text-sm font-medium text-[#141416] transition duration-200 hover:bg-white"
               onClick={() => {
                 document.dispatchEvent(
@@ -289,11 +291,10 @@ export function CourseList({
   requestLabel: string;
 }) {
   const [openSlug, setOpenSlug] = useState<string | null>(null);
-  const reduce = useReducedMotion();
   const baseId = useId();
 
   useEffect(() => {
-    function openFromHash(behavior: ScrollBehavior) {
+    function openFromHash() {
       const id = window.location.hash.replace(/^#/, "");
       if (!id.startsWith("course-")) {
         setOpenSlug(null);
@@ -302,20 +303,16 @@ export function CourseList({
       const slug = id.slice("course-".length);
       if (!courses.some((course) => course.slug === slug)) return;
       setOpenSlug(slug);
-      window.requestAnimationFrame(() => {
-        document.getElementById(id)?.scrollIntoView({ behavior, block: "start" });
-      });
     }
 
-    openFromHash("auto");
-    const onChange = () => openFromHash(reduce ? "auto" : "smooth");
-    window.addEventListener("hashchange", onChange);
-    window.addEventListener("popstate", onChange);
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    window.addEventListener("popstate", openFromHash);
     return () => {
-      window.removeEventListener("hashchange", onChange);
-      window.removeEventListener("popstate", onChange);
+      window.removeEventListener("hashchange", openFromHash);
+      window.removeEventListener("popstate", openFromHash);
     };
-  }, [courses, reduce]);
+  }, [courses]);
 
   function toggle(slug: string) {
     const next = openSlug === slug ? null : slug;
@@ -324,10 +321,7 @@ export function CourseList({
     window.history.pushState(null, "", hash);
     if (next) {
       window.requestAnimationFrame(() => {
-        document.getElementById(courseId(slug))?.scrollIntoView({
-          behavior: reduce ? "auto" : "smooth",
-          block: "start",
-        });
+        scrollToId(courseId(slug));
       });
     }
   }

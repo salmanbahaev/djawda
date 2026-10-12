@@ -21,6 +21,20 @@ html {
   scroll-behavior: auto;
 }
 
+/* Matches the sticky bar (4.5rem + border). Clicks align the heading in JS and do not add this again. */
+#hero,
+#approach,
+#audience,
+#courses,
+#teachers,
+#formats,
+#faq,
+#contacts,
+#lead,
+.course-card {
+  scroll-margin-top: calc(4.5rem + 1px);
+}
+
 body {
   background-color: #0f0f10;
   color: var(--color-ink);

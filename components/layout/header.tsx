@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Mark } from "@/components/ui/mark";
+import { CLOSE_MENU_EVENT } from "@/lib/anchor-scroll";
 
 export type HeaderProps = {
   logo: string | null;
@@ -31,6 +32,12 @@ export function Header(props: HeaderProps) {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  useEffect(() => {
+    const onClose = () => setOpen(false);
+    window.addEventListener(CLOSE_MENU_EVENT, onClose);
+    return () => window.removeEventListener(CLOSE_MENU_EVENT, onClose);
+  }, []);
 
   useEffect(() => {
     if (!open) return;

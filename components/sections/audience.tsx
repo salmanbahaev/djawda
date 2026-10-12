@@ -4,7 +4,7 @@ import type { HomeContent } from "@/lib/cms/content";
 
 export function AudienceSection({ home }: { home: HomeContent }) {
   return (
-    <section id="audience" data-surface="light" className="tone-light scroll-mt-20 py-24 md:py-32">
+    <section id="audience" data-surface="light" className="tone-light py-24 md:py-32">
       <Container>
         <Eyebrow>{home.audienceEyebrow}</Eyebrow>
         <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">

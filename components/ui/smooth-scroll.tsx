@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { followHash, installAnchorClicks, registerLenis } from "@/lib/anchor-scroll";
 
 export function SmoothScroll() {
   useEffect(() => {
@@ -17,9 +18,13 @@ export function SmoothScroll() {
       gsap.registerPlugin(ScrollTrigger);
       const lenis = new Lenis({
         autoRaf: false,
-        anchors: { offset: 0 },
+        anchors: false,
         lerp: 0.085,
       });
+      registerLenis((target, options) => {
+        lenis.scrollTo(target, options);
+      });
+      const removeAnchorClicks = installAnchorClicks();
       lenis.on("scroll", ScrollTrigger.update);
       const onTick = (time: number) => {
         lenis.raf(time * 1000);
@@ -27,7 +32,11 @@ export function SmoothScroll() {
       gsap.ticker.add(onTick);
       gsap.ticker.lagSmoothing(0);
       ScrollTrigger.refresh();
+      const initial = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+      if (initial && document.getElementById(initial)) followHash(initial, true);
       cleanup = () => {
+        removeAnchorClicks();
+        registerLenis(null);
         gsap.ticker.remove(onTick);
         lenis.destroy();
       };

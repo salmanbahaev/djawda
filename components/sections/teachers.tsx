@@ -4,7 +4,7 @@ import { paragraphs } from "@/lib/cms/text";
 
 export function TeachersSection({ home, about }: { home: HomeContent; about: AboutContent }) {
   return (
-    <section id="teachers" className="scroll-mt-20">
+    <section id="teachers">
       <div data-surface="light" className="tone-light py-24 md:py-32">
         <Container>
           <Eyebrow>{home.teachersEyebrow}</Eyebrow>
