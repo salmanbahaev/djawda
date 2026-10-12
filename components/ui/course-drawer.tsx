@@ -205,6 +205,7 @@ function CourseDrawerPanel({
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const spacerRef = useRef<HTMLDivElement>(null);
   const accent = courseAccent(course.accent, index);
   const tabs = useMemo(() => courseTabs(course), [course]);
   const facts = courseFacts(course);
@@ -271,7 +272,17 @@ function CourseDrawerPanel({
   }, [course.slug, onClose]);
 
   useEffect(() => {
-    scrollerRef.current?.scrollTo({ top: 0 });
+    const scroller = scrollerRef.current;
+    const spacer = spacerRef.current;
+    if (!scroller || !spacer) return;
+    const apply = () => {
+      spacer.style.height = `${scroller.clientHeight}px`;
+    };
+    apply();
+    scroller.scrollTo({ top: 0 });
+    const observer = new ResizeObserver(apply);
+    observer.observe(scroller);
+    return () => observer.disconnect();
   }, [course.slug]);
 
   useEffect(() => {
@@ -354,7 +365,7 @@ function CourseDrawerPanel({
         {tabs.length ? (
           <nav
             aria-label="Разделы курса"
-            className="flex shrink-0 gap-1.5 overflow-x-auto border-b border-[#e4d7c6] px-5 py-3 sm:px-8"
+            className="flex shrink-0 flex-wrap gap-1.5 border-b border-[#e4d7c6] px-5 py-3 sm:px-8"
           >
             {tabs.map((tab) => {
               const selected = active === tab.id;
@@ -429,6 +440,7 @@ function CourseDrawerPanel({
               </div>
             ))}
           </div>
+          <div ref={spacerRef} aria-hidden />
         </div>
 
         <footer className="shrink-0 border-t border-[#e4d7c6] px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-8">
