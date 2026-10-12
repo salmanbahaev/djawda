@@ -41,6 +41,18 @@ function visualAnchor(id: string): HTMLElement | null {
   return heading;
 }
 
+function layoutTop(node: HTMLElement) {
+  // offsetTop ignores the in-view reveal transform, so the heading is not
+  // measured while it is still translated down.
+  let top = 0;
+  let current: Element | null = node;
+  while (current instanceof HTMLElement) {
+    top += current.offsetTop;
+    current = current.offsetParent;
+  }
+  return top;
+}
+
 function scrollToY(top: number, immediate: boolean) {
   const y = Math.max(0, top);
   if (lenisScroll) {
@@ -57,8 +69,7 @@ export function scrollToId(id: string, immediate = false) {
   }
   const anchor = visualAnchor(id);
   if (!anchor) return;
-  const top = anchor.getBoundingClientRect().top + window.scrollY - headerClearance();
-  scrollToY(top, immediate);
+  scrollToY(layoutTop(anchor) - headerClearance(), immediate);
 }
 
 function hashIdFromAnchor(anchor: HTMLAnchorElement) {
@@ -89,7 +100,7 @@ function whenLayoutSettles(id: string, then: () => void) {
     if (generation !== scrollGeneration) return;
     const menuOpen = document.getElementById("mobile-nav");
     const anchor = visualAnchor(id);
-    const docTop = anchor ? anchor.getBoundingClientRect().top + window.scrollY : 0;
+    const docTop = anchor ? layoutTop(anchor) : 0;
     const shifted = !Number.isFinite(previous) || Math.abs(docTop - previous) >= 0.5;
     if (menuOpen || shifted) {
       stableFrames = 0;
