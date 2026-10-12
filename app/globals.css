@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-cormorant), "Iowan Old Style", Palatino, serif;
+  --color-teal-950: #0f0f10;
+  --color-teal-900: #d8d8dc;
+  --color-teal-800: #b7b7bc;
+  --color-teal-700: #8e8e94;
+  --color-ink: #f3f3f4;
+  --color-muted: #a7a7ad;
+  --color-paper: #1c1c1f;
+  --color-paper-2: #2a2a2e;
+  --color-line: #3c3c42;
+  --color-silver: #e6e6ea;
+  --color-gold: #c8c8ce;
+  --color-gold-2: #d6d6db;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+/* Matches the sticky bar (4.5rem + border). Clicks align the heading in JS and do not add this again. */
+#hero,
+#approach,
+#audience,
+#courses,
+#teachers,
+#formats,
+#faq,
+#contacts,
+#lead,
+.course-card {
+  scroll-margin-top: calc(4.5rem + 1px);
+}
+
+body {
+  background-color: #0f0f10;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+
+section {
+  overflow-x: clip;
+}
+
+@keyframes hero-mark-in {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 0.92;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-mark {
+    opacity: 0.92;
+    animation: hero-mark-in 0.9s ease-out both;
+  }
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+  .hero-mark {
+    animation: none;
+    opacity: 0.92;
+  }
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+a,
+button,
+summary,
+[role="button"] {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+::selection {
+  background: #3a3a40;
+  color: #f4f4f5;
+}
+
+:focus-visible {
+  outline: 2px solid #d6d6db;
+  outline-offset: 3px;
+}
+
+.prose-measure {
+  max-width: 68ch;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 46s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.tone-light {
+  --color-ink: #17171a;
+  --color-muted: #3f3f46;
+  --color-paper: #ffffff;
+  --color-paper-2: #f4f4f2;
+  --color-line: #d8d8d4;
+  --color-gold: #3a3a40;
+  --color-gold-2: #3a3a40;
+  --color-silver: #3a3a40;
+  background-color: #f5f5f4;
+  color: #17171a;
+}
+
+.tone-light.surface-2 {
+  background-color: #e4e4e2;
+}
+
+.tone-light.surface-3 {
+  background-color: #ececea;
+}
+
+.tone-light ::selection {
+  background: #d9d9d4;
+  color: #17171a;
+}
+
+.tone-light :focus-visible {
+  outline-color: #17171a;
+}
+
+.course-glare {
+  background: radial-gradient(
+    420px circle at var(--gx, 50%) var(--gy, 18%),
+    rgba(255, 255, 255, 0.14),
+    transparent 42%
+  );
+}
+
+.rail-tip {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .rail-tip {
+    display: block;
+  }
+
+  .section-rail a:hover .rail-tip,
+  .section-rail a:focus-visible .rail-tip {
+    opacity: 1;
+  }
+}
+
+@keyframes select-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes select-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.select-popover[data-state="open"] .select-popover-panel {
+  animation: select-in 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.select-popover[data-state="closed"] .select-popover-panel {
+  animation: select-out 120ms ease;
+}
+
+.field-control:focus-visible,
+.pill:has(:focus-visible) {
+  outline: 2px solid #d6d6db;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+
+  .marquee-clone {
+    display: none;
+  }
+
+  .marquee-track {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .reveal,
+  .kinetic-word {
+    filter: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .status-ping {
+    display: none;
+  }
+
+  .float-label {
+    transition: none;
+  }
+
+  .select-popover[data-state="open"] .select-popover-panel,
+  .select-popover[data-state="closed"] .select-popover-panel {
+    animation: none;
+  }
+}
