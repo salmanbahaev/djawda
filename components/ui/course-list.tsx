@@ -3,7 +3,6 @@
 import { motion, useReducedMotion, useSpring } from "motion/react";
 import Image from "next/image";
 import { useEffect, useId, useState } from "react";
-import { CountUp } from "@/components/ui/count-up";
 import { FaqList } from "@/components/ui/faq-list";
 import { Reveal } from "@/components/ui/reveal";
 import { scrollToId } from "@/lib/anchor-scroll";
@@ -145,10 +144,9 @@ function CourseCard({
           >
             <span className="flex items-start justify-between gap-3">
               <StatusBadge status={course.status} />
-              <CountUp
-                text={course.priceText}
-                className="text-right text-base font-medium text-[#f4f4f5]"
-              />
+              <span className="text-right text-base font-medium text-[#f4f4f5]">
+                {course.priceText}
+              </span>
             </span>
             <span className="block text-2xl font-medium tracking-tight text-ink sm:text-3xl">
               {course.title}
@@ -161,7 +159,7 @@ function CourseCard({
                 {meta.map((part, index) => (
                   <span key={`${part}-${index}`}>
                     {index > 0 ? " · " : null}
-                    {part === course.duration ? <CountUp text={part} /> : part}
+                    {part}
                   </span>
                 ))}
               </span>
