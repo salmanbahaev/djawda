@@ -347,9 +347,6 @@ function CourseDrawerPanel({
               <h2 id={titleId} className="mt-3 text-3xl tracking-tight text-accent sm:text-4xl">
                 {course.title}
               </h2>
-              <p className="mt-2 text-xl font-medium tracking-tight text-accent">
-                {course.priceText}
-              </p>
             </div>
             <button
               type="button"
