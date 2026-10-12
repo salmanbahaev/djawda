@@ -102,7 +102,7 @@ export function ApproachPath({ steps }: { steps: readonly { title: string; text:
           </defs>
           <path
             d={PATH}
-            stroke="#0c5168"
+            stroke="#3c3c42"
             strokeOpacity="0.28"
             strokeWidth="2"
             strokeLinecap="round"
@@ -111,18 +111,18 @@ export function ApproachPath({ steps }: { steps: readonly { title: string; text:
           <path
             ref={pathRef}
             d={PATH}
-            stroke="#b5893f"
+            stroke="#d6d6db"
             strokeWidth="2.5"
             strokeLinecap="round"
             vectorEffect="non-scaling-stroke"
           />
-          <circle ref={haloRef} cx="24" cy="78" r="14" fill="#b5893f" opacity="0.22" />
+          <circle ref={haloRef} cx="24" cy="78" r="14" fill="#d6d6db" opacity="0.22" />
           <circle
             ref={beadRef}
             cx="24"
             cy="78"
             r="5.5"
-            fill="#e6d3a4"
+            fill="#f4f4f5"
             filter={`url(#${filterId})`}
           />
         </svg>
@@ -134,7 +134,7 @@ export function ApproachPath({ steps }: { steps: readonly { title: string; text:
             ref={(node) => {
               cardRefs.current[index] = node;
             }}
-            className="approach-step rounded-3xl border border-line bg-paper-2 p-6 shadow-[0_18px_40px_-32px_rgba(0,61,82,0.65)]"
+            className="approach-step rounded-3xl border border-line bg-[#18181a] p-6"
           >
             <span className="step-index text-xs font-semibold tracking-[0.18em] text-gold">
               {String(index + 1).padStart(2, "0")}

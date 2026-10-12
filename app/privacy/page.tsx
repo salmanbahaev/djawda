@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function PrivacyPage() {
   const page = await getPrivacy();
   return (
-    <section className="py-16 md:py-24">
+    <section className="bg-[#0f0f10] py-16 md:py-24">
       <Container className="max-w-3xl">
         <h1 className="text-4xl font-medium tracking-tight sm:text-5xl">{page.title}</h1>
         <p className="mt-6 rounded-3xl border border-gold/40 bg-gold/10 px-5 py-4 text-sm leading-relaxed">

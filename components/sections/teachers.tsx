@@ -5,7 +5,7 @@ import { paragraphs } from "@/lib/cms/text";
 export function TeachersSection({ home, about }: { home: HomeContent; about: AboutContent }) {
   return (
     <section id="teachers" className="scroll-mt-20">
-      <div className="bg-teal-950 py-24 text-white md:py-32">
+      <div className="bg-[#0f0f10] py-24 text-white md:py-32">
         <Container>
           <Eyebrow light>{home.teachersEyebrow}</Eyebrow>
           <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">
@@ -31,7 +31,7 @@ export function TeachersSection({ home, about }: { home: HomeContent; about: Abo
           </div>
         </Container>
       </div>
-      <div className="bg-white py-24 md:py-32">
+      <div className="bg-[#222225] py-24 md:py-32">
         <Container>
           <Eyebrow>{about.eyebrow}</Eyebrow>
           <h2 className="mt-3 max-w-3xl text-3xl font-medium tracking-tight sm:text-5xl">

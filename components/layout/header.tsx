@@ -92,7 +92,7 @@ export function Header(props: HeaderProps) {
           ))}
           <Link
             href="/#lead"
-            className="whitespace-nowrap rounded-full bg-white px-4 py-2 font-medium text-teal-900 transition duration-200 hover:bg-gold-2"
+            className="whitespace-nowrap rounded-full bg-[#f4f4f5] px-4 py-2 font-medium text-[#141416] transition duration-200 hover:bg-white"
           >
             {props.navCta}
           </Link>
@@ -142,7 +142,7 @@ export function Header(props: HeaderProps) {
               ))}
               <Link
                 href="/#lead"
-                className="mt-2 rounded-full bg-white px-4 py-3 text-center font-medium text-teal-900"
+                className="mt-2 rounded-full bg-[#f4f4f5] px-4 py-3 text-center font-medium text-[#141416]"
                 onClick={() => setOpen(false)}
               >
                 {props.navCta}
@@ -153,7 +153,7 @@ export function Header(props: HeaderProps) {
       </AnimatePresence>
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left bg-gold"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left bg-[#d6d6db]"
         style={{ scaleX: progress }}
       />
     </header>

@@ -166,7 +166,7 @@ export function FlowField({ variant = "full", className = "" }: FlowFieldProps) 
       for (const particle of particles) {
         ctx.beginPath();
         ctx.fillStyle = particle.gold
-          ? `rgba(198, 161, 90, ${particle.a * 0.8})`
+          ? `rgba(214, 214, 219, ${particle.a * 0.8})`
           : `rgba(236, 239, 242, ${particle.a})`;
         ctx.arc(particle.x + shiftX, particle.y + shiftY, particle.r, 0, Math.PI * 2);
         ctx.fill();

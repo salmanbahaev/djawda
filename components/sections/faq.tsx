@@ -4,7 +4,7 @@ import type { HomeContent } from "@/lib/cms/content";
 
 export function FaqSection({ home }: { home: HomeContent }) {
   return (
-    <section id="faq" className="scroll-mt-20 bg-white py-24 md:py-32">
+    <section id="faq" className="scroll-mt-20 bg-[#0f0f10] py-24 md:py-32">
       <Container>
         <Eyebrow>{home.faqEyebrow}</Eyebrow>
         <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">{home.faqTitle}</h2>

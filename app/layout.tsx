@@ -16,7 +16,7 @@ const manrope = Manrope({
 
 const cormorant = Cormorant({
   subsets: ["latin", "cyrillic"],
-  weight: ["500", "600", "700"],
+  weight: ["300", "400", "500"],
   display: "swap",
   variable: "--font-cormorant",
 });

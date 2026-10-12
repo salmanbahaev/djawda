@@ -27,12 +27,12 @@ export type LeadFormCopy = {
 type CourseOption = { slug: string; title: string };
 
 const controlClass =
-  "field-control w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-base text-ink outline-none transition duration-200 placeholder:text-transparent focus:border-teal-900 focus:placeholder:text-[#3a5560]";
+  "field-control w-full rounded-2xl border border-[#3c3c42] bg-[#141416] px-4 py-3.5 text-base text-[#f4f4f5] outline-none transition duration-200 placeholder:text-transparent focus:border-[#d6d6db] focus:placeholder:text-[#8d8d93]";
 
 const labelBase =
   "float-label pointer-events-none absolute left-4 z-10 max-w-[calc(100%-2.75rem)] origin-left truncate transition-all duration-200 ease-out";
 
-const peerLabel = `${labelBase} top-1/2 -translate-y-1/2 text-base text-[#3a5560] peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:bg-white peer-focus:px-1 peer-focus:text-xs peer-focus:font-medium peer-focus:text-ink peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:font-medium peer-[:not(:placeholder-shown)]:text-ink`;
+const peerLabel = `${labelBase} top-1/2 -translate-y-1/2 text-base text-[#b4b4ba] peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:bg-[#2a2a2e] peer-focus:px-1 peer-focus:text-xs peer-focus:font-medium peer-focus:text-[#f4f4f5] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:bg-[#2a2a2e] peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:font-medium peer-[:not(:placeholder-shown)]:text-[#f4f4f5]`;
 
 export function LeadForm({
   copy,
@@ -107,14 +107,17 @@ export function LeadForm({
 
   if (status === "success") {
     return (
-      <div className="rounded-3xl border border-line bg-paper-2 p-6 text-ink sm:p-8" role="status">
+      <div
+        className="rounded-3xl border border-[#3c3c42] bg-[#2a2a2e] p-6 text-[#f4f4f5] sm:p-8"
+        role="status"
+      >
         <h3 className="text-2xl font-medium tracking-tight">{copy.successTitle}</h3>
-        <p className="mt-3 leading-relaxed text-[#3a5560]">{message}</p>
+        <p className="mt-3 leading-relaxed text-[#c8c8ce]">{message}</p>
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noreferrer"
-          className="mt-6 inline-flex rounded-full bg-teal-900 px-5 py-3 text-sm font-medium text-white transition duration-200 hover:bg-teal-800"
+          className="mt-6 inline-flex rounded-full bg-[#f4f4f5] px-5 py-3 text-sm font-medium text-[#141416] transition duration-200 hover:bg-white"
         >
           {copy.whatsappCta}
         </a>
@@ -126,7 +129,7 @@ export function LeadForm({
     <form
       id={id}
       onSubmit={onSubmit}
-      className="relative rounded-3xl border border-line bg-paper-2 p-6 text-ink scheme-light sm:p-8"
+      className="relative rounded-3xl border border-[#3c3c42] bg-[#2a2a2e] p-6 text-[#f4f4f5] scheme-dark sm:p-8"
       noValidate
     >
       <div className="grid gap-5">
@@ -160,64 +163,42 @@ export function LeadForm({
           placeholder={copy.coursePlaceholder}
           options={courses.map((item) => ({ value: item.slug, label: item.title }))}
         />
-        <fieldset>
-          <legend className="text-sm font-medium text-ink">{copy.formatLabel}</legend>
-          <div className="mt-3 grid gap-2 sm:grid-cols-3">
-            {copy.formats.map((item) => {
-              const selected = format === item.value;
-              return (
-                <label
-                  key={item.value}
-                  className={`pill cursor-pointer rounded-2xl border px-3 py-3 text-sm font-medium transition duration-200 ${
-                    selected
-                      ? "border-teal-900 bg-teal-900 text-white"
-                      : "border-line bg-white text-ink hover:border-teal-800"
-                  }`}
-                >
-                  <input
-                    className="sr-only"
-                    type="radio"
-                    name={`${id}-format`}
-                    value={item.value}
-                    checked={selected}
-                    onChange={() => setFormat(item.value)}
-                    required
-                  />
-                  {item.label}
-                </label>
-              );
-            })}
-          </div>
-          {fieldErrors.format ? (
-            <p className="mt-2 text-sm font-medium text-red-800">{fieldErrors.format}</p>
-          ) : null}
-        </fieldset>
+        <SelectField
+          id={`${id}-format`}
+          name={`${id}-format`}
+          label={copy.formatLabel}
+          error={fieldErrors.format}
+          value={format}
+          onChange={setFormat}
+          placeholder="Выберите формат"
+          options={copy.formats}
+        />
         <div>
           <div className="flex items-start gap-3">
             <input
               id={`${id}-consent`}
               type="checkbox"
-              className="field-control mt-1 h-4 w-4 accent-teal-900"
+              className="field-control mt-1 h-4 w-4 accent-[#f4f4f5]"
               checked={consent}
               onChange={(event) => setConsent(event.target.checked)}
               required
               aria-invalid={fieldErrors.consent ? true : undefined}
               aria-describedby={fieldErrors.consent ? `${id}-consent-error` : undefined}
             />
-            <label htmlFor={`${id}-consent`} className="text-sm leading-relaxed text-ink">
+            <label htmlFor={`${id}-consent`} className="text-sm leading-relaxed text-[#f4f4f5]">
               {copy.consentLabel}
             </label>
           </div>
           <p className="mt-2 pl-7 text-sm">
             <Link
               href="/privacy"
-              className="font-medium text-teal-900 underline decoration-teal-900/40 underline-offset-4"
+              className="font-medium text-[#f4f4f5] underline decoration-white/35 underline-offset-4"
             >
               {copy.privacyLinkLabel}
             </Link>
           </p>
           {fieldErrors.consent ? (
-            <p id={`${id}-consent-error`} className="mt-2 text-sm font-medium text-red-800">
+            <p id={`${id}-consent-error`} className="mt-2 text-sm font-medium text-red-300">
               {fieldErrors.consent}
             </p>
           ) : null}
@@ -234,7 +215,7 @@ export function LeadForm({
           </label>
         </div>
         {status === "error" ? (
-          <p role="alert" className="text-sm font-medium text-red-800">
+          <p role="alert" className="text-sm font-medium text-red-300">
             {message}
           </p>
         ) : null}
@@ -242,7 +223,7 @@ export function LeadForm({
           <button
             type="submit"
             disabled={status === "sending"}
-            className="rounded-full bg-teal-900 px-5 py-3 text-sm font-medium text-white transition duration-200 hover:bg-teal-800 disabled:opacity-60"
+            className="rounded-full bg-[#f4f4f5] px-5 py-3 text-sm font-medium text-[#141416] transition duration-200 hover:bg-white disabled:opacity-60"
           >
             {status === "sending" ? copy.submittingLabel : copy.submitLabel}
           </button>
@@ -250,12 +231,12 @@ export function LeadForm({
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border border-teal-900/30 px-5 py-3 text-center text-sm font-medium text-teal-900 transition duration-200 hover:border-teal-900"
+            className="rounded-full border border-white/30 px-5 py-3 text-center text-sm font-medium text-[#f4f4f5] transition duration-200 hover:border-white/70"
           >
             {copy.whatsappCta}
           </a>
         </div>
-        <p className="text-sm text-[#3a5560]">{copy.hint}</p>
+        <p className="text-sm text-[#b4b4ba]">{copy.hint}</p>
       </div>
     </form>
   );
@@ -280,7 +261,7 @@ function TextField({
           placeholder=" "
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-error` : undefined}
-          className={`${controlClass} peer ${error ? "border-red-800" : ""}`}
+          className={`${controlClass} peer ${error ? "border-red-400" : ""}`}
           {...props}
         />
         <label htmlFor={id} className={peerLabel}>
@@ -288,7 +269,7 @@ function TextField({
         </label>
       </div>
       {error ? (
-        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-800">
+        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-300">
           {error}
         </p>
       ) : null}
@@ -298,6 +279,7 @@ function TextField({
 
 function SelectField({
   id,
+  name = "course",
   label,
   error,
   value,
@@ -306,6 +288,7 @@ function SelectField({
   options,
 }: {
   id: string;
+  name?: string;
   label: string;
   error?: string;
   value: string;
@@ -321,7 +304,7 @@ function SelectField({
       <div className="relative">
         <select
           id={id}
-          name="course"
+          name={name}
           required
           value={value}
           aria-invalid={error ? true : undefined}
@@ -329,7 +312,7 @@ function SelectField({
           onChange={(event) => onChange(event.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className={`${controlClass} appearance-none pr-12 ${error ? "border-red-800" : ""}`}
+          className={`${controlClass} appearance-none pr-12 ${error ? "border-red-400" : ""}`}
         >
           <option value="">{floated ? placeholder : "\u00a0"}</option>
           {options.map((item) => (
@@ -338,7 +321,7 @@ function SelectField({
             </option>
           ))}
         </select>
-        <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-ink">
+        <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[#d6d6db]">
           <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
             <path
               d="M5 7.5 10 12.5 15 7.5"
@@ -353,15 +336,15 @@ function SelectField({
           htmlFor={id}
           className={`${labelBase} ${
             floated
-              ? "top-0 -translate-y-1/2 bg-white px-1 text-xs font-medium text-ink"
-              : "top-1/2 -translate-y-1/2 text-base text-[#3a5560]"
+              ? "top-0 -translate-y-1/2 bg-[#2a2a2e] px-1 text-xs font-medium text-[#f4f4f5]"
+              : "top-1/2 -translate-y-1/2 text-base text-[#b4b4ba]"
           }`}
         >
           {label}
         </label>
       </div>
       {error ? (
-        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-800">
+        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-300">
           {error}
         </p>
       ) : null}

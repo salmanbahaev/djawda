@@ -3,18 +3,18 @@
 @theme {
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-cormorant), "Iowan Old Style", Palatino, serif;
-  --color-teal-950: #021920;
-  --color-teal-900: #003d52;
-  --color-teal-800: #0c5168;
-  --color-teal-700: #1a6a82;
-  --color-ink: #122f38;
-  --color-muted: #4e6872;
-  --color-paper: #f4f1ec;
-  --color-paper-2: #fffcf8;
-  --color-line: #e4ddd3;
-  --color-silver: #e7ebef;
-  --color-gold: #b5893f;
-  --color-gold-2: #e6d3a4;
+  --color-teal-950: #0f0f10;
+  --color-teal-900: #d8d8dc;
+  --color-teal-800: #b7b7bc;
+  --color-teal-700: #8e8e94;
+  --color-ink: #f3f3f4;
+  --color-muted: #a7a7ad;
+  --color-paper: #1c1c1f;
+  --color-paper-2: #2a2a2e;
+  --color-line: #3c3c42;
+  --color-silver: #e6e6ea;
+  --color-gold: #c8c8ce;
+  --color-gold-2: #d6d6db;
 }
 
 html {
@@ -22,26 +22,16 @@ html {
 }
 
 body {
-  background-color: var(--color-paper);
-  background-image:
-    radial-gradient(ellipse 48% 36% at 8% -8%, rgba(0, 61, 82, 0.09), transparent 62%),
-    radial-gradient(ellipse 36% 28% at 100% 0%, rgba(181, 137, 63, 0.1), transparent 58%),
-    radial-gradient(ellipse 42% 32% at 78% 100%, rgba(12, 81, 104, 0.07), transparent 55%);
-  background-attachment: fixed;
-  background-size:
-    140% 140%,
-    120% 120%,
-    130% 130%;
+  background-color: #0f0f10;
   color: var(--color-ink);
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
-  animation: mesh-drift 32s ease-in-out infinite alternate;
 }
 
 h1,
 h2 {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.03em;
   line-height: 1.12;
 }
@@ -58,32 +48,17 @@ button:disabled {
 }
 
 ::selection {
-  background: #003d52;
-  color: #fff;
+  background: #3a3a40;
+  color: #f4f4f5;
 }
 
 :focus-visible {
-  outline: 2px solid #b5893f;
+  outline: 2px solid #d6d6db;
   outline-offset: 3px;
 }
 
 .prose-measure {
   max-width: 68ch;
-}
-
-@keyframes mesh-drift {
-  from {
-    background-position:
-      0% 0%,
-      100% 0%,
-      80% 100%;
-  }
-  to {
-    background-position:
-      18% 8%,
-      82% 16%,
-      62% 84%;
-  }
 }
 
 @keyframes marquee {
@@ -106,7 +81,7 @@ button:disabled {
 .course-glare {
   background: radial-gradient(
     420px circle at var(--gx, 50%) var(--gy, 18%),
-    rgba(255, 255, 255, 0.72),
+    rgba(255, 255, 255, 0.14),
     transparent 42%
   );
 }
@@ -123,8 +98,8 @@ button:disabled {
 }
 
 .approach-path.is-motion .approach-step.is-lit {
-  border-color: color-mix(in srgb, var(--color-gold) 55%, white);
-  box-shadow: 0 22px 50px -32px rgba(0, 61, 82, 0.55);
+  border-color: color-mix(in srgb, var(--color-silver) 55%, #2a2a2e);
+  box-shadow: 0 22px 50px -32px rgba(0, 0, 0, 0.55);
   transform: translateY(-4px);
 }
 
@@ -151,12 +126,11 @@ button:disabled {
 
 .field-control:focus-visible,
 .pill:has(:focus-visible) {
-  outline: 2px solid #003d52;
+  outline: 2px solid #d6d6db;
   outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body,
   .marquee-track {
     animation: none;
   }

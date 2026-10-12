@@ -4,7 +4,6 @@ import { resolveKeystaticStorage } from "./lib/env";
 const storage = resolveKeystaticStorage();
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["remotion", "@remotion/player"],
   env: {
     NEXT_PUBLIC_KEYSTATIC_STORAGE: storage,
   },

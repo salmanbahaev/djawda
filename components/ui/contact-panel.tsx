@@ -42,7 +42,7 @@ export function ContactPanel({
         <ul className={`${lead ? "mt-6" : ""} space-y-3 text-base`}>
           <li>
             <a
-              className="font-medium text-teal-900 underline decoration-gold/60 underline-offset-4"
+              className="font-medium text-[#f4f4f5] underline decoration-white/40 underline-offset-4"
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
@@ -75,7 +75,7 @@ export function ContactPanel({
         <div className="mt-6 flex flex-wrap gap-3">
           <a
             href={routeUrl}
-            className="rounded-full bg-teal-900 px-5 py-3 text-sm font-medium text-white"
+            className="rounded-full bg-[#f4f4f5] px-5 py-3 text-sm font-medium text-[#141416]"
             target="_blank"
             rel="noreferrer"
           >
@@ -83,7 +83,7 @@ export function ContactPanel({
           </a>
           <a
             href={mapUrl}
-            className="rounded-full border border-teal-900/20 px-5 py-3 text-sm font-medium"
+            className="rounded-full border border-white/25 px-5 py-3 text-sm font-medium text-[#f4f4f5]"
             target="_blank"
             rel="noreferrer"
           >
@@ -91,7 +91,7 @@ export function ContactPanel({
           </a>
         </div>
       </div>
-      <div className="overflow-hidden rounded-3xl border border-line bg-white">
+      <div className="overflow-hidden rounded-3xl border border-line bg-[#18181a]">
         {mapImage ? (
           <a href={mapUrl} target="_blank" rel="noreferrer" className="block">
             <Image

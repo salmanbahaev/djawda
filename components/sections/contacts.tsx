@@ -10,7 +10,7 @@ export function ContactsSection({
   settings: SettingsContent;
 }) {
   return (
-    <section id="contacts" className="scroll-mt-20 py-24 md:py-32">
+    <section id="contacts" className="scroll-mt-20 bg-[#222225] py-24 md:py-32">
       <Container>
         <Eyebrow>{home.contactsEyebrow}</Eyebrow>
         <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">

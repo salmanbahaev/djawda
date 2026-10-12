@@ -42,16 +42,20 @@ function StatusBadge({ status }: { status: string }) {
   return (
     <span
       className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium ${
-        open ? "border-gold/40 bg-gold/10 text-gold" : "border-teal-900/15 bg-white text-teal-800"
+        open
+          ? "border-white/30 bg-white/10 text-[#f4f4f5]"
+          : "border-line bg-[#141416] text-[#c8c8ce]"
       }`}
     >
       <span className="relative flex h-2 w-2" aria-hidden>
         <motion.span
-          className={`status-ping absolute inline-flex h-full w-full rounded-full ${open ? "bg-gold" : "bg-teal-700"}`}
+          className={`status-ping absolute inline-flex h-full w-full rounded-full ${open ? "bg-[#d6d6db]" : "bg-[#8e8e94]"}`}
           animate={{ scale: [1, 1.85], opacity: [0.45, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
         />
-        <span className={`relative h-2 w-2 rounded-full ${open ? "bg-gold" : "bg-teal-700"}`} />
+        <span
+          className={`relative h-2 w-2 rounded-full ${open ? "bg-[#d6d6db]" : "bg-[#8e8e94]"}`}
+        />
       </span>
       {courseStatusLabel(status)}
     </span>
@@ -113,7 +117,7 @@ function CourseCard({
     <div className="[perspective:1100px]">
       <motion.article
         id={courseId(course.slug)}
-        className="course-card relative scroll-mt-24 overflow-hidden rounded-3xl border border-line bg-paper-2 shadow-[0_24px_50px_-36px_rgba(0,61,82,0.55)] [transform-style:preserve-3d]"
+        className="course-card relative scroll-mt-24 overflow-hidden rounded-3xl border border-line bg-[#222225] [transform-style:preserve-3d]"
         style={{ rotateX, rotateY }}
         onPointerMove={onMove}
         onPointerLeave={resetTilt}
@@ -141,7 +145,7 @@ function CourseCard({
               <StatusBadge status={course.status} />
               <CountUp
                 text={course.priceText}
-                className="text-right text-base font-medium text-teal-900"
+                className="text-right text-base font-medium text-[#f4f4f5]"
               />
             </span>
             <span className="block text-2xl font-medium tracking-tight text-ink sm:text-3xl">
@@ -151,7 +155,7 @@ function CourseCard({
               {course.shortDescription}
             </span>
             <span className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <span className="text-sm leading-relaxed text-teal-900">
+              <span className="text-sm leading-relaxed text-[#d6d6db]">
                 {meta.map((part, index) => (
                   <span key={`${part}-${index}`}>
                     {index > 0 ? " · " : null}
@@ -159,7 +163,7 @@ function CourseCard({
                   </span>
                 ))}
               </span>
-              <span className="inline-flex items-center gap-2 text-sm font-medium text-teal-900">
+              <span className="inline-flex items-center gap-2 text-sm font-medium text-[#f4f4f5]">
                 {expanded ? closeLabel : linkLabel}
                 <motion.span
                   aria-hidden
@@ -257,7 +261,7 @@ function CourseCard({
 
             <a
               href="#lead"
-              className="mt-6 inline-flex rounded-full bg-teal-900 px-5 py-3 text-sm font-medium text-white transition duration-200 hover:bg-teal-800"
+              className="mt-6 inline-flex rounded-full bg-[#f4f4f5] px-5 py-3 text-sm font-medium text-[#141416] transition duration-200 hover:bg-white"
               onClick={() => {
                 document.dispatchEvent(
                   new CustomEvent(COURSE_SELECT_EVENT, { detail: course.slug }),

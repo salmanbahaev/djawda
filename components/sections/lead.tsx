@@ -17,7 +17,7 @@ export function LeadSection({
   return (
     <section
       id="lead"
-      className="relative scroll-mt-20 overflow-hidden bg-teal-950 py-24 text-white md:py-32"
+      className="relative scroll-mt-20 overflow-hidden bg-[#18181a] py-24 text-white md:py-32"
     >
       <FlowFieldLazy variant="quiet" />
       <Container className="relative grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
