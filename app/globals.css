@@ -268,10 +268,13 @@ html[data-scroll-lock] {
 .classroom-section::before {
   content: "";
   position: absolute;
+  z-index: 0;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(rgba(245, 239, 228, 0.05) 0.85px, transparent 0.95px);
-  background-size: 18px 18px;
+  background-image:
+    linear-gradient(rgba(245, 239, 228, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 239, 228, 0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
   -webkit-mask-image: radial-gradient(ellipse 72% 70% at 74% 46%, #000 12%, transparent 70%);
   mask-image: radial-gradient(ellipse 72% 70% at 74% 46%, #000 12%, transparent 70%);
 }
@@ -297,7 +300,6 @@ html[data-scroll-lock] {
 }
 
 .classroom-frame {
-  position: relative;
   z-index: 1;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.14),
@@ -305,6 +307,17 @@ html[data-scroll-lock] {
 }
 
 @media (max-width: 1023px) {
+  .classroom-collage::before {
+    inset: -10% -42% -6% -42%;
+    background: radial-gradient(
+      ellipse 70% 84% at 50% 46%,
+      rgba(245, 239, 228, 0.58) 0%,
+      rgba(236, 220, 196, 0.36) 42%,
+      rgba(214, 192, 164, 0.16) 64%,
+      transparent 80%
+    );
+  }
+
   .classroom-section {
     background-image: radial-gradient(
       ellipse 100% 58% at 50% 78%,

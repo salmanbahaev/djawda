@@ -68,7 +68,7 @@ function ClassroomPhotos({
   return (
     <div className={`classroom-collage relative ${wide && portrait ? "lg:pb-24" : ""}`}>
       {wide ? (
-        <div className="classroom-frame overflow-hidden rounded-3xl lg:w-[84%]">
+        <div className="classroom-frame relative overflow-hidden rounded-3xl lg:w-[84%]">
           <div className="relative aspect-[4/3]">
             <Image
               src={wide}
@@ -84,8 +84,8 @@ function ClassroomPhotos({
         <div
           className={
             wide
-              ? "classroom-frame mt-4 overflow-hidden rounded-3xl lg:absolute lg:right-0 lg:bottom-0 lg:mt-0 lg:w-[46%]"
-              : "classroom-frame overflow-hidden rounded-3xl lg:ml-auto lg:w-[62%]"
+              ? "classroom-frame relative mt-4 overflow-hidden rounded-3xl lg:absolute lg:right-0 lg:bottom-0 lg:mt-0 lg:w-[46%]"
+              : "classroom-frame relative overflow-hidden rounded-3xl lg:ml-auto lg:w-[62%]"
           }
         >
           <div className="relative aspect-[3/4]">
