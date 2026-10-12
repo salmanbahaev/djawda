@@ -149,12 +149,35 @@ button:disabled {
   outline-color: #17171a;
 }
 
-.course-glare {
-  background: radial-gradient(
-    420px circle at var(--gx, 50%) var(--gy, 18%),
-    rgba(255, 255, 255, 0.14),
-    transparent 42%
-  );
+.catalog-cream {
+  --color-ink: #0f2f3a;
+  --color-muted: #3e5662;
+  --color-gold: #3e5662;
+  --color-line: #e4d7c6;
+  background-color: #f5efe4;
+  color: #0f2f3a;
+}
+
+.catalog-cream ::selection {
+  background: #e7d3ae;
+  color: #0f2f3a;
+}
+
+.catalog-cta {
+  background-color: #e4c27a;
+  color: #0f2f3a;
+}
+
+.catalog-cta:hover {
+  background-color: #efd09a;
+}
+
+.course-drawer :focus-visible {
+  outline-color: #0f2f3a;
+}
+
+html[data-scroll-lock] {
+  overflow: hidden;
 }
 
 .rail-tip {
@@ -228,10 +251,6 @@ button:disabled {
     filter: none !important;
     transform: none !important;
     opacity: 1 !important;
-  }
-
-  .status-ping {
-    display: none;
   }
 
   .float-label {

@@ -1,4 +1,5 @@
 import { collection, config, fields, singleton } from "@keystatic/core";
+import { COURSE_ACCENTS } from "@/lib/course-accent";
 import { COURSE_STATUSES } from "@/lib/course-status";
 import { FORMAT_OPTIONS } from "@/lib/formats";
 
@@ -249,11 +250,11 @@ export default config({
           validation: { isRequired: true },
         }),
         courseLinkLabel: fields.text({
-          label: "Кнопка раскрытия курса",
+          label: "Кнопка «Подробнее»",
           validation: { isRequired: true },
         }),
         courseCloseLabel: fields.text({
-          label: "Кнопка сворачивания курса",
+          label: "Кнопка закрытия окна курса",
           validation: { isRequired: true },
         }),
         courseRequestLabel: fields.text({
@@ -565,7 +566,7 @@ export default config({
           validation: { isRequired: true },
         }),
         subtitle: fields.text({
-          label: "Подзаголовок в раскрытой карточке",
+          label: "Подзаголовок в окне курса",
           multiline: true,
           validation: { isRequired: true },
         }),
@@ -584,6 +585,13 @@ export default config({
           options: COURSE_STATUSES.map((item) => ({ label: item.label, value: item.value })),
           defaultValue: "soon",
         }),
+        accent: fields.select({
+          label: "Цвет карточки",
+          description:
+            "Тонкая полоска сверху карточки в каталоге. У соседних курсов лучше разные цвета.",
+          options: COURSE_ACCENTS.map((item) => ({ label: item.label, value: item.value })),
+          defaultValue: "teal",
+        }),
         order: fields.integer({
           label: "Порядок на главной",
           defaultValue: 1,
@@ -599,7 +607,7 @@ export default config({
         materialsImage: fields.image({
           label: "Изображение в разделе материалов",
           description:
-            "Показывается в разделе с якорем materials. Для «Таджвид с нуля» — фото пособий.",
+            "Показывается в окне курса, в разделе с якорем materials. Для «Таджвид с нуля» — фото пособий.",
           directory: "public/images/courses",
           publicPath: "/images/courses/",
         }),
@@ -620,7 +628,7 @@ export default config({
             note: fields.text({ label: "Примечание", multiline: true }),
           }),
           {
-            label: "Разделы карточки",
+            label: "Разделы окна курса",
             itemLabel: (props) => props.fields.title.value || "Раздел",
           },
         ),

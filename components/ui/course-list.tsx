@@ -1,281 +1,26 @@
 "use client";
 
-import { motion, useReducedMotion, useSpring } from "motion/react";
-import Image from "next/image";
-import { useEffect, useId, useState } from "react";
-import { FaqList } from "@/components/ui/faq-list";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { CourseDrawer, CourseStatusChip } from "@/components/ui/course-drawer";
 import { Reveal } from "@/components/ui/reveal";
-import { scrollToId } from "@/lib/anchor-scroll";
-import { paragraphs } from "@/lib/cms/text";
-import { courseStatusLabel } from "@/lib/course-status";
+import { followHash } from "@/lib/anchor-scroll";
+import { courseAccent } from "@/lib/course-accent";
+import { courseDomId, courseFacts, type CourseListItem } from "@/lib/course-catalog";
 import { COURSE_SELECT_EVENT } from "@/lib/forms/course-event";
 
-type Section = {
-  id: string | null;
-  title: string;
-  body: string | null;
-  items: readonly string[];
-  note: string | null;
-};
+export type { CourseListItem };
 
-export type CourseListItem = {
-  slug: string;
-  title: string;
-  shortDescription: string;
-  subtitle: string;
-  formats: string;
-  duration: string;
-  groupSize: string | null;
-  priceText: string;
-  status: string;
-  materialsImage: string | null;
-  materialsImageAlt: string | null;
-  sections: readonly Section[];
-  faq: readonly { question: string; answer: string; draft?: boolean }[];
-};
-
-function courseId(slug: string) {
-  return `course-${slug}`;
+function withHistory(drawerSlug: string | null) {
+  const current = window.history.state;
+  const base: Record<string, unknown> =
+    current && typeof current === "object" ? { ...(current as Record<string, unknown>) } : {};
+  if (drawerSlug) base.courseDrawer = drawerSlug;
+  else delete base.courseDrawer;
+  return base;
 }
 
-function StatusBadge({ status }: { status: string }) {
-  const open = status === "open";
-  return (
-    <span
-      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium ${
-        open
-          ? "border-white/30 bg-white/10 text-[#f4f4f5]"
-          : "border-line bg-[#141416] text-[#c8c8ce]"
-      }`}
-    >
-      <span className="relative flex h-2 w-2" aria-hidden>
-        <motion.span
-          className={`status-ping absolute inline-flex h-full w-full rounded-full ${open ? "bg-[#d6d6db]" : "bg-[#8e8e94]"}`}
-          animate={{ scale: [1, 1.85], opacity: [0.45, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
-        />
-        <span
-          className={`relative h-2 w-2 rounded-full ${open ? "bg-[#d6d6db]" : "bg-[#8e8e94]"}`}
-        />
-      </span>
-      {courseStatusLabel(status)}
-    </span>
-  );
-}
-
-function CourseCard({
-  course,
-  expanded,
-  panelId,
-  buttonId,
-  linkLabel,
-  closeLabel,
-  requestLabel,
-  onToggle,
-}: {
-  course: CourseListItem;
-  expanded: boolean;
-  panelId: string;
-  buttonId: string;
-  linkLabel: string;
-  closeLabel: string;
-  requestLabel: string;
-  onToggle: () => void;
-}) {
-  const reduce = useReducedMotion();
-  const rotateX = useSpring(0, { stiffness: 180, damping: 22, mass: 0.4 });
-  const rotateY = useSpring(0, { stiffness: 180, damping: 22, mass: 0.4 });
-  const [glare, setGlare] = useState(false);
-  const meta = [course.formats, course.duration, course.groupSize].filter((part): part is string =>
-    Boolean(part),
-  );
-
-  function resetTilt() {
-    rotateX.set(0);
-    rotateY.set(0);
-    setGlare(false);
-  }
-
-  useEffect(() => {
-    if (!expanded) return;
-    rotateX.set(0);
-    rotateY.set(0);
-  }, [expanded, rotateX, rotateY]);
-
-  function onMove(event: React.PointerEvent<HTMLElement>) {
-    if (reduce || expanded || event.pointerType !== "mouse") return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const px = (event.clientX - rect.left) / rect.width;
-    const py = (event.clientY - rect.top) / rect.height;
-    event.currentTarget.style.setProperty("--gx", `${px * 100}%`);
-    event.currentTarget.style.setProperty("--gy", `${py * 100}%`);
-    rotateY.set((px - 0.5) * 8);
-    rotateX.set((0.5 - py) * 6);
-    if (!glare) setGlare(true);
-  }
-
-  return (
-    <div className="[perspective:1100px]">
-      <motion.article
-        id={courseId(course.slug)}
-        className="course-card relative overflow-hidden rounded-3xl border border-line bg-[#18181a] [transform-style:preserve-3d]"
-        style={{ rotateX, rotateY }}
-        onPointerMove={onMove}
-        onPointerLeave={resetTilt}
-        onPointerCancel={resetTilt}
-      >
-        <span
-          aria-hidden
-          className={`course-glare pointer-events-none absolute inset-0 transition-opacity duration-300 ${
-            glare && !expanded ? "opacity-100" : "opacity-0"
-          }`}
-        />
-        <h3 className="relative">
-          <button
-            id={buttonId}
-            type="button"
-            className="flex w-full cursor-pointer flex-col gap-4 p-5 text-left sm:p-7"
-            aria-expanded={expanded}
-            aria-controls={panelId}
-            onClick={() => {
-              resetTilt();
-              onToggle();
-            }}
-          >
-            <span className="flex items-start justify-between gap-3">
-              <StatusBadge status={course.status} />
-              <span className="text-right text-base font-medium text-[#f4f4f5]">
-                {course.priceText}
-              </span>
-            </span>
-            <span className="block text-2xl font-medium tracking-tight text-ink sm:text-3xl">
-              {course.title}
-            </span>
-            <span className="block max-w-3xl text-sm leading-relaxed text-muted sm:text-base">
-              {course.shortDescription}
-            </span>
-            <span className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <span className="text-sm leading-relaxed text-[#d6d6db]">
-                {meta.map((part, index) => (
-                  <span key={`${part}-${index}`}>
-                    {index > 0 ? " · " : null}
-                    {part}
-                  </span>
-                ))}
-              </span>
-              <span className="inline-flex items-center gap-2 text-sm font-medium text-[#f4f4f5]">
-                {expanded ? closeLabel : linkLabel}
-                <motion.span
-                  aria-hidden
-                  animate={{ rotate: expanded ? 45 : 0 }}
-                  transition={{ duration: reduce ? 0 : 0.25 }}
-                  className="inline-block text-lg leading-none text-gold"
-                >
-                  +
-                </motion.span>
-              </span>
-            </span>
-          </button>
-        </h3>
-
-        <motion.div
-          id={panelId}
-          role="region"
-          aria-labelledby={buttonId}
-          initial={false}
-          animate={{ height: expanded ? "auto" : 0, opacity: expanded ? 1 : 0 }}
-          transition={
-            reduce
-              ? { duration: 0 }
-              : {
-                  height: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-                  opacity: { duration: 0.3 },
-                }
-          }
-          className="relative overflow-hidden"
-        >
-          <div className="border-t border-line px-5 pt-6 pb-7 sm:px-7" inert={!expanded}>
-            {course.subtitle && course.subtitle !== course.shortDescription ? (
-              <p className="max-w-3xl text-lg leading-relaxed">{course.subtitle}</p>
-            ) : null}
-            <div
-              className={
-                course.subtitle && course.subtitle !== course.shortDescription ? "mt-8" : ""
-              }
-            >
-              {course.sections.map((section) => (
-                <section
-                  key={`${section.id}-${section.title}`}
-                  className="grid gap-3 border-b border-line py-6 last:border-b-0 md:grid-cols-[12rem_1fr] md:gap-8"
-                >
-                  <h4 className="text-base font-medium tracking-tight md:pt-1">{section.title}</h4>
-                  <div>
-                    {paragraphs(section.body).map((paragraph) => (
-                      <p key={paragraph} className="mt-3 leading-relaxed text-muted first:mt-0">
-                        {paragraph}
-                      </p>
-                    ))}
-                    {section.items.length ? (
-                      <ul className="mt-3 space-y-2.5">
-                        {section.items.map((item) => (
-                          <li key={item} className="flex gap-3 leading-relaxed">
-                            <span
-                              aria-hidden
-                              className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold"
-                            />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                    {section.note ? (
-                      <p className="mt-4 border-l border-gold/70 pl-4 text-sm leading-relaxed text-muted">
-                        {section.note}
-                      </p>
-                    ) : null}
-                    {section.id === "materials" && course.materialsImage ? (
-                      <figure className="mt-5">
-                        <Image
-                          src={course.materialsImage}
-                          alt={course.materialsImageAlt || ""}
-                          width={1280}
-                          height={960}
-                          className="h-auto w-full rounded-2xl border border-line"
-                          sizes="(min-width: 768px) 640px, 100vw"
-                        />
-                      </figure>
-                    ) : null}
-                  </div>
-                </section>
-              ))}
-            </div>
-
-            {course.faq.length ? (
-              <div className="mt-4">
-                <h4 className="text-base font-medium tracking-tight">Вопросы по этому курсу</h4>
-                <div className="mt-2">
-                  <FaqList items={course.faq} />
-                </div>
-              </div>
-            ) : null}
-
-            <a
-              href="#lead"
-              data-course={course.slug}
-              className="mt-6 inline-flex rounded-full bg-[#f4f4f5] px-5 py-3 text-sm font-medium text-[#141416] transition duration-200 hover:bg-white"
-              onClick={() => {
-                document.dispatchEvent(
-                  new CustomEvent(COURSE_SELECT_EVENT, { detail: course.slug }),
-                );
-              }}
-            >
-              {requestLabel}
-            </a>
-          </div>
-        </motion.div>
-      </motion.article>
-    </div>
-  );
+function hashSlug() {
+  return decodeURIComponent(window.location.hash.replace(/^#/, ""));
 }
 
 export function CourseList({
@@ -290,57 +35,188 @@ export function CourseList({
   requestLabel: string;
 }) {
   const [openSlug, setOpenSlug] = useState<string | null>(null);
-  const baseId = useId();
+  const [desktop, setDesktop] = useState(false);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const afterClose = useRef<(() => void) | null>(null);
 
-  useEffect(() => {
-    function openFromHash() {
-      const id = window.location.hash.replace(/^#/, "");
-      if (!id.startsWith("course-")) {
-        setOpenSlug(null);
-        return;
-      }
-      const slug = id.slice("course-".length);
-      if (!courses.some((course) => course.slug === slug)) return;
-      setOpenSlug(slug);
-    }
-
-    openFromHash();
-    window.addEventListener("hashchange", openFromHash);
-    window.addEventListener("popstate", openFromHash);
-    return () => {
-      window.removeEventListener("hashchange", openFromHash);
-      window.removeEventListener("popstate", openFromHash);
-    };
+  const readSlug = useCallback(() => {
+    const id = hashSlug();
+    if (!id.startsWith("course-")) return null;
+    const slug = id.slice("course-".length);
+    return courses.some((course) => course.slug === slug) ? slug : null;
   }, [courses]);
 
-  function toggle(slug: string) {
-    const next = openSlug === slug ? null : slug;
-    setOpenSlug(next);
-    const hash = next ? `#${courseId(slug)}` : "#courses";
-    window.history.pushState(null, "", hash);
-    if (next) {
-      window.requestAnimationFrame(() => {
-        scrollToId(courseId(slug));
-      });
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 768px)");
+    const apply = () => setDesktop(media.matches);
+    apply();
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
+  }, []);
+
+  useEffect(() => {
+    function sync() {
+      const slug = readSlug();
+      if (slug && document.activeElement instanceof HTMLElement) {
+        const active = document.activeElement;
+        if (!active.closest("[data-course-drawer-root]")) openerRef.current = active;
+      }
+      setOpenSlug(slug);
     }
-  }
+    sync();
+    window.addEventListener("hashchange", sync);
+    window.addEventListener("popstate", sync);
+    return () => {
+      window.removeEventListener("hashchange", sync);
+      window.removeEventListener("popstate", sync);
+    };
+  }, [readSlug]);
+
+  const openDrawer = useCallback((slug: string, source?: HTMLElement | null) => {
+    if (source) openerRef.current = source;
+    const hash = `#${courseDomId(slug)}`;
+    if (window.location.hash !== hash) {
+      window.history.pushState(withHistory(slug), "", hash);
+    }
+    setOpenSlug(slug);
+  }, []);
+
+  const closeDrawer = useCallback(() => {
+    const id = hashSlug();
+    if (id.startsWith("course-")) {
+      const state = window.history.state as { courseDrawer?: string } | null;
+      if (state?.courseDrawer) {
+        window.history.back();
+        return;
+      }
+      window.history.pushState(withHistory(null), "", "#courses");
+    }
+    setOpenSlug(null);
+  }, []);
+
+  const handleClosed = useCallback(() => {
+    const node = openerRef.current;
+    if (node && document.contains(node)) node.focus({ preventScroll: true });
+    const run = afterClose.current;
+    afterClose.current = null;
+    run?.();
+  }, []);
+
+  const requestCourse = useCallback(
+    (slug: string) => {
+      document.dispatchEvent(new CustomEvent(COURSE_SELECT_EVENT, { detail: slug }));
+      const go = () => {
+        followHash("lead");
+        window.setTimeout(() => {
+          document.getElementById("lead-form-course")?.focus({ preventScroll: true });
+        }, 60);
+      };
+      const id = hashSlug();
+      if (openSlug === null) {
+        if (id.startsWith("course-"))
+          window.history.replaceState(withHistory(null), "", "#courses");
+        go();
+        return;
+      }
+      openerRef.current = null;
+      afterClose.current = go;
+      if (id.startsWith("course-")) window.history.replaceState(withHistory(null), "", "#courses");
+      setOpenSlug(null);
+    },
+    [openSlug],
+  );
+
+  const activeIndex = courses.findIndex((course) => course.slug === openSlug);
+  const active = activeIndex >= 0 ? courses[activeIndex] : null;
 
   return (
-    <div className="mt-10 flex flex-col gap-4">
-      {courses.map((course, index) => (
-        <Reveal key={course.slug} from="right" delay={index * 0.08}>
-          <CourseCard
-            course={course}
-            expanded={openSlug === course.slug}
-            panelId={`${baseId}-${course.slug}-panel`}
-            buttonId={`${baseId}-${course.slug}-button`}
-            linkLabel={linkLabel}
-            closeLabel={closeLabel}
-            requestLabel={requestLabel}
-            onToggle={() => toggle(course.slug)}
-          />
-        </Reveal>
-      ))}
-    </div>
+    <>
+      <ul className="mt-10 grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-5">
+        {courses.map((course, index) => {
+          const accent = courseAccent(course.accent, index);
+          const facts = courseFacts(course);
+          const open = openSlug === course.slug;
+          return (
+            <li key={course.slug} className="min-w-0">
+              <Reveal className="h-full" from="right" delay={index * 0.08}>
+                <article
+                  id={courseDomId(course.slug)}
+                  className="course-card flex h-full flex-col overflow-hidden rounded-3xl border border-[#e7dccb] bg-[#fffdf8] shadow-[0_12px_32px_rgba(15,47,58,0.05)]"
+                  style={{
+                    backgroundImage: `linear-gradient(180deg, ${accent.color}1f, transparent 5.5rem)`,
+                  }}
+                >
+                  <span
+                    aria-hidden
+                    className="h-1 w-full"
+                    style={{ backgroundColor: accent.color }}
+                  />
+                  <div className="flex h-full flex-col p-5 sm:p-6">
+                    <CourseStatusChip status={course.status} />
+                    <h3 className="mt-4 text-2xl font-medium tracking-tight text-balance text-[#0f2f3a]">
+                      {course.title}
+                    </h3>
+                    <p
+                      className="mt-2 line-clamp-1 text-sm leading-relaxed text-[#3e5662]"
+                      title={course.shortDescription}
+                    >
+                      {course.shortDescription}
+                    </p>
+                    {facts.length ? (
+                      <ul className="mt-4 flex flex-wrap gap-2">
+                        {facts.map((fact) => (
+                          <li
+                            key={fact}
+                            className="rounded-full border border-[#0f2f3a]/10 bg-[#f5efe4] px-2.5 py-1 text-xs leading-5 text-[#3e5662]"
+                          >
+                            {fact}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                    <div className="mt-auto pt-6">
+                      <p className="text-xl font-medium tracking-tight text-[#0f2f3a]">
+                        {course.priceText}
+                      </p>
+                      <div className="mt-4 grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          className="min-h-11 rounded-full border border-[#0f2f3a]/15 px-3 py-2.5 text-sm font-medium text-[#0f2f3a] transition hover:bg-[#0f2f3a]/5"
+                          aria-haspopup="dialog"
+                          aria-expanded={open}
+                          aria-controls={open ? "course-dialog" : undefined}
+                          onClick={(event) => openDrawer(course.slug, event.currentTarget)}
+                        >
+                          {linkLabel}
+                        </button>
+                        <button
+                          type="button"
+                          className="catalog-cta min-h-11 rounded-full px-3 py-2.5 text-sm font-medium"
+                          onClick={() => requestCourse(course.slug)}
+                        >
+                          Записаться
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </Reveal>
+            </li>
+          );
+        })}
+      </ul>
+      <CourseDrawer
+        course={active}
+        index={Math.max(0, activeIndex)}
+        desktop={desktop}
+        closeLabel={closeLabel}
+        requestLabel={requestLabel}
+        onClose={closeDrawer}
+        onRequest={() => {
+          if (active) requestCourse(active.slug);
+        }}
+        onClosed={handleClosed}
+      />
+    </>
   );
 }
