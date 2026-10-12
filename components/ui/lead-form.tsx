@@ -357,14 +357,15 @@ function SelectField({
             className="select-popover z-[60] w-[var(--radix-select-trigger-width)]"
           >
             <div className="select-popover-panel overflow-hidden rounded-2xl border border-[#d8d8d4] bg-white text-[#17171a] shadow-[0_18px_40px_-24px_rgba(23,23,26,0.45)]">
-              <Select.Viewport className="max-h-[min(18rem,var(--radix-select-content-available-height))] overflow-y-auto p-1.5">
+              <Select.Viewport className="max-h-[min(18rem,var(--radix-select-content-available-height))] overflow-y-auto py-1.5">
                 {options.map((item) => (
                   <Select.Item
                     key={item.value}
                     value={item.value}
-                    className="relative flex cursor-pointer items-center rounded-xl py-2.5 pr-3 pl-9 text-sm outline-none data-[highlighted]:bg-[#f0f0ee] data-[state=checked]:font-medium"
+                    className="relative mx-1.5 flex cursor-pointer items-center gap-3 rounded-xl px-2.5 py-2.5 text-sm outline-none data-[highlighted]:bg-[#f0f0ee] data-[state=checked]:font-medium"
                   >
-                    <Select.ItemIndicator className="absolute left-3 inline-flex text-[#17171a]">
+                    <Select.ItemText className="min-w-0 flex-1">{item.label}</Select.ItemText>
+                    <Select.ItemIndicator className="inline-flex shrink-0 text-[#17171a]">
                       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
                         <path
                           d="M3.5 8.2 6.4 11.1 12.5 4.8"
@@ -375,7 +376,6 @@ function SelectField({
                         />
                       </svg>
                     </Select.ItemIndicator>
-                    <Select.ItemText>{item.label}</Select.ItemText>
                   </Select.Item>
                 ))}
               </Select.Viewport>

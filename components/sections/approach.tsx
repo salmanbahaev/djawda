@@ -7,7 +7,7 @@ export function ApproachSection({ home }: { home: HomeContent }) {
   return (
     <section id="approach" data-surface="dark" className="bg-[#0f0f10] py-24 md:py-32">
       <Container>
-        <Reveal>
+        <Reveal from="left">
           <Eyebrow>{home.approachEyebrow}</Eyebrow>
           <h2 className="mt-3 max-w-3xl text-3xl font-medium tracking-tight sm:text-5xl">
             {home.approachTitle}

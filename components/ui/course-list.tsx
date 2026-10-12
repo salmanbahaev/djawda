@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useId, useState } from "react";
 import { CountUp } from "@/components/ui/count-up";
 import { FaqList } from "@/components/ui/faq-list";
+import { Reveal } from "@/components/ui/reveal";
 import { scrollToId } from "@/lib/anchor-scroll";
 import { paragraphs } from "@/lib/cms/text";
 import { courseStatusLabel } from "@/lib/course-status";
@@ -328,18 +329,19 @@ export function CourseList({
 
   return (
     <div className="mt-10 flex flex-col gap-4">
-      {courses.map((course) => (
-        <CourseCard
-          key={course.slug}
-          course={course}
-          expanded={openSlug === course.slug}
-          panelId={`${baseId}-${course.slug}-panel`}
-          buttonId={`${baseId}-${course.slug}-button`}
-          linkLabel={linkLabel}
-          closeLabel={closeLabel}
-          requestLabel={requestLabel}
-          onToggle={() => toggle(course.slug)}
-        />
+      {courses.map((course, index) => (
+        <Reveal key={course.slug} from="right" delay={index * 0.08}>
+          <CourseCard
+            course={course}
+            expanded={openSlug === course.slug}
+            panelId={`${baseId}-${course.slug}-panel`}
+            buttonId={`${baseId}-${course.slug}-button`}
+            linkLabel={linkLabel}
+            closeLabel={closeLabel}
+            requestLabel={requestLabel}
+            onToggle={() => toggle(course.slug)}
+          />
+        </Reveal>
       ))}
     </div>
   );

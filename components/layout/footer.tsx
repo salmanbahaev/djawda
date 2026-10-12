@@ -40,7 +40,7 @@ export function Footer({
             <Mark src={logo} alt={logoAlt} height={52} />
             <span className="flex flex-col leading-none">
               <span className="text-lg font-semibold tracking-wide">{wordmark}</span>
-              <span className="mt-1 text-[0.68rem] tracking-[0.18em] text-white/65">
+              <span className="mt-1 text-[0.68rem] tracking-[0.12em] text-white/65">
                 {wordmarkRu}
               </span>
             </span>

@@ -45,8 +45,9 @@ export default config({
           validation: { isRequired: true },
         }),
         wordmarkRu: fields.text({
-          label: "Словесный знак по-русски",
-          defaultValue: "Джавда",
+          label: "Строка под названием",
+          description: "Мелкая подпись под «Djawda» в шапке и подвале.",
+          defaultValue: "Школа таджвида",
           validation: { isRequired: true },
         }),
         logo: fields.image({

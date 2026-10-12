@@ -6,15 +6,18 @@ export function AudienceSection({ home }: { home: HomeContent }) {
   return (
     <section id="audience" data-surface="light" className="tone-light py-24 md:py-32">
       <Container>
-        <Eyebrow>{home.audienceEyebrow}</Eyebrow>
-        <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">
-          {home.audienceTitle}
-        </h2>
+        <Reveal from="left">
+          <Eyebrow>{home.audienceEyebrow}</Eyebrow>
+          <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">
+            {home.audienceTitle}
+          </h2>
+        </Reveal>
         <div className="mt-10 grid gap-4 md:grid-cols-6">
           {home.audienceItems.map((item, index) => (
             <Reveal
               key={item.title}
-              delay={index * 0.05}
+              from="right"
+              delay={index * 0.08}
               className={
                 index === 0 ? "md:col-span-4" : index === 1 ? "md:col-span-2" : "md:col-span-3"
               }

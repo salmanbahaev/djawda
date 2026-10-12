@@ -42,6 +42,10 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+section {
+  overflow-x: clip;
+}
+
 h1,
 h2 {
   font-family: var(--font-display);
@@ -200,6 +204,7 @@ button:disabled {
   .kinetic-word {
     filter: none !important;
     transform: none !important;
+    opacity: 1 !important;
   }
 
   .status-ping {

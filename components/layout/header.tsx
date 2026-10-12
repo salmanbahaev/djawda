@@ -55,15 +55,15 @@ export function Header(props: HeaderProps) {
       <div className="mx-auto flex h-[4.5rem] w-full max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
         <Link
           href="/#hero"
-          className="flex shrink-0 items-center gap-3"
+          className="flex min-w-0 items-center gap-2.5 sm:gap-3"
           onClick={() => setOpen(false)}
         >
           <Mark src={props.logo} alt={props.logoAlt} height={46} priority tone="flat" />
-          <span className="flex flex-col leading-none">
-            <span className="font-display text-2xl leading-none font-medium tracking-wide">
+          <span className="flex min-w-0 flex-col leading-none">
+            <span className="truncate font-display text-2xl leading-none font-medium tracking-wide">
               {props.wordmark}
             </span>
-            <span className="mt-1 text-[0.68rem] tracking-[0.18em] text-white/70">
+            <span className="mt-1 truncate text-[0.68rem] tracking-[0.12em] text-white/70">
               {props.wordmarkRu}
             </span>
           </span>
