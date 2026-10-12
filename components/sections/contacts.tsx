@@ -10,7 +10,7 @@ export function ContactsSection({
   settings: SettingsContent;
 }) {
   return (
-    <section id="contacts" className="scroll-mt-20 bg-[#222225] py-24 md:py-32">
+    <section id="contacts" data-surface="light" className="tone-light scroll-mt-20 py-24 md:py-32">
       <Container>
         <Eyebrow>{home.contactsEyebrow}</Eyebrow>
         <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">
@@ -26,8 +26,9 @@ export function ContactsSection({
             instagramLabel={settings.instagramLabel}
             address={settings.address}
             mapUrl={settings.mapUrl || ""}
-            mapImage={settings.mapImage}
-            mapImageAlt={settings.mapImageAlt || ""}
+            mapLatitude={settings.mapLatitude}
+            mapLongitude={settings.mapLongitude}
+            mapZoom={settings.mapZoom}
             mapEmbedUrl={settings.mapEmbedUrl || ""}
             routeUrl={settings.routeUrl || ""}
             routeLabel={settings.routeLabel}

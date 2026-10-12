@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useMotionValue, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Mark } from "@/components/ui/mark";
@@ -23,22 +23,7 @@ export function Header(props: HeaderProps) {
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const progress = useMotionValue(0);
   const links = props.nav.map((item) => ({ ...item, href: siteHref(item.href) }));
-
-  useEffect(() => {
-    function onScroll() {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      progress.set(max > 0 ? window.scrollY / max : 0);
-    }
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [progress]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -151,11 +136,6 @@ export function Header(props: HeaderProps) {
           </motion.nav>
         ) : null}
       </AnimatePresence>
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left bg-[#d6d6db]"
-        style={{ scaleX: progress }}
-      />
     </header>
   );
 }

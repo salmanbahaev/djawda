@@ -4,7 +4,7 @@ import type { HomeContent } from "@/lib/cms/content";
 
 export function AudienceSection({ home }: { home: HomeContent }) {
   return (
-    <section id="audience" className="scroll-mt-20 bg-[#222225] py-24 md:py-32">
+    <section id="audience" data-surface="light" className="tone-light scroll-mt-20 py-24 md:py-32">
       <Container>
         <Eyebrow>{home.audienceEyebrow}</Eyebrow>
         <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">
@@ -19,7 +19,7 @@ export function AudienceSection({ home }: { home: HomeContent }) {
                 index === 0 ? "md:col-span-4" : index === 1 ? "md:col-span-2" : "md:col-span-3"
               }
             >
-              <article className="h-full rounded-3xl border border-line bg-[#18181a] p-6 transition duration-300 hover:-translate-y-1 hover:border-white/25">
+              <article className="h-full rounded-3xl border border-line bg-white p-6 shadow-[0_1px_2px_rgba(23,23,26,0.04)] transition duration-300 hover:-translate-y-1 hover:border-[#b0b0ab]">
                 <p className="text-xs font-semibold tracking-[0.18em] text-gold">
                   {String(index + 1).padStart(2, "0")}
                 </p>

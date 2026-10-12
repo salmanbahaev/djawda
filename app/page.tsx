@@ -10,6 +10,7 @@ import { LeadSection } from "@/components/sections/lead";
 import { TeachersSection } from "@/components/sections/teachers";
 import { Marquee } from "@/components/ui/marquee";
 import { getAbout, getCourses, getFormCopy, getHome, getSettings } from "@/lib/cms/content";
+import { readMapPoint } from "@/lib/maps";
 
 export async function generateMetadata(): Promise<Metadata> {
   const home = await getHome();
@@ -34,6 +35,7 @@ export default async function HomePage() {
     getFormCopy(),
   ]);
 
+  const point = readMapPoint(settings.mapLatitude, settings.mapLongitude, settings.mapZoom);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
@@ -48,6 +50,15 @@ export default async function HomePage() {
       addressLocality: "Грозный",
       addressCountry: "RU",
     },
+    ...(point
+      ? {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: point.latitude,
+            longitude: point.longitude,
+          },
+        }
+      : {}),
   };
 
   return (

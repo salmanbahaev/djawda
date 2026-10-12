@@ -4,6 +4,7 @@ import { ReaderRefresh } from "@keystatic/next/reader-refresh";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { MotionProvider } from "@/components/layout/motion-provider";
+import { SectionProgress } from "@/components/ui/section-progress";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
 import { getFooter, getSettings, reader } from "@/lib/cms/content";
 import "./globals.css";
@@ -69,6 +70,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             nav={settings.nav}
             navCta={settings.navCta}
           />
+          <SectionProgress />
           <main>{children}</main>
           <Footer
             logo={settings.logo}

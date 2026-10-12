@@ -86,22 +86,42 @@ export default config({
         }),
         address: fields.text({ label: "Адрес", validation: { isRequired: true } }),
         mapUrl: fields.url({ label: "Ссылка на карту 2ГИС", validation: { isRequired: true } }),
-        mapImage: fields.image({
-          label: "Снимок карты 2ГИС",
+        mapLatitude: fields.text({
+          label: "Широта",
           description:
-            "Картинка в блоке контактов. Клик открывает ту же точку в 2ГИС. Виджет firmsonmap для geo-id из ТЗ отдаёт ошибку, поэтому на сайте снимок.",
+            "Десятичные градусы дома на Яндекс Картах, например 43.332611. Из них собираются виджет и кнопка маршрута.",
+          defaultValue: "43.332611",
+          validation: { isRequired: true },
+        }),
+        mapLongitude: fields.text({
+          label: "Долгота",
+          description: "Десятичные градусы, например 45.685504.",
+          defaultValue: "45.685504",
+          validation: { isRequired: true },
+        }),
+        mapZoom: fields.text({
+          label: "Масштаб карты",
+          description: "Около 17: видны улица и соседние дома.",
+          defaultValue: "17",
+          validation: { isRequired: true },
+        }),
+        mapImage: fields.image({
+          label: "Снимок карты",
+          description:
+            "На сайте не показывается. Карта в контактах — виджет Яндекса по широте и долготе.",
           directory: "public/images",
           publicPath: "/images/",
         }),
         mapImageAlt: fields.text({ label: "Подпись карты" }),
         mapEmbedUrl: fields.url({
-          label: "Запасная ссылка iframe",
-          description:
-            "Используется, только если снимка нет. Конструктор 2ГИС можно подставить сюда, когда выдаст рабочий виджет.",
+          label: "Запасная ссылка виджета",
+          description: "Используется, только если широта или долгота не читаются как координаты.",
           validation: { isRequired: true },
         }),
         routeUrl: fields.url({
-          label: "Ссылка «Построить маршрут»",
+          label: "Запасная ссылка маршрута",
+          description:
+            "Используется, только если координаты не заданы. Иначе маршрут строится в Яндексе.",
           validation: { isRequired: true },
         }),
         routeLabel: fields.text({

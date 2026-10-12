@@ -5,7 +5,7 @@ import { paragraphs } from "@/lib/cms/text";
 export function TeachersSection({ home, about }: { home: HomeContent; about: AboutContent }) {
   return (
     <section id="teachers" className="scroll-mt-20">
-      <div className="bg-[#0f0f10] py-24 text-white md:py-32">
+      <div data-surface="dark" className="bg-[#0f0f10] py-24 text-white md:py-32">
         <Container>
           <Eyebrow light>{home.teachersEyebrow}</Eyebrow>
           <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">
@@ -31,7 +31,7 @@ export function TeachersSection({ home, about }: { home: HomeContent; about: Abo
           </div>
         </Container>
       </div>
-      <div className="bg-[#222225] py-24 md:py-32">
+      <div data-surface="light" className="tone-light py-24 md:py-32">
         <Container>
           <Eyebrow>{about.eyebrow}</Eyebrow>
           <h2 className="mt-3 max-w-3xl text-3xl font-medium tracking-tight sm:text-5xl">
@@ -48,7 +48,7 @@ export function TeachersSection({ home, about }: { home: HomeContent; about: Abo
             {about.principles.map((item) => (
               <li
                 key={item.title}
-                className="rounded-3xl border border-line bg-paper p-5 transition duration-300 hover:-translate-y-1 hover:border-gold/40"
+                className="rounded-3xl border border-line bg-white p-5 shadow-[0_1px_2px_rgba(23,23,26,0.04)] transition duration-300 hover:-translate-y-1 hover:border-[#b0b0ab]"
               >
                 <h4 className="text-lg font-medium">{item.title}</h4>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>

@@ -1,5 +1,6 @@
 "use client";
 
+import * as Select from "@radix-ui/react-select";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { COURSE_SELECT_EVENT } from "@/lib/forms/course-event";
@@ -27,12 +28,12 @@ export type LeadFormCopy = {
 type CourseOption = { slug: string; title: string };
 
 const controlClass =
-  "field-control w-full rounded-2xl border border-[#3c3c42] bg-[#141416] px-4 py-3.5 text-base text-[#f4f4f5] outline-none transition duration-200 placeholder:text-transparent focus:border-[#d6d6db] focus:placeholder:text-[#8d8d93]";
+  "field-control w-full rounded-2xl border border-[#cfcfca] bg-[#f7f7f6] px-4 py-3.5 text-base text-[#17171a] outline-none transition duration-200 placeholder:text-transparent focus:border-[#17171a] focus:placeholder:text-[#6d6d73]";
 
 const labelBase =
   "float-label pointer-events-none absolute left-4 z-10 max-w-[calc(100%-2.75rem)] origin-left truncate transition-all duration-200 ease-out";
 
-const peerLabel = `${labelBase} top-1/2 -translate-y-1/2 text-base text-[#b4b4ba] peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:bg-[#2a2a2e] peer-focus:px-1 peer-focus:text-xs peer-focus:font-medium peer-focus:text-[#f4f4f5] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:bg-[#2a2a2e] peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:font-medium peer-[:not(:placeholder-shown)]:text-[#f4f4f5]`;
+const peerLabel = `${labelBase} top-1/2 -translate-y-1/2 text-base text-[#5c5c62] peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:bg-white peer-focus:px-1 peer-focus:text-xs peer-focus:font-medium peer-focus:text-[#17171a] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:font-medium peer-[:not(:placeholder-shown)]:text-[#17171a]`;
 
 export function LeadForm({
   copy,
@@ -108,16 +109,16 @@ export function LeadForm({
   if (status === "success") {
     return (
       <div
-        className="rounded-3xl border border-[#3c3c42] bg-[#2a2a2e] p-6 text-[#f4f4f5] sm:p-8"
+        className="rounded-3xl border border-[#d8d8d4] bg-white p-6 text-[#17171a] shadow-[0_1px_2px_rgba(23,23,26,0.04)] sm:p-8"
         role="status"
       >
         <h3 className="text-2xl font-medium tracking-tight">{copy.successTitle}</h3>
-        <p className="mt-3 leading-relaxed text-[#c8c8ce]">{message}</p>
+        <p className="mt-3 leading-relaxed text-[#3f3f46]">{message}</p>
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noreferrer"
-          className="mt-6 inline-flex rounded-full bg-[#f4f4f5] px-5 py-3 text-sm font-medium text-[#141416] transition duration-200 hover:bg-white"
+          className="mt-6 inline-flex rounded-full bg-[#17171a] px-5 py-3 text-sm font-medium text-[#f5f5f4] transition duration-200 hover:bg-[#2c2c30]"
         >
           {copy.whatsappCta}
         </a>
@@ -129,7 +130,7 @@ export function LeadForm({
     <form
       id={id}
       onSubmit={onSubmit}
-      className="relative rounded-3xl border border-[#3c3c42] bg-[#2a2a2e] p-6 text-[#f4f4f5] scheme-dark sm:p-8"
+      className="relative rounded-3xl border border-[#d8d8d4] bg-white p-6 text-[#17171a] shadow-[0_1px_2px_rgba(23,23,26,0.04)] scheme-light sm:p-8"
       noValidate
     >
       <div className="grid gap-5">
@@ -178,27 +179,27 @@ export function LeadForm({
             <input
               id={`${id}-consent`}
               type="checkbox"
-              className="field-control mt-1 h-4 w-4 accent-[#f4f4f5]"
+              className="field-control mt-1 h-4 w-4 accent-[#17171a]"
               checked={consent}
               onChange={(event) => setConsent(event.target.checked)}
               required
               aria-invalid={fieldErrors.consent ? true : undefined}
               aria-describedby={fieldErrors.consent ? `${id}-consent-error` : undefined}
             />
-            <label htmlFor={`${id}-consent`} className="text-sm leading-relaxed text-[#f4f4f5]">
+            <label htmlFor={`${id}-consent`} className="text-sm leading-relaxed text-[#17171a]">
               {copy.consentLabel}
             </label>
           </div>
           <p className="mt-2 pl-7 text-sm">
             <Link
               href="/privacy"
-              className="font-medium text-[#f4f4f5] underline decoration-white/35 underline-offset-4"
+              className="font-medium text-[#17171a] underline decoration-[#17171a]/30 underline-offset-4"
             >
               {copy.privacyLinkLabel}
             </Link>
           </p>
           {fieldErrors.consent ? (
-            <p id={`${id}-consent-error`} className="mt-2 text-sm font-medium text-red-300">
+            <p id={`${id}-consent-error`} className="mt-2 text-sm font-medium text-red-700">
               {fieldErrors.consent}
             </p>
           ) : null}
@@ -215,7 +216,7 @@ export function LeadForm({
           </label>
         </div>
         {status === "error" ? (
-          <p role="alert" className="text-sm font-medium text-red-300">
+          <p role="alert" className="text-sm font-medium text-red-700">
             {message}
           </p>
         ) : null}
@@ -223,7 +224,7 @@ export function LeadForm({
           <button
             type="submit"
             disabled={status === "sending"}
-            className="rounded-full bg-[#f4f4f5] px-5 py-3 text-sm font-medium text-[#141416] transition duration-200 hover:bg-white disabled:opacity-60"
+            className="rounded-full bg-[#17171a] px-5 py-3 text-sm font-medium text-[#f5f5f4] transition duration-200 hover:bg-[#2c2c30] disabled:opacity-60"
           >
             {status === "sending" ? copy.submittingLabel : copy.submitLabel}
           </button>
@@ -231,12 +232,12 @@ export function LeadForm({
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border border-white/30 px-5 py-3 text-center text-sm font-medium text-[#f4f4f5] transition duration-200 hover:border-white/70"
+            className="rounded-full border border-[#17171a]/25 px-5 py-3 text-center text-sm font-medium text-[#17171a] transition duration-200 hover:border-[#17171a]/60"
           >
             {copy.whatsappCta}
           </a>
         </div>
-        <p className="text-sm text-[#b4b4ba]">{copy.hint}</p>
+        <p className="text-sm text-[#3f3f46]">{copy.hint}</p>
       </div>
     </form>
   );
@@ -261,7 +262,7 @@ function TextField({
           placeholder=" "
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-error` : undefined}
-          className={`${controlClass} peer ${error ? "border-red-400" : ""}`}
+          className={`${controlClass} peer ${error ? "border-red-700" : ""}`}
           {...props}
         />
         <label htmlFor={id} className={peerLabel}>
@@ -269,7 +270,7 @@ function TextField({
         </label>
       </div>
       {error ? (
-        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-300">
+        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-700">
           {error}
         </p>
       ) : null}
@@ -296,55 +297,94 @@ function SelectField({
   placeholder: string;
   options: { value: string; label: string }[];
 }) {
-  const [focused, setFocused] = useState(false);
-  const floated = focused || value !== "";
+  const [open, setOpen] = useState(false);
+  const floated = open || value !== "";
 
   return (
     <div>
-      <div className="relative">
-        <select
-          id={id}
-          name={name}
-          required
-          value={value}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={error ? `${id}-error` : undefined}
-          onChange={(event) => onChange(event.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          className={`${controlClass} appearance-none pr-12 ${error ? "border-red-400" : ""}`}
-        >
-          <option value="">{floated ? placeholder : "\u00a0"}</option>
-          {options.map((item) => (
-            <option key={item.value} value={item.value}>
-              {item.label}
-            </option>
-          ))}
-        </select>
-        <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[#d6d6db]">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
-            <path
-              d="M5 7.5 10 12.5 15 7.5"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+      <Select.Root
+        name={name}
+        value={value}
+        onValueChange={onChange}
+        open={open}
+        onOpenChange={setOpen}
+      >
+        <div className="relative">
+          <Select.Trigger
+            id={id}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? `${id}-error` : undefined}
+            className={`${controlClass} flex items-center justify-between gap-3 pr-4 text-left ${
+              error ? "border-red-700" : ""
+            }`}
+          >
+            <Select.Value
+              placeholder={floated ? placeholder : "\u00a0"}
+              className={floated && value === "" ? "text-[#6d6d73]" : undefined}
             />
-          </svg>
-        </span>
-        <label
-          htmlFor={id}
-          className={`${labelBase} ${
-            floated
-              ? "top-0 -translate-y-1/2 bg-[#2a2a2e] px-1 text-xs font-medium text-[#f4f4f5]"
-              : "top-1/2 -translate-y-1/2 text-base text-[#b4b4ba]"
-          }`}
-        >
-          {label}
-        </label>
-      </div>
+            <Select.Icon
+              className={`shrink-0 text-[#3f3f46] transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+            >
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
+                <path
+                  d="M5 7.5 10 12.5 15 7.5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Select.Icon>
+          </Select.Trigger>
+          <label
+            htmlFor={id}
+            className={`${labelBase} ${
+              floated
+                ? "top-0 -translate-y-1/2 bg-white px-1 text-xs font-medium text-[#17171a]"
+                : "top-1/2 -translate-y-1/2 text-base text-[#5c5c62]"
+            }`}
+          >
+            {label}
+          </label>
+        </div>
+        <Select.Portal>
+          <Select.Content
+            position="popper"
+            side="bottom"
+            align="start"
+            sideOffset={8}
+            collisionPadding={12}
+            className="select-popover z-[60] w-[var(--radix-select-trigger-width)]"
+          >
+            <div className="select-popover-panel overflow-hidden rounded-2xl border border-[#d8d8d4] bg-white text-[#17171a] shadow-[0_18px_40px_-24px_rgba(23,23,26,0.45)]">
+              <Select.Viewport className="max-h-[min(18rem,var(--radix-select-content-available-height))] overflow-y-auto p-1.5">
+                {options.map((item) => (
+                  <Select.Item
+                    key={item.value}
+                    value={item.value}
+                    className="relative flex cursor-pointer items-center rounded-xl py-2.5 pr-3 pl-9 text-sm outline-none data-[highlighted]:bg-[#f0f0ee] data-[state=checked]:font-medium"
+                  >
+                    <Select.ItemIndicator className="absolute left-3 inline-flex text-[#17171a]">
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+                        <path
+                          d="M3.5 8.2 6.4 11.1 12.5 4.8"
+                          stroke="currentColor"
+                          strokeWidth="1.7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </Select.ItemIndicator>
+                    <Select.ItemText>{item.label}</Select.ItemText>
+                  </Select.Item>
+                ))}
+              </Select.Viewport>
+            </div>
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
       {error ? (
-        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-300">
+        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-700">
           {error}
         </p>
       ) : null}

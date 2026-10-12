@@ -1,6 +1,6 @@
-import Image from "next/image";
+import { readMapPoint, yandexMapWidgetUrl, yandexRouteUrl } from "@/lib/maps";
 
-const mapFrameTitle = "Карта 2ГИС: школа Djawda, улица Нурсултана Назарбаева, 23А";
+const mapFrameTitle = "Яндекс Карта: школа Djawda, улица Нурсултана Назарбаева, 23А";
 
 export function ContactPanel({
   phone,
@@ -11,8 +11,9 @@ export function ContactPanel({
   instagramLabel,
   address,
   mapUrl,
-  mapImage,
-  mapImageAlt,
+  mapLatitude,
+  mapLongitude,
+  mapZoom,
   mapEmbedUrl,
   routeUrl,
   routeLabel,
@@ -27,14 +28,19 @@ export function ContactPanel({
   instagramLabel: string;
   address: string;
   mapUrl: string;
-  mapImage: string | null;
-  mapImageAlt: string;
+  mapLatitude: string;
+  mapLongitude: string;
+  mapZoom: string;
   mapEmbedUrl: string;
   routeUrl: string;
   routeLabel: string;
   mapLinkLabel: string;
   lead?: string;
 }) {
+  const point = readMapPoint(mapLatitude, mapLongitude, mapZoom);
+  const iframeSrc = point ? yandexMapWidgetUrl(point) : mapEmbedUrl;
+  const routeHref = point ? yandexRouteUrl(point) : routeUrl;
+
   return (
     <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
       <div>
@@ -42,7 +48,7 @@ export function ContactPanel({
         <ul className={`${lead ? "mt-6" : ""} space-y-3 text-base`}>
           <li>
             <a
-              className="font-medium text-[#f4f4f5] underline decoration-white/40 underline-offset-4"
+              className="font-medium text-ink underline decoration-[#17171a]/30 underline-offset-4"
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
@@ -74,8 +80,8 @@ export function ContactPanel({
         </ul>
         <div className="mt-6 flex flex-wrap gap-3">
           <a
-            href={routeUrl}
-            className="rounded-full bg-[#f4f4f5] px-5 py-3 text-sm font-medium text-[#141416]"
+            href={routeHref}
+            className="rounded-full bg-[#17171a] px-5 py-3 text-sm font-medium text-[#f5f5f4]"
             target="_blank"
             rel="noreferrer"
           >
@@ -83,7 +89,7 @@ export function ContactPanel({
           </a>
           <a
             href={mapUrl}
-            className="rounded-full border border-white/25 px-5 py-3 text-sm font-medium text-[#f4f4f5]"
+            className="rounded-full border border-[#17171a]/20 px-5 py-3 text-sm font-medium text-[#17171a]"
             target="_blank"
             rel="noreferrer"
           >
@@ -91,27 +97,14 @@ export function ContactPanel({
           </a>
         </div>
       </div>
-      <div className="overflow-hidden rounded-3xl border border-line bg-[#18181a]">
-        {mapImage ? (
-          <a href={mapUrl} target="_blank" rel="noreferrer" className="block">
-            <Image
-              src={mapImage}
-              alt={mapImageAlt || mapFrameTitle}
-              width={1200}
-              height={800}
-              className="h-auto w-full"
-              sizes="(min-width: 1024px) 640px, 100vw"
-            />
-          </a>
-        ) : (
-          <iframe
-            title={mapFrameTitle}
-            src={mapEmbedUrl}
-            className="h-80 w-full md:h-[420px]"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        )}
+      <div className="overflow-hidden rounded-3xl border border-line bg-white shadow-[0_1px_2px_rgba(23,23,26,0.04)]">
+        <iframe
+          title={mapFrameTitle}
+          src={iframeSrc}
+          className="h-80 w-full border-0 md:h-[420px]"
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
       </div>
     </div>
   );

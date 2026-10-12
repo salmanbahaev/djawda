@@ -7,7 +7,11 @@ import Link from "next/link";
 
 export function HeroSection({ home, settings }: { home: HomeContent; settings: SettingsContent }) {
   return (
-    <section id="hero" className="relative scroll-mt-20 overflow-hidden bg-[#070708] text-white">
+    <section
+      id="hero"
+      data-surface="dark"
+      className="relative scroll-mt-20 overflow-hidden bg-[#070708] text-white"
+    >
       <SilkBackground />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_45%,transparent_0%,rgba(0,0,0,0.28)_55%,rgba(0,0,0,0.62)_100%)]" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/55" />
