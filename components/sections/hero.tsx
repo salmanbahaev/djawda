@@ -16,7 +16,7 @@ export function HeroSection({ home, settings }: { home: HomeContent; settings: S
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_45%,transparent_0%,rgba(0,0,0,0.28)_55%,rgba(0,0,0,0.62)_100%)]" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/55" />
       <Container className="relative z-10 flex min-h-[calc(100svh-4.5rem)] items-center py-20 lg:py-24">
-        <div className="grid w-full items-center md:grid-cols-[minmax(0,auto)_1fr] md:gap-x-8 lg:gap-x-12 xl:gap-x-16">
+        <div className="grid w-full items-center md:grid-cols-[minmax(0,auto)_1fr]">
           <Mark
             src={settings.logo}
             alt={settings.logoAlt || ""}
