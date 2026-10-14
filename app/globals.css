@@ -173,28 +173,12 @@ button:disabled {
 }
 
 .path-section {
-  position: relative;
-  isolation: isolate;
   background-color: #0f0f10;
   background-image: radial-gradient(
     ellipse 70% 48% at 50% 0%,
     rgba(15, 47, 58, 0.5),
     transparent 70%
   );
-}
-
-.path-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 80px 80px;
-  -webkit-mask-image: radial-gradient(ellipse 72% 68% at 50% 42%, #000 18%, transparent 74%);
-  mask-image: radial-gradient(ellipse 72% 68% at 50% 42%, #000 18%, transparent 74%);
 }
 
 .tone-light {

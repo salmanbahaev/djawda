@@ -7,7 +7,7 @@ function Arrow() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-4 w-4"
+      className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.5"
@@ -36,22 +36,24 @@ export function AudienceSection({
             {home.audienceTitle}
           </h2>
         </Reveal>
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
+        <ol className="mt-10 border-t border-line">
           {home.audienceItems.map((item, index) => {
             const slug = item.courseSlug?.trim() ?? "";
             const courseTitle = titles.get(slug);
             const linked = Boolean(slug && courseTitle);
             const body = (
               <>
-                <p className="text-xs font-semibold tracking-[0.18em] text-accent-faint">
-                  {String(index + 1).padStart(2, "0")}
-                </p>
-                <h3 className="mt-4 text-2xl font-medium tracking-tight">{item.title}</h3>
-                <p className="mt-3 mb-6 leading-relaxed text-muted">{item.text}</p>
+                <span>
+                  <span className="text-xs font-semibold tracking-[0.18em] text-accent-faint">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-2 text-2xl font-medium tracking-tight">{item.title}</h3>
+                  <p className="mt-2 max-w-xl leading-relaxed text-muted">{item.text}</p>
+                </span>
                 {linked ? (
-                  <span className="mt-auto border-t border-line pt-4 text-sm font-medium text-accent">
+                  <span className="text-sm font-medium text-accent lg:text-right">
                     <span className="block">{courseTitle}</span>
-                    <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.14em] uppercase">
+                    <span className="mt-1 inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.14em] uppercase">
                       {home.audienceLinkLabel}
                       <Arrow />
                     </span>
@@ -60,24 +62,26 @@ export function AudienceSection({
               </>
             );
             const className =
-              "flex h-full flex-col rounded-3xl border border-line bg-white p-6 shadow-[0_1px_2px_rgba(23,23,26,0.04)] motion-reduce:transition-none";
+              "grid gap-4 py-7 transition-colors duration-200 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-center lg:gap-10 lg:py-8";
 
             return (
-              <Reveal key={item.title} from="right" delay={index * 0.06} className="h-full">
-                {linked ? (
-                  <a
-                    href={`#${courseDomId(slug)}`}
-                    className={`${className} transition duration-300 hover:-translate-y-1 hover:border-accent/40 motion-reduce:hover:translate-y-0`}
-                  >
-                    {body}
-                  </a>
-                ) : (
-                  <article className={className}>{body}</article>
-                )}
-              </Reveal>
+              <li key={item.title} className="border-b border-line">
+                <Reveal from="right" delay={index * 0.05}>
+                  {linked ? (
+                    <a
+                      href={`#${courseDomId(slug)}`}
+                      className={`group ${className} hover:bg-[#fffdf8]`}
+                    >
+                      {body}
+                    </a>
+                  ) : (
+                    <article className={className}>{body}</article>
+                  )}
+                </Reveal>
+              </li>
             );
           })}
-        </div>
+        </ol>
       </Container>
     </section>
   );

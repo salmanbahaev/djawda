@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useId, useMemo, useState, type KeyboardEvent } from "react";
+import { useEffect, useId, useMemo, useState, type KeyboardEvent } from "react";
 
 type FaqItem = { question: string; answer: string; draft?: boolean; topic?: string | null };
 
@@ -28,6 +28,15 @@ export function FaqList({ items }: { items: readonly FaqItem[] }) {
   const baseId = useId();
   const active = groups[topicIndex] ?? groups[0];
   const showTabs = groups.length > 1;
+  const [vertical, setVertical] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 768px)");
+    const apply = () => setVertical(media.matches);
+    apply();
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
+  }, []);
 
   function selectTopic(index: number) {
     setTopicIndex(index);
@@ -37,9 +46,11 @@ export function FaqList({ items }: { items: readonly FaqItem[] }) {
   function onTabKey(event: KeyboardEvent<HTMLDivElement>) {
     const max = groups.length - 1;
     let next = topicIndex;
-    if (event.key === "ArrowRight") next = topicIndex === max ? 0 : topicIndex + 1;
-    else if (event.key === "ArrowLeft") next = topicIndex === 0 ? max : topicIndex - 1;
-    else if (event.key === "Home") next = 0;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      next = topicIndex === max ? 0 : topicIndex + 1;
+    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      next = topicIndex === 0 ? max : topicIndex - 1;
+    } else if (event.key === "Home") next = 0;
     else if (event.key === "End") next = max;
     else return;
     event.preventDefault();
@@ -50,12 +61,15 @@ export function FaqList({ items }: { items: readonly FaqItem[] }) {
   if (!active) return null;
 
   return (
-    <div>
+    <div
+      className={showTabs ? "md:grid md:grid-cols-[12rem_minmax(0,1fr)] md:gap-x-12" : undefined}
+    >
       {showTabs ? (
         <div
           role="tablist"
           aria-label="Темы вопросов"
-          className="flex flex-wrap gap-2"
+          aria-orientation={vertical ? "vertical" : "horizontal"}
+          className="flex gap-6 border-b border-line md:flex-col md:gap-0 md:border-r md:border-b-0 md:pr-6"
           onKeyDown={onTabKey}
         >
           {groups.map((group, index) => {
@@ -69,10 +83,10 @@ export function FaqList({ items }: { items: readonly FaqItem[] }) {
                 aria-selected={selected}
                 aria-controls={`${baseId}-panel`}
                 tabIndex={selected ? 0 : -1}
-                className={`cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                className={`cursor-pointer border-b-2 py-3 text-left text-base transition-colors duration-200 md:border-b-0 md:border-l-2 md:px-4 ${
                   selected
-                    ? "bg-accent text-[var(--paper)]"
-                    : "border border-line bg-white text-accent hover:border-accent/40"
+                    ? "border-accent font-medium text-accent"
+                    : "border-transparent text-muted hover:text-accent"
                 }`}
                 onClick={() => selectTopic(index)}
               >
@@ -86,7 +100,7 @@ export function FaqList({ items }: { items: readonly FaqItem[] }) {
         id={`${baseId}-panel`}
         role={showTabs ? "tabpanel" : undefined}
         aria-labelledby={showTabs ? `${baseId}-tab-${topicIndex}` : undefined}
-        className={showTabs ? "mt-4" : undefined}
+        className={showTabs ? "pt-2 md:pt-0" : undefined}
       >
         <div className="divide-y divide-line border-y border-line">
           {active.items.map((item, index) => {

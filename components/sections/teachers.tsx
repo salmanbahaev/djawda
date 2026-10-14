@@ -17,40 +17,56 @@ export function TeachersSection({ home, about }: { home: HomeContent; about: Abo
               <p className="mt-5 max-w-2xl text-muted">{home.teachersLead}</p>
             ) : null}
           </Reveal>
-          <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-16">
-            {about.teachers.map((teacher, index) => (
-              <Reveal key={teacher.name} from="right" delay={index * 0.08}>
-                <article>
-                  <p className="text-xs font-semibold tracking-[0.18em] text-accent-faint">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <h3 className="mt-2 text-2xl font-medium tracking-tight">{teacher.name}</h3>
-                  <ol className="mt-6">
-                    {teacher.lines.map((line, lineIndex) => {
-                      const last = lineIndex === teacher.lines.length - 1;
-                      return (
-                        <li key={line} className="relative pb-7 pl-8 last:pb-0">
-                          {last ? null : (
+          <ol className="mt-14 max-w-3xl">
+            {about.teachers.map((teacher, teacherIndex) => {
+              const lastTeacher = teacherIndex === about.teachers.length - 1;
+              return (
+                <li key={teacher.name}>
+                  <Reveal from="right" delay={teacherIndex * 0.06}>
+                    <h3 className="relative pb-6 pl-10 text-2xl font-medium tracking-tight">
+                      <span
+                        aria-hidden
+                        className="absolute top-2.5 left-0 z-10 h-3.5 w-3.5 rounded-full border border-accent bg-accent"
+                      />
+                      {teacher.lines.length > 0 || !lastTeacher ? (
+                        <span
+                          aria-hidden
+                          className={`absolute bottom-0 left-[6.5px] w-px bg-accent/25 ${
+                            teacherIndex === 0 ? "top-5" : "top-0"
+                          }`}
+                        />
+                      ) : null}
+                      {teacher.name}
+                    </h3>
+                    <ol>
+                      {teacher.lines.map((line, lineIndex) => {
+                        const lastLine = lineIndex === teacher.lines.length - 1;
+                        const terminal = lastTeacher && lastLine;
+                        return (
+                          <li
+                            key={line}
+                            className={`relative pl-10 ${terminal ? "" : lastLine ? "pb-14" : "pb-7"}`}
+                          >
+                            {terminal ? null : (
+                              <span
+                                aria-hidden
+                                className="absolute top-0 bottom-0 left-[6.5px] w-px bg-accent/25"
+                              />
+                            )}
                             <span
                               aria-hidden
-                              className="absolute top-3 -bottom-3 left-2 w-px -translate-x-1/2 bg-accent/25"
+                              className="absolute top-1.5 left-[3px] z-10 h-2 w-2 rounded-full bg-[#f5f5f4] ring-1 ring-accent"
                             />
-                          )}
-                          <span
-                            aria-hidden
-                            className={`absolute top-1 left-0 h-4 w-4 rounded-full border border-accent ${
-                              last ? "bg-accent" : "bg-white"
-                            }`}
-                          />
-                          <p className="text-sm leading-relaxed text-muted">{line}</p>
-                        </li>
-                      );
-                    })}
-                  </ol>
-                </article>
-              </Reveal>
-            ))}
-          </div>
+                            <p className="text-sm leading-relaxed text-muted">{line}</p>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </Reveal>
+                </li>
+              );
+            })}
+          </ol>
         </Container>
       </div>
       <div data-surface="light" className="tone-light surface-3 py-24 md:py-32">
@@ -70,10 +86,10 @@ export function TeachersSection({ home, about }: { home: HomeContent; about: Abo
             </div>
             <h3 className="mt-12 text-2xl font-medium tracking-tight">{about.principlesTitle}</h3>
           </Reveal>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="mt-8 border-t border-line md:grid md:grid-cols-3">
             {about.principles.map((item, index) => (
-              <Reveal key={item.title} from="right" delay={index * 0.08}>
-                <article className="h-full rounded-3xl border border-line bg-white p-5 shadow-[0_1px_2px_rgba(23,23,26,0.04)] transition duration-300 hover:-translate-y-1 hover:border-[#b0b0ab]">
+              <Reveal key={item.title} from="right" delay={index * 0.06}>
+                <article className="border-b border-line py-6 md:border-b-0 md:border-l md:px-8 md:py-2 md:first:border-l-0 md:first:pl-0">
                   <h4 className="text-lg font-medium">{item.title}</h4>
                   <p className="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
                 </article>
