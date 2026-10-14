@@ -13,8 +13,29 @@
   --color-paper-2: #2a2a2e;
   --color-line: #3c3c42;
   --color-silver: #e6e6ea;
-  --color-gold: #c8c8ce;
-  --color-gold-2: #d6d6db;
+}
+
+/*
+  Brand palette. --ink / --paper / --accent are fixed.
+  --color-ink and --color-paper stay adaptive text and surface colors.
+*/
+:root {
+  --ink: #0f0f10;
+  --paper: #f5efe4;
+  --paper-raised: #fffdf8;
+  --accent: #0f2f3a;
+  --accent-hover: #0a242c;
+  --accent-muted: #3d5c6c;
+  --accent-soft: #d7e4ea;
+  --accent-faint: #9eb4c2;
+}
+
+@theme inline {
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-muted: var(--accent-muted);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-faint: var(--accent-faint);
 }
 
 html {
@@ -28,6 +49,7 @@ html {
 #courses,
 #teachers,
 #formats,
+#classroom,
 #faq,
 #contacts,
 #lead,
@@ -94,7 +116,7 @@ button:disabled {
 }
 
 :focus-visible {
-  outline: 2px solid #d6d6db;
+  outline: 2px solid var(--accent-faint);
   outline-offset: 3px;
 }
 
@@ -125,9 +147,8 @@ button:disabled {
   --color-paper: #ffffff;
   --color-paper-2: #f4f4f2;
   --color-line: #d8d8d4;
-  --color-gold: #3a3a40;
-  --color-gold-2: #3a3a40;
   --color-silver: #3a3a40;
+  --accent-faint: #3d5c6c;
   background-color: #f5f5f4;
   color: #17171a;
 }
@@ -145,16 +166,39 @@ button:disabled {
   color: #17171a;
 }
 
-.tone-light :focus-visible {
-  outline-color: #17171a;
+.catalog-cream {
+  --color-ink: var(--accent);
+  --color-muted: var(--accent-muted);
+  --accent-faint: var(--accent-muted);
+  --color-line: #e4d7c6;
+  background-color: var(--paper);
+  color: var(--accent);
 }
 
-.course-glare {
-  background: radial-gradient(
-    420px circle at var(--gx, 50%) var(--gy, 18%),
-    rgba(255, 255, 255, 0.14),
-    transparent 42%
-  );
+.catalog-cream ::selection,
+.course-drawer ::selection {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.catalog-cta {
+  background-color: var(--accent);
+  color: var(--paper);
+  transition: background-color 200ms ease;
+}
+
+.catalog-cta:hover {
+  background-color: var(--accent-hover);
+}
+
+.tone-light :focus-visible,
+.catalog-cream :focus-visible,
+.course-drawer :focus-visible {
+  outline-color: var(--accent);
+}
+
+html[data-scroll-lock] {
+  overflow: hidden;
 }
 
 .rail-tip {
@@ -204,8 +248,115 @@ button:disabled {
 
 .field-control:focus-visible,
 .pill:has(:focus-visible) {
-  outline: 2px solid #d6d6db;
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* Classroom: warmer slate behind the photos, deep at the edges. Static paint only. */
+.classroom-section {
+  position: relative;
+  background-color: #081820;
+  background-image: radial-gradient(
+    ellipse 64% 78% at 74% 46%,
+    #4d636e 0%,
+    #1c4452 36%,
+    #0f2f3a 66%,
+    #081820 100%
+  );
+}
+
+.classroom-section::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(245, 239, 228, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 239, 228, 0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 72% 70% at 74% 46%, #000 12%, transparent 70%);
+  mask-image: radial-gradient(ellipse 72% 70% at 74% 46%, #000 12%, transparent 70%);
+}
+
+.classroom-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+.classroom-collage::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  inset: -8% -10% -6% -4%;
+  background: radial-gradient(
+    ellipse 72% 68% at 58% 46%,
+    rgba(245, 239, 228, 0.5) 0%,
+    rgba(232, 218, 196, 0.26) 34%,
+    rgba(61, 92, 108, 0.08) 58%,
+    transparent 74%
+  );
+}
+
+.classroom-frame {
+  z-index: 1;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 22px 48px rgba(4, 10, 16, 0.46);
+}
+
+@media (max-width: 1023px) {
+  .classroom-section {
+    background-image: linear-gradient(
+      to bottom,
+      #081820 0%,
+      #081820 34%,
+      #0f2f3a 52%,
+      #1c4452 68%,
+      #4d636e 84%,
+      #1a3c4a 94%,
+      #081820 100%
+    );
+  }
+
+  .classroom-section::before {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 36%,
+      #000 58%,
+      #000 90%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 36%,
+      #000 58%,
+      #000 90%,
+      transparent 100%
+    );
+  }
+
+  .classroom-collage::before {
+    inset: 6% -36% -8% -36%;
+    background: radial-gradient(
+      ellipse 80% 70% at 50% 50%,
+      rgba(245, 239, 228, 0.5) 0%,
+      rgba(236, 220, 196, 0.28) 40%,
+      rgba(214, 192, 164, 0.1) 68%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 34%,
+      #000 70%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 34%, #000 70%, transparent 100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -228,10 +379,6 @@ button:disabled {
     filter: none !important;
     transform: none !important;
     opacity: 1 !important;
-  }
-
-  .status-ping {
-    display: none;
   }
 
   .float-label {

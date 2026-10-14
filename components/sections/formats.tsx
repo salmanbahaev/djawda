@@ -29,7 +29,7 @@ export function FormatsSection({ home }: { home: HomeContent }) {
             <ol className="mt-5 grid gap-4 sm:grid-cols-5">
               {home.enrollmentSteps.map((step, index) => (
                 <li key={step} className="text-sm leading-relaxed">
-                  <span className="mb-2 block text-xs font-semibold tracking-[0.16em] text-gold">
+                  <span className="mb-2 block text-xs font-semibold tracking-[0.16em] text-accent-faint">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   {step}

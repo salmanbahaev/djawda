@@ -8,17 +8,9 @@ export function Container({
   return <div className={`mx-auto w-full max-w-6xl px-5 sm:px-8 ${className}`}>{children}</div>;
 }
 
-export function Eyebrow({
-  children,
-  light = false,
-}: {
-  children: React.ReactNode;
-  light?: boolean;
-}) {
+export function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p
-      className={`text-xs font-semibold tracking-[0.22em] uppercase ${light ? "text-gold-2" : "text-gold"}`}
-    >
+    <p className="text-xs font-semibold tracking-[0.22em] text-accent-faint uppercase">
       {children}
     </p>
   );

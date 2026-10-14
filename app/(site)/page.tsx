@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ApproachSection } from "@/components/sections/approach";
 import { AudienceSection } from "@/components/sections/audience";
+import { ClassroomSection } from "@/components/sections/classroom";
 import { ContactsSection } from "@/components/sections/contacts";
 import { CoursesSection } from "@/components/sections/courses";
 import { FaqSection } from "@/components/sections/faq";
@@ -74,6 +75,7 @@ export default async function HomePage() {
       <CoursesSection home={home} courses={courses} />
       <TeachersSection home={home} about={about} />
       <FormatsSection home={home} />
+      <ClassroomSection home={home} />
       <FaqSection home={home} />
       <ContactsSection home={home} settings={settings} />
       <LeadSection home={home} settings={settings} form={form} courses={courses} />

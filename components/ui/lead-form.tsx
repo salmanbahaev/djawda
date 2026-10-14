@@ -193,7 +193,7 @@ export function LeadForm({
           <p className="mt-2 pl-7 text-sm">
             <Link
               href="/privacy"
-              className="font-medium text-[#17171a] underline decoration-[#17171a]/30 underline-offset-4"
+              className="font-medium text-accent underline decoration-accent/30 underline-offset-4"
             >
               {copy.privacyLinkLabel}
             </Link>

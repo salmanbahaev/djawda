@@ -77,7 +77,7 @@ export function Header(props: HeaderProps) {
             <Link
               key={link.href}
               href={link.href}
-              className="whitespace-nowrap transition-colors duration-200 hover:text-white"
+              className="whitespace-nowrap transition-colors duration-200 hover:text-accent-faint"
             >
               {link.label}
             </Link>
@@ -126,7 +126,7 @@ export function Header(props: HeaderProps) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="rounded-2xl px-3 py-3 text-lg"
+                  className="rounded-2xl px-3 py-3 text-lg transition-colors hover:text-accent-faint"
                   onClick={() => setOpen(false)}
                 >
                   {link.label}

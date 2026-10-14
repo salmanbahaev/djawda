@@ -11,11 +11,58 @@ type ScrollOptions = {
 
 type LenisScroll = (target: number, options?: ScrollOptions) => void;
 
-let lenisScroll: LenisScroll | null = null;
-let scrollGeneration = 0;
+type LenisLock = {
+  stop: () => void;
+  start: () => void;
+};
 
-export function registerLenis(scroll: LenisScroll | null) {
+const SCROLL_KEYS = new Set([" ", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "Home", "End"]);
+
+let lenisScroll: LenisScroll | null = null;
+let lenisLock: LenisLock | null = null;
+let scrollGeneration = 0;
+let scrollLocks = 0;
+
+function blockBackgroundKeys(event: KeyboardEvent) {
+  if (!SCROLL_KEYS.has(event.key)) return;
+  const target = event.target;
+  if (target instanceof HTMLElement) {
+    if (target.isContentEditable) return;
+    const tag = target.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+    if (target.closest("[data-course-drawer-root]")) return;
+  }
+  event.preventDefault();
+}
+
+export function registerLenis(scroll: LenisScroll | null, lock: LenisLock | null = null) {
   lenisScroll = scroll;
+  lenisLock = lock;
+  if (scrollLocks > 0) lenisLock?.stop();
+}
+
+/** Stops Lenis and background keys while a course drawer is open. Nested scroll uses data-lenis-prevent. */
+export function lockPageScroll() {
+  if (typeof document === "undefined") return;
+  scrollLocks += 1;
+  if (scrollLocks > 1) return;
+  const root = document.documentElement;
+  const gap = window.innerWidth - root.clientWidth;
+  root.style.paddingRight = gap > 0 ? `${gap}px` : "";
+  root.setAttribute("data-scroll-lock", "");
+  lenisLock?.stop();
+  document.addEventListener("keydown", blockBackgroundKeys);
+}
+
+export function unlockPageScroll() {
+  if (typeof document === "undefined") return;
+  scrollLocks = Math.max(0, scrollLocks - 1);
+  if (scrollLocks > 0) return;
+  const root = document.documentElement;
+  root.style.paddingRight = "";
+  root.removeAttribute("data-scroll-lock");
+  document.removeEventListener("keydown", blockBackgroundKeys);
+  lenisLock?.start();
 }
 
 /** Sticky bar height plus a small gap. Ignores the open mobile menu, which is in normal flow. */

@@ -1,4 +1,6 @@
 import { collection, config, fields, singleton } from "@keystatic/core";
+import { CLASSROOM_ICONS } from "@/lib/classroom-icons";
+import { COURSE_ACCENTS } from "@/lib/course-accent";
 import { COURSE_STATUSES } from "@/lib/course-status";
 import { FORMAT_OPTIONS } from "@/lib/formats";
 
@@ -249,11 +251,11 @@ export default config({
           validation: { isRequired: true },
         }),
         courseLinkLabel: fields.text({
-          label: "Кнопка раскрытия курса",
+          label: "Кнопка «Подробнее»",
           validation: { isRequired: true },
         }),
         courseCloseLabel: fields.text({
-          label: "Кнопка сворачивания курса",
+          label: "Кнопка закрытия окна курса",
           validation: { isRequired: true },
         }),
         courseRequestLabel: fields.text({
@@ -301,6 +303,58 @@ export default config({
           validation: { isRequired: true },
         }),
         enrollmentSteps: textList("Шаги записи"),
+        classroomEyebrow: fields.text({
+          label: "Класс: надзаголовок",
+          validation: { isRequired: true },
+        }),
+        classroomTitle: fields.text({
+          label: "Класс: заголовок",
+          validation: { isRequired: true },
+        }),
+        classroomLead: fields.text({
+          label: "Класс: вступление",
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+        classroomFeatures: fields.array(
+          fields.object({
+            icon: fields.select({
+              label: "Значок",
+              options: CLASSROOM_ICONS.map((item) => ({ label: item.label, value: item.value })),
+              defaultValue: "board",
+            }),
+            title: fields.text({ label: "Заголовок", validation: { isRequired: true } }),
+            text: fields.text({
+              label: "Текст",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
+          }),
+          {
+            label: "Класс: особенности",
+            itemLabel: (props) => props.fields.title.value || "Пункт",
+          },
+        ),
+        classroomWideImage: fields.image({
+          label: "Класс: широкий снимок",
+          description: "Большое фото в коллаже. На телефоне показывается первым.",
+          directory: "public/images/classroom",
+          publicPath: "/images/classroom/",
+        }),
+        classroomWideAlt: fields.text({
+          label: "Класс: подпись широкого снимка",
+          validation: { isRequired: true },
+        }),
+        classroomPortraitImage: fields.image({
+          label: "Класс: вертикальный снимок",
+          description: "Меньшее фото. На широком экране перекрывает широкий снимок справа снизу.",
+          directory: "public/images/classroom",
+          publicPath: "/images/classroom/",
+        }),
+        classroomPortraitAlt: fields.text({
+          label: "Класс: подпись вертикального снимка",
+          validation: { isRequired: true },
+        }),
         faqEyebrow: fields.text({ label: "FAQ: надзаголовок", validation: { isRequired: true } }),
         faqTitle: fields.text({ label: "FAQ: заголовок", validation: { isRequired: true } }),
         faq: fields.array(
@@ -565,7 +619,7 @@ export default config({
           validation: { isRequired: true },
         }),
         subtitle: fields.text({
-          label: "Подзаголовок в раскрытой карточке",
+          label: "Подзаголовок в окне курса",
           multiline: true,
           validation: { isRequired: true },
         }),
@@ -584,6 +638,13 @@ export default config({
           options: COURSE_STATUSES.map((item) => ({ label: item.label, value: item.value })),
           defaultValue: "soon",
         }),
+        accent: fields.select({
+          label: "Цвет карточки",
+          description:
+            "Тонкая полоска сверху карточки: оттенок синего или серого. У соседних курсов лучше разные.",
+          options: COURSE_ACCENTS.map((item) => ({ label: item.label, value: item.value })),
+          defaultValue: "deep",
+        }),
         order: fields.integer({
           label: "Порядок на главной",
           defaultValue: 1,
@@ -599,7 +660,7 @@ export default config({
         materialsImage: fields.image({
           label: "Изображение в разделе материалов",
           description:
-            "Показывается в разделе с якорем materials. Для «Таджвид с нуля» — фото пособий.",
+            "Показывается в окне курса, в разделе с якорем materials. Для «Таджвид с нуля» — фото пособий.",
           directory: "public/images/courses",
           publicPath: "/images/courses/",
         }),
@@ -620,7 +681,7 @@ export default config({
             note: fields.text({ label: "Примечание", multiline: true }),
           }),
           {
-            label: "Разделы карточки",
+            label: "Разделы окна курса",
             itemLabel: (props) => props.fields.title.value || "Раздел",
           },
         ),

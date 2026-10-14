@@ -18,7 +18,7 @@ export default async function PrivacyPage() {
     <section className="bg-[#0f0f10] py-16 md:py-24">
       <Container className="max-w-3xl">
         <h1 className="text-4xl font-medium tracking-tight sm:text-5xl">{page.title}</h1>
-        <p className="mt-6 rounded-3xl border border-gold/40 bg-gold/10 px-5 py-4 text-sm leading-relaxed">
+        <p className="mt-6 rounded-3xl border border-accent-faint/50 bg-accent-faint/10 px-5 py-4 text-sm leading-relaxed">
           {page.notice}
         </p>
         <div className="mt-8 space-y-4 leading-relaxed text-muted">

@@ -21,9 +21,12 @@ export function SmoothScroll() {
         anchors: false,
         lerp: 0.085,
       });
-      registerLenis((target, options) => {
-        lenis.scrollTo(target, options);
-      });
+      registerLenis(
+        (target, options) => {
+          lenis.scrollTo(target, options);
+        },
+        { stop: () => lenis.stop(), start: () => lenis.start() },
+      );
       const removeAnchorClicks = installAnchorClicks();
       lenis.on("scroll", ScrollTrigger.update);
       const onTick = (time: number) => {

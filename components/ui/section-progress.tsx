@@ -11,6 +11,7 @@ const SECTIONS = [
   { id: "courses", label: "Курсы" },
   { id: "teachers", label: "Преподаватели" },
   { id: "formats", label: "Формат" },
+  { id: "classroom", label: "Класс" },
   { id: "faq", label: "Вопросы" },
   { id: "contacts", label: "Контакты" },
   { id: "lead", label: "Заявка" },
@@ -81,7 +82,7 @@ export function SectionProgress() {
       data-tone={tone}
       className="section-rail fixed top-1/2 right-[max(2px,env(safe-area-inset-right))] z-30 -translate-y-1/2 max-[340px]:hidden"
     >
-      <div className="relative h-[min(15.5rem,46vh)] w-3.5">
+      <div className="relative h-[min(17.25rem,52vh)] w-3.5">
         <span
           aria-hidden
           className={`absolute top-1.5 bottom-1.5 left-1/2 w-px -translate-x-1/2 ${

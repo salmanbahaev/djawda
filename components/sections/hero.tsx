@@ -1,4 +1,4 @@
-import { SilkBackground } from "@/components/ui/silk-background";
+import { HeroThreads } from "@/components/ui/backgrounds/hero-threads";
 import { Magnetic } from "@/components/ui/magnetic";
 import { Mark } from "@/components/ui/mark";
 import { Container } from "@/components/ui/container";
@@ -10,11 +10,13 @@ export function HeroSection({ home, settings }: { home: HomeContent; settings: S
     <section
       id="hero"
       data-surface="dark"
-      className="relative overflow-hidden bg-[#070708] text-white"
+      className="relative overflow-hidden bg-[var(--ink)] text-white"
     >
-      <SilkBackground />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_45%,transparent_0%,rgba(0,0,0,0.28)_55%,rgba(0,0,0,0.62)_100%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/55" />
+      <HeroThreads />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(15,15,16,0.78)_0%,rgba(15,15,16,0.4)_48%,rgba(15,15,16,0.16)_100%)]"
+      />
       <Container className="relative z-10 flex min-h-[calc(100svh-4.5rem)] items-center py-20 lg:py-24">
         <div className="grid w-full items-center md:grid-cols-[minmax(0,auto)_1fr]">
           <Mark

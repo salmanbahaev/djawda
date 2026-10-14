@@ -17,23 +17,20 @@
 
 ### Color Palette
 
-The generated stone/black palette is not used. Djawda keeps the school brand:
+Brand palette is three roles. `--color-ink` and `--color-paper` stay adaptive surface colors and are not these tokens.
 
-| Role         | Hex       | CSS Variable       |
-| ------------ | --------- | ------------------ |
-| Primary      | `#003d52` | `--color-teal-900` |
-| Primary deep | `#021920` | `--color-teal-950` |
-| On Primary   | `#FFFFFF` | —                  |
-| Accent       | `#b5893f` | `--color-gold`     |
-| Accent soft  | `#e6d3a4` | `--color-gold-2`   |
-| Background   | `#f4f1ec` | `--color-paper`    |
-| Card         | `#fffcf8` | `--color-paper-2`  |
-| Foreground   | `#122f38` | `--color-ink`      |
-| Muted text   | `#4e6872` | `--color-muted`    |
-| Silver       | `#e7ebef` | `--color-silver`   |
-| Border       | `#e4ddd3` | `--color-line`     |
+| Role         | Hex       | CSS Variable     |
+| ------------ | --------- | ---------------- |
+| Ink          | `#0f0f10` | `--ink`          |
+| Paper        | `#f5efe4` | `--paper`        |
+| Paper raised | `#fffdf8` | `--paper-raised` |
+| Accent       | `#0f2f3a` | `--accent`       |
+| Accent hover | `#0a242c` | `--accent-hover` |
+| Accent muted | `#3d5c6c` | `--accent-muted` |
+| Accent soft  | `#d7e4ea` | `--accent-soft`  |
+| Accent faint | `#9eb4c2` | `--accent-faint` |
 
-**Color Notes:** Deep blue-teal, silver, white, a touch of warm yellow-gold. No invented calligraphy in decoration.
+**Color Notes:** Dark gray, warm paper, and one muted slate-blue. Primary buttons use `--accent` with `--paper` text and `--accent-hover` on hover. On dark surfaces, links and eyebrows use `--accent-faint`. No gold or bronze. No invented calligraphy in decoration.
 
 ### Typography
 
@@ -74,8 +71,8 @@ _Density: 3/10 — Spacious_
 ```css
 /* Primary Button */
 .btn-primary {
-  background: #a16207;
-  color: white;
+  background: var(--accent);
+  color: var(--paper);
   padding: 12px 24px;
   border-radius: 8px;
   font-weight: 600;
@@ -84,8 +81,7 @@ _Density: 3/10 — Spacious_
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+  background: var(--accent-hover);
 }
 
 /* Secondary Button */

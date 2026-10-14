@@ -5,7 +5,7 @@ import type { CourseContent, HomeContent } from "@/lib/cms/content";
 
 export function CoursesSection({ home, courses }: { home: HomeContent; courses: CourseContent[] }) {
   return (
-    <section id="courses" data-surface="dark" className="bg-[#0f0f10] py-24 md:py-32">
+    <section id="courses" data-surface="light" className="catalog-cream py-24 md:py-32">
       <Container>
         <Reveal from="left">
           <Eyebrow>{home.catalogEyebrow}</Eyebrow>

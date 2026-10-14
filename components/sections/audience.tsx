@@ -23,7 +23,7 @@ export function AudienceSection({ home }: { home: HomeContent }) {
               }
             >
               <article className="h-full rounded-3xl border border-line bg-white p-6 shadow-[0_1px_2px_rgba(23,23,26,0.04)] transition duration-300 hover:-translate-y-1 hover:border-[#b0b0ab]">
-                <p className="text-xs font-semibold tracking-[0.18em] text-gold">
+                <p className="text-xs font-semibold tracking-[0.18em] text-accent-faint">
                   {String(index + 1).padStart(2, "0")}
                 </p>
                 <h3 className="mt-4 text-2xl font-medium tracking-tight">{item.title}</h3>
