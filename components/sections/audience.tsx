@@ -47,11 +47,11 @@ export function AudienceSection({
                   {String(index + 1).padStart(2, "0")}
                 </p>
                 <h3 className="mt-4 text-2xl font-medium tracking-tight">{item.title}</h3>
-                <p className="mt-3 leading-relaxed text-muted">{item.text}</p>
+                <p className="mt-3 mb-6 leading-relaxed text-muted">{item.text}</p>
                 {linked ? (
-                  <span className="mt-6 flex items-center justify-between gap-3 border-t border-line pt-4 text-sm font-medium text-accent">
-                    <span>{courseTitle}</span>
-                    <span className="inline-flex shrink-0 items-center gap-1.5 text-xs font-semibold tracking-[0.14em] uppercase">
+                  <span className="mt-auto border-t border-line pt-4 text-sm font-medium text-accent">
+                    <span className="block">{courseTitle}</span>
+                    <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.14em] uppercase">
                       {home.audienceLinkLabel}
                       <Arrow />
                     </span>

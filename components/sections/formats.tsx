@@ -49,17 +49,17 @@ export function FormatsSection({ home }: { home: HomeContent }) {
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{home.formatsLead}</p>
         </Reveal>
-        <div className="mt-10 grid gap-4 md:grid-cols-2 md:gap-5">
-          <div className="grid gap-4">
+        <div className="mt-10 grid items-stretch gap-4 md:grid-cols-2 md:gap-5">
+          <div className="flex h-full flex-col gap-4">
             {offline.map((item, index) => (
-              <Reveal key={item.title} from="left" delay={index * 0.06} className="h-full">
+              <Reveal key={item.title} from="left" delay={index * 0.06} className="h-full flex-1">
                 <FormatCard item={item} tone="paper" />
               </Reveal>
             ))}
           </div>
-          <div className="grid gap-4">
+          <div className="flex h-full flex-col gap-4">
             {online.map((item, index) => (
-              <Reveal key={item.title} from="right" delay={index * 0.06} className="h-full">
+              <Reveal key={item.title} from="right" delay={index * 0.06} className="h-full flex-1">
                 <FormatCard item={item} tone="slate" />
               </Reveal>
             ))}
