@@ -19,6 +19,7 @@ export function ContactPanel({
   routeLabel,
   mapLinkLabel,
   lead,
+  stacked = false,
 }: {
   phone: string;
   whatsappUrl: string;
@@ -36,13 +37,16 @@ export function ContactPanel({
   routeLabel: string;
   mapLinkLabel: string;
   lead?: string;
+  stacked?: boolean;
 }) {
   const point = readMapPoint(mapLatitude, mapLongitude, mapZoom);
   const iframeSrc = point ? yandexMapWidgetUrl(point) : mapEmbedUrl;
   const routeHref = point ? yandexRouteUrl(point) : routeUrl;
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+    <div
+      className={stacked ? "grid gap-6" : "grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start"}
+    >
       <div>
         {lead ? <p className="max-w-md text-lg leading-relaxed text-muted">{lead}</p> : null}
         <ul className={`${lead ? "mt-6" : ""} space-y-3 text-base`}>
@@ -101,7 +105,7 @@ export function ContactPanel({
         <iframe
           title={mapFrameTitle}
           src={iframeSrc}
-          className="h-80 w-full border-0 md:h-[420px]"
+          className={stacked ? "h-72 w-full border-0 sm:h-80" : "h-80 w-full border-0 md:h-[420px]"}
           loading="lazy"
           referrerPolicy="strict-origin-when-cross-origin"
         />

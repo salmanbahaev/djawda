@@ -47,6 +47,7 @@ html {
 #approach,
 #audience,
 #courses,
+#path,
 #teachers,
 #formats,
 #classroom,
@@ -139,6 +140,61 @@ button:disabled {
 
 .marquee-track:hover {
   animation-play-state: paused;
+}
+
+.section-glow,
+.section-glow-left,
+.section-glow-bottom {
+  background-color: #0f0f10;
+}
+
+.section-glow {
+  background-image: radial-gradient(
+    ellipse 48% 42% at 92% 0%,
+    rgba(15, 47, 58, 0.55),
+    transparent 64%
+  );
+}
+
+.section-glow-left {
+  background-image: radial-gradient(
+    ellipse 42% 55% at 0% 30%,
+    rgba(15, 47, 58, 0.5),
+    transparent 62%
+  );
+}
+
+.section-glow-bottom {
+  background-image: radial-gradient(
+    ellipse 46% 42% at 100% 0%,
+    rgba(15, 47, 58, 0.5),
+    transparent 66%
+  );
+}
+
+.path-section {
+  position: relative;
+  isolation: isolate;
+  background-color: #0f0f10;
+  background-image: radial-gradient(
+    ellipse 70% 48% at 50% 0%,
+    rgba(15, 47, 58, 0.5),
+    transparent 70%
+  );
+}
+
+.path-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  -webkit-mask-image: radial-gradient(ellipse 72% 68% at 50% 42%, #000 18%, transparent 74%);
+  mask-image: radial-gradient(ellipse 72% 68% at 50% 42%, #000 18%, transparent 74%);
 }
 
 .tone-light {

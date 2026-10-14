@@ -7,7 +7,7 @@ import { CoursesSection } from "@/components/sections/courses";
 import { FaqSection } from "@/components/sections/faq";
 import { FormatsSection } from "@/components/sections/formats";
 import { HeroSection } from "@/components/sections/hero";
-import { LeadSection } from "@/components/sections/lead";
+import { PathSection } from "@/components/sections/path";
 import { TeachersSection } from "@/components/sections/teachers";
 import { Marquee } from "@/components/ui/marquee";
 import { getAbout, getCourses, getFormCopy, getHome, getSettings } from "@/lib/cms/content";
@@ -71,14 +71,14 @@ export default async function HomePage() {
       <HeroSection home={home} settings={settings} />
       <Marquee items={courses.map((course) => course.title)} />
       <ApproachSection home={home} />
-      <AudienceSection home={home} />
+      <AudienceSection home={home} courses={courses} />
       <CoursesSection home={home} courses={courses} />
+      <PathSection home={home} />
       <TeachersSection home={home} about={about} />
       <FormatsSection home={home} />
       <ClassroomSection home={home} />
       <FaqSection home={home} />
-      <ContactsSection home={home} settings={settings} />
-      <LeadSection home={home} settings={settings} form={form} courses={courses} />
+      <ContactsSection home={home} settings={settings} form={form} courses={courses} />
     </>
   );
 }

@@ -9,12 +9,12 @@ const SECTIONS = [
   { id: "approach", label: "Подход" },
   { id: "audience", label: "Кому" },
   { id: "courses", label: "Курсы" },
+  { id: "path", label: "Путь" },
   { id: "teachers", label: "Преподаватели" },
   { id: "formats", label: "Формат" },
   { id: "classroom", label: "Класс" },
   { id: "faq", label: "Вопросы" },
   { id: "contacts", label: "Контакты" },
-  { id: "lead", label: "Заявка" },
 ] as const;
 
 export function SectionProgress() {

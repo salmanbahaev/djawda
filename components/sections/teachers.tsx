@@ -17,16 +17,36 @@ export function TeachersSection({ home, about }: { home: HomeContent; about: Abo
               <p className="mt-5 max-w-2xl text-muted">{home.teachersLead}</p>
             ) : null}
           </Reveal>
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
+          <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-16">
             {about.teachers.map((teacher, index) => (
               <Reveal key={teacher.name} from="right" delay={index * 0.08}>
-                <article className="h-full rounded-3xl border border-line bg-white p-6 shadow-[0_1px_2px_rgba(23,23,26,0.04)] transition duration-300 hover:-translate-y-1 hover:border-[#b0b0ab] sm:p-8">
-                  <h3 className="text-2xl font-medium">{teacher.name}</h3>
-                  <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted">
-                    {teacher.lines.map((line) => (
-                      <li key={line}>{line}</li>
-                    ))}
-                  </ul>
+                <article>
+                  <p className="text-xs font-semibold tracking-[0.18em] text-accent-faint">
+                    {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <h3 className="mt-2 text-2xl font-medium tracking-tight">{teacher.name}</h3>
+                  <ol className="mt-6">
+                    {teacher.lines.map((line, lineIndex) => {
+                      const last = lineIndex === teacher.lines.length - 1;
+                      return (
+                        <li key={line} className="relative pb-7 pl-8 last:pb-0">
+                          {last ? null : (
+                            <span
+                              aria-hidden
+                              className="absolute top-3 -bottom-3 left-2 w-px -translate-x-1/2 bg-accent/25"
+                            />
+                          )}
+                          <span
+                            aria-hidden
+                            className={`absolute top-1 left-0 h-4 w-4 rounded-full border border-accent ${
+                              last ? "bg-accent" : "bg-white"
+                            }`}
+                          />
+                          <p className="text-sm leading-relaxed text-muted">{line}</p>
+                        </li>
+                      );
+                    })}
+                  </ol>
                 </article>
               </Reveal>
             ))}
