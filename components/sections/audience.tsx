@@ -62,21 +62,23 @@ export function AudienceSection({
               </>
             );
             const className =
-              "grid gap-4 py-7 transition-colors duration-200 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-center lg:gap-10 lg:py-8";
+              "grid gap-4 rounded-xl px-5 py-6 transition-colors duration-200 md:px-8 md:py-7 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-center lg:gap-10 lg:py-8";
 
             return (
               <li key={item.title} className="border-b border-line">
                 <Reveal from="right" delay={index * 0.05}>
-                  {linked ? (
-                    <a
-                      href={`#${courseDomId(slug)}`}
-                      className={`group ${className} hover:bg-[#fffdf8]`}
-                    >
-                      {body}
-                    </a>
-                  ) : (
-                    <article className={className}>{body}</article>
-                  )}
+                  <div className="px-1 py-1.5 md:px-1.5 md:py-2">
+                    {linked ? (
+                      <a
+                        href={`#${courseDomId(slug)}`}
+                        className={`group ${className} hover:bg-[#fffdf8]`}
+                      >
+                        {body}
+                      </a>
+                    ) : (
+                      <article className={className}>{body}</article>
+                    )}
+                  </div>
                 </Reveal>
               </li>
             );
