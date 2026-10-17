@@ -33,7 +33,7 @@ export function Footer({
   address: string;
 }) {
   return (
-    <footer data-surface="dark" className="bg-[#0f0f10] text-white">
+    <footer data-surface="dark" className="border-t border-white/10 bg-[#0f0f10] text-white">
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <Link href="/" className="inline-flex items-center gap-3">
