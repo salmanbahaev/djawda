@@ -223,6 +223,11 @@ export default config({
           label: "Кому подойдёт: заголовок",
           validation: { isRequired: true },
         }),
+        audienceLinkLabel: fields.text({
+          label: "Кому подойдёт: текст ссылки",
+          description: "Короткая подпись на карточке, которая открывает окно курса.",
+          validation: { isRequired: true },
+        }),
         audienceItems: fields.array(
           fields.object({
             title: fields.text({ label: "Заголовок", validation: { isRequired: true } }),
@@ -231,10 +236,43 @@ export default config({
               multiline: true,
               validation: { isRequired: true },
             }),
+            courseSlug: fields.text({
+              label: "Якорь курса",
+              description:
+                "Slug направления, без решётки. Например tajweed-s-nulya. Карточка откроет окно этого курса.",
+            }),
           }),
           {
             label: "Кому подойдёт",
             itemLabel: (props) => props.fields.title.value || "Пункт",
+          },
+        ),
+        pathEyebrow: fields.text({
+          label: "Путь ученицы: надзаголовок",
+          validation: { isRequired: true },
+        }),
+        pathTitle: fields.text({
+          label: "Путь ученицы: заголовок",
+          validation: { isRequired: true },
+        }),
+        pathLead: fields.text({
+          label: "Путь ученицы: вступление",
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+        pathSteps: fields.array(
+          fields.object({
+            title: fields.text({ label: "Шаг", validation: { isRequired: true } }),
+            text: fields.text({
+              label: "Пояснение",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
+          }),
+          {
+            label: "Шаги пути ученицы",
+            description: "На широком экране шаги стоят в ряд, на узком — столбиком.",
+            itemLabel: (props) => props.fields.title.value || "Шаг",
           },
         ),
         catalogEyebrow: fields.text({
@@ -291,6 +329,17 @@ export default config({
               label: "Текст",
               multiline: true,
               validation: { isRequired: true },
+            }),
+            kind: fields.select({
+              label: "Вид",
+              description:
+                "Офлайн и онлайн становятся двумя контрастными карточками. Пояснение выводится строкой под ними.",
+              options: [
+                { label: "Офлайн", value: "offline" },
+                { label: "Онлайн", value: "online" },
+                { label: "Пояснение", value: "note" },
+              ],
+              defaultValue: "note",
             }),
           }),
           {
@@ -363,6 +412,11 @@ export default config({
             answer: fields.text({
               label: "Ответ",
               multiline: true,
+              validation: { isRequired: true },
+            }),
+            topic: fields.text({
+              label: "Тема",
+              description: "Вопросы с одной и той же темой собираются в одну группу.",
               validation: { isRequired: true },
             }),
             draft: fields.checkbox({

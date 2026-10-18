@@ -52,7 +52,7 @@ export function Header(props: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-teal-950/75 text-white backdrop-blur-xl">
-      <div className="mx-auto flex h-[4.5rem] w-full max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
+      <div className="mx-auto flex h-[4.5rem] w-full max-w-7xl items-center justify-between gap-3 px-5 sm:px-8">
         <Link
           href="/#hero"
           className="flex min-w-0 items-center gap-2.5 sm:gap-3"
@@ -70,7 +70,7 @@ export function Header(props: HeaderProps) {
         </Link>
 
         <nav
-          className="hidden items-center gap-4 text-[0.8125rem] text-white/80 lg:flex"
+          className="hidden items-center gap-x-3 text-[0.75rem] text-white/80 min-[1180px]:flex xl:gap-x-4 xl:text-[0.8125rem]"
           aria-label="Основное меню"
         >
           {links.map((link) => (
@@ -84,7 +84,7 @@ export function Header(props: HeaderProps) {
           ))}
           <Link
             href="/#lead"
-            className="whitespace-nowrap rounded-full bg-[#f4f4f5] px-4 py-2 font-medium text-[#141416] transition duration-200 hover:bg-white"
+            className="whitespace-nowrap rounded-full bg-[#f4f4f5] px-3 py-2 font-medium text-[#141416] transition duration-200 hover:bg-white xl:px-4"
           >
             {props.navCta}
           </Link>
@@ -93,7 +93,7 @@ export function Header(props: HeaderProps) {
         <button
           type="button"
           ref={menuButtonRef}
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 lg:hidden"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 min-[1180px]:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen((value) => !value)}
@@ -115,7 +115,7 @@ export function Header(props: HeaderProps) {
           <motion.nav
             id="mobile-nav"
             aria-label="Мобильное меню"
-            className="border-t border-white/10 bg-teal-950 lg:hidden"
+            className="border-t border-white/10 bg-teal-950 min-[1180px]:hidden"
             initial={reduce ? false : { height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={reduce ? undefined : { height: 0, opacity: 0 }}
