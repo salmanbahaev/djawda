@@ -137,7 +137,7 @@ function DrawerFaq({ items }: { items: readonly { question: string; answer: stri
                 <button
                   id={buttonId}
                   type="button"
-                  className="flex w-full items-center justify-between gap-4 py-4 text-left text-base font-medium text-accent"
+                  className="press flex min-h-11 w-full items-center justify-between gap-4 py-4 text-left text-base font-medium text-accent"
                   aria-expanded={expanded}
                   aria-controls={panelId}
                   onClick={() => setOpen(expanded ? null : index)}
@@ -147,7 +147,7 @@ function DrawerFaq({ items }: { items: readonly { question: string; answer: stri
                     aria-hidden
                     animate={{ rotate: expanded ? 45 : 0 }}
                     transition={{ duration: reduce ? 0 : 0.28, ease: PANEL_EASE }}
-                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-accent/25 text-xl leading-none text-accent"
+                    className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-accent/25 text-xl leading-none text-accent"
                   >
                     +
                   </motion.span>
@@ -340,7 +340,7 @@ function CourseDrawerPanel({
         exit={hiddenMotion}
         transition={{ duration, ease: PANEL_EASE }}
       >
-        <header className="shrink-0 border-b border-[#e4d7c6] px-5 pt-[max(1.25rem,env(safe-area-inset-top))] pb-4 sm:px-8">
+        <header className="shrink-0 border-b border-[#e4d7c6] px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-8">
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
               <CourseStatusChip status={course.status} />
@@ -350,7 +350,7 @@ function CourseDrawerPanel({
             </div>
             <button
               type="button"
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-accent/15 text-2xl leading-none text-accent"
+              className="press grid h-11 w-11 shrink-0 place-items-center rounded-full border border-accent/15 text-2xl leading-none text-accent"
               aria-label={closeLabel}
               onClick={onClose}
             >
@@ -362,7 +362,7 @@ function CourseDrawerPanel({
         {tabs.length ? (
           <nav
             aria-label="Разделы курса"
-            className="flex shrink-0 flex-wrap gap-1.5 border-b border-[#e4d7c6] px-5 py-3 sm:px-8"
+            className="flex shrink-0 flex-wrap gap-2 border-b border-[#e4d7c6] px-4 py-3 sm:px-8"
           >
             {tabs.map((tab) => {
               const selected = active === tab.id;
@@ -370,7 +370,7 @@ function CourseDrawerPanel({
                 <button
                   key={tab.id}
                   type="button"
-                  className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-medium ${
+                  className={`press min-h-11 shrink-0 rounded-full px-4 text-sm font-semibold ${
                     selected
                       ? "bg-accent text-[var(--paper)]"
                       : "text-accent-muted hover:bg-accent/5"
@@ -388,7 +388,7 @@ function CourseDrawerPanel({
         <div
           ref={scrollerRef}
           data-lenis-prevent
-          className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-6 sm:px-8 sm:py-8"
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-6 sm:px-8 sm:py-8"
         >
           <div className="max-w-[65ch]">
             <p className="text-lg leading-relaxed text-accent">{course.shortDescription}</p>
@@ -442,10 +442,10 @@ function CourseDrawerPanel({
           <div ref={spacerRef} aria-hidden />
         </div>
 
-        <footer className="shrink-0 border-t border-[#e4d7c6] px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-8">
+        <footer className="shrink-0 border-t border-[#e4d7c6] px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-8">
           <button
             type="button"
-            className="catalog-cta w-full rounded-full px-5 py-3.5 text-sm font-semibold"
+            className="catalog-cta press min-h-11 w-full rounded-full px-4 py-3 text-base font-semibold"
             onClick={onRequest}
           >
             {requestLabel}

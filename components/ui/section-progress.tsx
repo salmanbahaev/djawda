@@ -80,7 +80,7 @@ export function SectionProgress() {
     <nav
       aria-label="Разделы страницы"
       data-tone={tone}
-      className="section-rail fixed top-1/2 right-[max(2px,env(safe-area-inset-right))] z-30 -translate-y-1/2 max-[340px]:hidden"
+      className="section-rail fixed top-1/2 right-[max(2px,env(safe-area-inset-right))] z-30 hidden -translate-y-1/2 md:block"
     >
       <div className="relative h-[min(17.25rem,52vh)] w-3.5">
         <span
@@ -93,7 +93,7 @@ export function SectionProgress() {
           aria-hidden
           className={`absolute top-1.5 left-1/2 w-px origin-top -translate-x-1/2 ${
             light ? "bg-[#17171a]/65" : "bg-white/70"
-          } ${reduce ? "" : "transition-[height] duration-200 ease-out"}`}
+          } ${reduce ? "" : "transition-[height] duration-300 ease-brand"}`}
           style={{ height: `calc((100% - 0.75rem) * ${progress})` }}
         />
         <ol className="relative flex h-full flex-col justify-between">
@@ -110,10 +110,10 @@ export function SectionProgress() {
                 >
                   <span
                     aria-hidden
-                    className={`block rounded-full ${reduce ? "" : "transition-[width,height,background-color,box-shadow] duration-200"} ${dotClass(light, reached, current)}`}
+                    className={`block rounded-full ${reduce ? "" : "transition-[width,height,background-color,box-shadow] duration-300 ease-brand"} ${dotClass(light, reached, current)}`}
                   />
                   <span
-                    className={`rail-tip pointer-events-none absolute top-1/2 right-full mr-2 -translate-y-1/2 rounded-full px-2 py-0.5 text-[10px] font-medium tracking-wide whitespace-nowrap opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 ${
+                    className={`rail-tip pointer-events-none absolute top-1/2 right-full mr-2 -translate-y-1/2 rounded-full px-2 py-1 text-xs font-medium tracking-wide whitespace-nowrap opacity-0 transition-opacity duration-300 ease-brand group-hover:opacity-100 group-focus-visible:opacity-100 ${
                       light ? "bg-[#17171a] text-[#f5f5f4]" : "bg-[#f4f4f5] text-[#17171a]"
                     }`}
                   >

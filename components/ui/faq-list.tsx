@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useId, useMemo, useState, type KeyboardEvent } from "react";
 
 type FaqItem = { question: string; answer: string; draft?: boolean; topic?: string | null };
@@ -24,7 +23,6 @@ export function FaqList({ items }: { items: readonly FaqItem[] }) {
   const groups = useMemo(() => groupItems(items), [items]);
   const [topicIndex, setTopicIndex] = useState(0);
   const [open, setOpen] = useState<number | null>(0);
-  const reduce = useReducedMotion();
   const baseId = useId();
   const active = groups[topicIndex] ?? groups[0];
   const showTabs = groups.length > 1;
@@ -58,6 +56,24 @@ export function FaqList({ items }: { items: readonly FaqItem[] }) {
     document.getElementById(`${baseId}-tab-${next}`)?.focus();
   }
 
+  function onQuestionKey(event: KeyboardEvent<HTMLDivElement>) {
+    const target = event.target;
+    if (!(target instanceof HTMLButtonElement)) return;
+    const buttons = Array.from(
+      event.currentTarget.querySelectorAll<HTMLButtonElement>("[data-faq-q]"),
+    );
+    const current = buttons.indexOf(target);
+    if (current < 0) return;
+    let next = current;
+    if (event.key === "ArrowDown") next = current === buttons.length - 1 ? 0 : current + 1;
+    else if (event.key === "ArrowUp") next = current === 0 ? buttons.length - 1 : current - 1;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = buttons.length - 1;
+    else return;
+    event.preventDefault();
+    buttons[next]?.focus();
+  }
+
   if (!active) return null;
 
   return (
@@ -69,7 +85,7 @@ export function FaqList({ items }: { items: readonly FaqItem[] }) {
           role="tablist"
           aria-label="Темы вопросов"
           aria-orientation={vertical ? "vertical" : "horizontal"}
-          className="flex gap-6 border-b border-line md:flex-col md:gap-0 md:border-r md:border-b-0 md:pr-6"
+          className="flex gap-2 border-b border-[var(--color-line)] md:flex-col md:gap-2 md:border-r md:border-b-0 md:pr-6"
           onKeyDown={onTabKey}
         >
           {groups.map((group, index) => {
@@ -83,10 +99,10 @@ export function FaqList({ items }: { items: readonly FaqItem[] }) {
                 aria-selected={selected}
                 aria-controls={`${baseId}-panel`}
                 tabIndex={selected ? 0 : -1}
-                className={`cursor-pointer border-b-2 py-3 text-left text-base transition-colors duration-200 md:border-b-0 md:border-l-2 md:px-4 ${
+                className={`press min-h-11 cursor-pointer border-b-2 px-2 text-left text-base md:border-b-0 md:border-l-2 md:px-4 ${
                   selected
-                    ? "border-accent font-medium text-accent"
-                    : "border-transparent text-muted hover:text-accent"
+                    ? "border-[var(--accent)] font-semibold text-[var(--accent)]"
+                    : "border-transparent text-[var(--color-muted)] hover:text-[var(--accent)]"
                 }`}
                 onClick={() => selectTopic(index)}
               >
@@ -100,51 +116,53 @@ export function FaqList({ items }: { items: readonly FaqItem[] }) {
         id={`${baseId}-panel`}
         role={showTabs ? "tabpanel" : undefined}
         aria-labelledby={showTabs ? `${baseId}-tab-${topicIndex}` : undefined}
-        className={showTabs ? "pt-2 md:pt-0" : undefined}
+        className={showTabs ? "pt-6 md:pt-0" : undefined}
+        onKeyDown={onQuestionKey}
       >
-        <div className="divide-y divide-line border-y border-line">
+        <div className="grid items-start gap-4 xl:grid-cols-2 xl:gap-6">
           {active.items.map((item, index) => {
             const expanded = open === index;
             const panelId = `${baseId}-answer-${topicIndex}-${index}`;
             const buttonId = `${baseId}-question-${topicIndex}-${index}`;
             return (
-              <div key={item.question}>
+              <div
+                key={item.question}
+                className="rounded-2xl border border-[var(--color-line)] px-4"
+              >
                 <h3>
                   <button
                     id={buttonId}
                     type="button"
-                    className="flex w-full cursor-pointer items-center justify-between gap-6 py-5 text-left text-lg font-medium"
+                    data-faq-q=""
+                    className="press flex min-h-11 w-full cursor-pointer items-center justify-between gap-4 py-4 text-left text-lg font-medium"
                     aria-expanded={expanded}
                     aria-controls={panelId}
                     onClick={() => setOpen(expanded ? null : index)}
                   >
                     <span>{item.question}</span>
-                    <motion.span
+                    <span
                       aria-hidden
-                      animate={{ rotate: expanded ? 45 : 0 }}
-                      transition={{ duration: reduce ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
-                      className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-accent/30 text-xl leading-none text-accent"
+                      className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 text-xl leading-none text-[var(--accent)] transition-transform duration-500 ease-brand motion-reduce:transition-none ${
+                        expanded ? "rotate-45" : ""
+                      }`}
                     >
                       +
-                    </motion.span>
+                    </span>
                   </button>
                 </h3>
-                <AnimatePresence initial={false}>
-                  {expanded ? (
-                    <motion.div
-                      id={panelId}
-                      role="region"
-                      aria-labelledby={buttonId}
-                      initial={reduce ? false : { height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={reduce ? undefined : { height: 0, opacity: 0 }}
-                      transition={{ duration: reduce ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
-                      className="overflow-hidden"
-                    >
-                      <p className="max-w-3xl pb-5 leading-relaxed text-muted">{item.answer}</p>
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
+                <div
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={buttonId}
+                  inert={!expanded}
+                  className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-500 ease-brand motion-reduce:transition-none ${
+                    expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="min-h-0 overflow-hidden">
+                    <p className="pb-4 leading-relaxed text-[var(--color-muted)]">{item.answer}</p>
+                  </div>
+                </div>
               </div>
             );
           })}

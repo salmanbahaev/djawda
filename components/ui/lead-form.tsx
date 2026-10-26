@@ -1,11 +1,11 @@
 "use client";
 
-import * as Select from "@radix-ui/react-select";
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
 import { COURSE_SELECT_EVENT } from "@/lib/forms/course-event";
 import { createLeadSchema } from "@/lib/forms/lead";
 import { formatRuPhoneInput } from "@/lib/forms/phone";
+import * as Select from "@radix-ui/react-select";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export type LeadFormCopy = {
   nameLabel: string;
@@ -28,23 +28,32 @@ export type LeadFormCopy = {
 type CourseOption = { slug: string; title: string };
 
 const controlClass =
-  "field-control w-full rounded-2xl border border-[#cfcfca] bg-[#f7f7f6] px-4 py-3.5 text-base text-[#17171a] outline-none transition duration-200 placeholder:text-transparent focus:border-[#17171a] focus:placeholder:text-[#6d6d73]";
+  "field-control min-h-11 w-full rounded-lg border border-[#8a8478] bg-white px-4 text-base text-[#17171a] transition-[border-color,background-color] duration-300 ease-brand data-[placeholder]:text-[#5c6570]";
 
-const labelBase =
-  "float-label pointer-events-none absolute left-4 z-10 max-w-[calc(100%-2.75rem)] origin-left truncate transition-all duration-200 ease-out";
+const fieldLabel = "mb-2 block text-sm font-semibold text-[#17171a]";
 
-const peerLabel = `${labelBase} top-1/2 -translate-y-1/2 text-base text-[#5c5c62] peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:bg-white peer-focus:px-1 peer-focus:text-xs peer-focus:font-medium peer-focus:text-[#17171a] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:font-medium peer-[:not(:placeholder-shown)]:text-[#17171a]`;
+const summaryFields = [
+  ["name", "name"],
+  ["phone", "phone"],
+  ["course", "course"],
+  ["format", "format"],
+  ["consent", "consent"],
+] as const;
 
 export function LeadForm({
   copy,
   courses,
   whatsappUrl,
+  phoneDisplay = "",
+  secondary,
   presetSlug,
   id = "lead-form",
 }: {
   copy: LeadFormCopy;
   courses: CourseOption[];
   whatsappUrl: string;
+  phoneDisplay?: string;
+  secondary?: { href: string; label: string };
   presetSlug?: string;
   id?: string;
 }) {
@@ -57,19 +66,50 @@ export function LeadForm({
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const summaryRef = useRef<HTMLDivElement>(null);
+  const alertRef = useRef<HTMLDivElement>(null);
+  const pendingFocus = useRef<"summary" | "alert" | null>(null);
 
   const leadSchema = useMemo(() => createLeadSchema(courses.map((item) => item.slug)), [courses]);
+  const summary = summaryFields.flatMap(([key]) => {
+    const error = fieldErrors[key];
+    return error ? [{ key, error }] : [];
+  });
+
+  useEffect(() => {
+    const target = pendingFocus.current;
+    if (!target) return;
+    const node = target === "summary" ? summaryRef.current : alertRef.current;
+    if (!node) return;
+    pendingFocus.current = null;
+    node.focus();
+  });
 
   useEffect(() => {
     function onSelect(event: Event) {
       const slug = (event as CustomEvent<string>).detail;
       if (typeof slug === "string" && courses.some((item) => item.slug === slug)) {
         setCourse(slug);
+        setFieldErrors((prev) => {
+          if (!prev.course) return prev;
+          const next = { ...prev };
+          delete next.course;
+          return next;
+        });
       }
     }
     document.addEventListener(COURSE_SELECT_EVENT, onSelect);
     return () => document.removeEventListener(COURSE_SELECT_EVENT, onSelect);
   }, [courses]);
+
+  function clearError(key: string) {
+    setFieldErrors((prev) => {
+      if (!prev[key]) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+  }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -81,9 +121,12 @@ export function LeadForm({
         if (typeof key === "string" && !nextErrors[key]) nextErrors[key] = issue.message;
       }
       setFieldErrors(nextErrors);
+      setStatus("idle");
+      pendingFocus.current = "summary";
       return;
     }
 
+    setFieldErrors({});
     setStatus("sending");
     setMessage("");
     try {
@@ -92,10 +135,16 @@ export function LeadForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, phone, course, format, consent, company }),
       });
-      const data = (await response.json()) as { ok?: boolean; message?: string; warning?: string };
+      let data: { ok?: boolean; message?: string; warning?: string; fallback?: string } = {};
+      try {
+        data = (await response.json()) as typeof data;
+      } catch {
+        data = {};
+      }
       if (!response.ok || !data.ok) {
         setStatus("error");
         setMessage(data.message || copy.errorText);
+        pendingFocus.current = "alert";
         return;
       }
       setStatus("success");
@@ -103,24 +152,26 @@ export function LeadForm({
     } catch {
       setStatus("error");
       setMessage(copy.errorText);
+      pendingFocus.current = "alert";
     }
   }
 
   if (status === "success") {
     return (
       <div
-        className="rounded-3xl border border-[#d8d8d4] bg-white p-6 text-[#17171a] shadow-[0_1px_2px_rgba(23,23,26,0.04)] sm:p-8"
+        className="rounded-3xl border border-[#d4cbbd] bg-white p-4 text-[#17171a] sm:p-6"
         role="status"
       >
         <h3 className="text-2xl font-medium tracking-tight">{copy.successTitle}</h3>
-        <p className="mt-3 leading-relaxed text-[#3f3f46]">{message}</p>
+        <p className="mt-4 leading-relaxed text-[#3e4450]">{message}</p>
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noreferrer"
-          className="mt-6 inline-flex rounded-full bg-[#17171a] px-5 py-3 text-sm font-medium text-[#f5f5f4] transition duration-200 hover:bg-[#2c2c30]"
+          className="press mt-6 inline-flex min-h-11 items-center rounded-full bg-[var(--accent)] px-4 text-base font-semibold text-[var(--paper)] hover:bg-[var(--accent-hover)]"
         >
           {copy.whatsappCta}
+          {phoneDisplay ? ` · ${phoneDisplay}` : ""}
         </a>
       </div>
     );
@@ -130,10 +181,32 @@ export function LeadForm({
     <form
       id={id}
       onSubmit={onSubmit}
-      className="relative rounded-3xl border border-[#d8d8d4] bg-white p-6 text-[#17171a] shadow-[0_1px_2px_rgba(23,23,26,0.04)] scheme-light sm:p-8"
+      className="relative rounded-3xl border border-[#d4cbbd] bg-white p-4 text-[#17171a] scheme-light sm:p-6"
       noValidate
     >
-      <div className="grid gap-5">
+      <div className="grid gap-6">
+        {summary.length > 0 ? (
+          <div
+            ref={summaryRef}
+            tabIndex={-1}
+            role="alert"
+            className="rounded-lg border border-red-800/30 bg-red-50 p-4"
+          >
+            <p className="text-sm font-semibold text-red-800">Проверьте поля формы</p>
+            <ul className="mt-2 grid gap-2">
+              {summary.map((item) => (
+                <li key={item.key}>
+                  <a
+                    href={`#${id}-${item.key}`}
+                    className="text-sm font-medium text-red-800 underline underline-offset-4"
+                  >
+                    {item.error}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
         <TextField
           id={`${id}-name`}
           label={copy.nameLabel}
@@ -141,7 +214,10 @@ export function LeadForm({
           name="name"
           autoComplete="name"
           value={name}
-          onChange={(event) => setName(event.target.value)}
+          onChange={(event) => {
+            setName(event.target.value);
+            clearError("name");
+          }}
         />
         <TextField
           id={`${id}-phone`}
@@ -153,14 +229,20 @@ export function LeadForm({
           autoComplete="tel"
           placeholder="+7 (900) 000-00-00"
           value={phone}
-          onChange={(event) => setPhone(formatRuPhoneInput(event.target.value))}
+          onChange={(event) => {
+            setPhone(formatRuPhoneInput(event.target.value));
+            clearError("phone");
+          }}
         />
         <SelectField
           id={`${id}-course`}
           label={copy.courseLabel}
           error={fieldErrors.course}
           value={course}
-          onChange={setCourse}
+          onChange={(value) => {
+            setCourse(value);
+            clearError("course");
+          }}
           placeholder={copy.coursePlaceholder}
           options={courses.map((item) => ({ value: item.slug, label: item.title }))}
         />
@@ -170,36 +252,40 @@ export function LeadForm({
           label={copy.formatLabel}
           error={fieldErrors.format}
           value={format}
-          onChange={setFormat}
+          onChange={(value) => {
+            setFormat(value);
+            clearError("format");
+          }}
           placeholder="Выберите формат"
           options={copy.formats}
         />
         <div>
-          <div className="flex items-start gap-3">
+          <label htmlFor={`${id}-consent`} className="flex min-h-11 items-center gap-3">
             <input
               id={`${id}-consent`}
               type="checkbox"
-              className="field-control mt-1 h-4 w-4 accent-[#17171a]"
+              className="field-control h-6 w-6 shrink-0 accent-[var(--accent)]"
               checked={consent}
-              onChange={(event) => setConsent(event.target.checked)}
-              required
+              onChange={(event) => {
+                setConsent(event.target.checked);
+                clearError("consent");
+              }}
+              aria-required="true"
               aria-invalid={fieldErrors.consent ? true : undefined}
               aria-describedby={fieldErrors.consent ? `${id}-consent-error` : undefined}
             />
-            <label htmlFor={`${id}-consent`} className="text-sm leading-relaxed text-[#17171a]">
-              {copy.consentLabel}
-            </label>
-          </div>
-          <p className="mt-2 pl-7 text-sm">
+            <span className="text-sm leading-relaxed text-[#17171a]">{copy.consentLabel}</span>
+          </label>
+          <p className="mt-2 pl-8 text-sm">
             <Link
               href="/privacy"
-              className="font-medium text-accent underline decoration-accent/30 underline-offset-4"
+              className="inline-flex min-h-11 items-center font-semibold text-[var(--accent)] underline decoration-[var(--accent)]/40 underline-offset-4"
             >
               {copy.privacyLinkLabel}
             </Link>
           </p>
           {fieldErrors.consent ? (
-            <p id={`${id}-consent-error`} className="mt-2 text-sm font-medium text-red-700">
+            <p id={`${id}-consent-error`} className="mt-2 text-sm font-medium text-red-800">
               {fieldErrors.consent}
             </p>
           ) : null}
@@ -216,28 +302,51 @@ export function LeadForm({
           </label>
         </div>
         {status === "error" ? (
-          <p role="alert" className="text-sm font-medium text-red-700">
-            {message}
-          </p>
+          <div
+            ref={alertRef}
+            tabIndex={-1}
+            role="alert"
+            className="rounded-lg border border-red-800/30 bg-red-50 p-4"
+          >
+            <p className="text-sm font-semibold text-red-800">{message}</p>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--accent)] underline underline-offset-4"
+            >
+              {copy.whatsappCta}
+              {phoneDisplay ? ` · ${phoneDisplay}` : ""}
+            </a>
+          </div>
         ) : null}
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <button
             type="submit"
             disabled={status === "sending"}
-            className="rounded-full bg-[#17171a] px-5 py-3 text-sm font-medium text-[#f5f5f4] transition duration-200 hover:bg-[#2c2c30] disabled:opacity-60"
+            className="press inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[var(--accent)] px-4 text-base font-semibold text-[var(--paper)] hover:bg-[var(--accent-hover)] disabled:bg-[var(--accent-muted)] sm:w-auto"
           >
             {status === "sending" ? copy.submittingLabel : copy.submitLabel}
           </button>
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full border border-[#17171a]/25 px-5 py-3 text-center text-sm font-medium text-[#17171a] transition duration-200 hover:border-[#17171a]/60"
-          >
-            {copy.whatsappCta}
-          </a>
+          {secondary ? (
+            <a
+              href={secondary.href}
+              className="press inline-flex min-h-11 items-center text-base font-semibold text-[var(--accent)] underline decoration-[var(--accent)]/40 underline-offset-4"
+            >
+              {secondary.label}
+            </a>
+          ) : null}
         </div>
-        <p className="text-sm text-[#3f3f46]">{copy.hint}</p>
+        <p className="text-sm text-[#3e4450]">{copy.hint}</p>
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="press inline-flex min-h-11 items-center text-sm font-semibold text-[var(--accent)] underline decoration-[var(--accent)]/40 underline-offset-4"
+        >
+          {copy.whatsappCta}
+          {phoneDisplay ? ` · ${phoneDisplay}` : ""}
+        </a>
       </div>
     </form>
   );
@@ -255,22 +364,19 @@ function TextField({
 } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div>
-      <div className="relative">
-        <input
-          id={id}
-          required
-          placeholder=" "
-          aria-invalid={error ? true : undefined}
-          aria-describedby={error ? `${id}-error` : undefined}
-          className={`${controlClass} peer ${error ? "border-red-700" : ""}`}
-          {...props}
-        />
-        <label htmlFor={id} className={peerLabel}>
-          {label}
-        </label>
-      </div>
+      <label htmlFor={id} className={fieldLabel}>
+        {label}
+      </label>
+      <input
+        id={id}
+        aria-required="true"
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${id}-error` : undefined}
+        className={`${controlClass} ${error ? "border-red-800" : ""}`}
+        {...props}
+      />
       {error ? (
-        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-700">
+        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-800">
           {error}
         </p>
       ) : null}
@@ -298,10 +404,12 @@ function SelectField({
   options: { value: string; label: string }[];
 }) {
   const [open, setOpen] = useState(false);
-  const floated = open || value !== "";
 
   return (
     <div>
+      <label htmlFor={id} className={fieldLabel}>
+        {label}
+      </label>
       <Select.Root
         name={name}
         value={value}
@@ -309,44 +417,30 @@ function SelectField({
         open={open}
         onOpenChange={setOpen}
       >
-        <div className="relative">
-          <Select.Trigger
-            id={id}
-            aria-invalid={error ? true : undefined}
-            aria-describedby={error ? `${id}-error` : undefined}
-            className={`${controlClass} flex items-center justify-between gap-3 pr-4 text-left ${
-              error ? "border-red-700" : ""
-            }`}
+        <Select.Trigger
+          id={id}
+          aria-required="true"
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${id}-error` : undefined}
+          className={`${controlClass} flex items-center justify-between gap-3 text-left ${
+            error ? "border-red-800" : ""
+          }`}
+        >
+          <Select.Value placeholder={placeholder} />
+          <Select.Icon
+            className={`shrink-0 text-[#3e4450] transition-transform duration-300 ease-brand ${open ? "rotate-180" : ""}`}
           >
-            <Select.Value
-              placeholder={floated ? placeholder : "\u00a0"}
-              className={floated && value === "" ? "text-[#6d6d73]" : undefined}
-            />
-            <Select.Icon
-              className={`shrink-0 text-[#3f3f46] transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-            >
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
-                <path
-                  d="M5 7.5 10 12.5 15 7.5"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Select.Icon>
-          </Select.Trigger>
-          <label
-            htmlFor={id}
-            className={`${labelBase} ${
-              floated
-                ? "top-0 -translate-y-1/2 bg-white px-1 text-xs font-medium text-[#17171a]"
-                : "top-1/2 -translate-y-1/2 text-base text-[#5c5c62]"
-            }`}
-          >
-            {label}
-          </label>
-        </div>
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
+              <path
+                d="M5 7.5 10 12.5 15 7.5"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Select.Icon>
+        </Select.Trigger>
         <Select.Portal>
           <Select.Content
             position="popper"
@@ -356,13 +450,13 @@ function SelectField({
             collisionPadding={12}
             className="select-popover z-[60] w-[var(--radix-select-trigger-width)]"
           >
-            <div className="select-popover-panel overflow-hidden rounded-2xl border border-[#d8d8d4] bg-white text-[#17171a] shadow-[0_18px_40px_-24px_rgba(23,23,26,0.45)]">
-              <Select.Viewport className="max-h-[min(18rem,var(--radix-select-content-available-height))] overflow-y-auto py-1.5">
+            <div className="select-popover-panel overflow-hidden rounded-xl border border-[#d4cbbd] bg-white text-[#17171a] shadow-[0_18px_40px_-24px_rgba(23,23,26,0.45)]">
+              <Select.Viewport className="max-h-[min(18rem,var(--radix-select-content-available-height))] overflow-y-auto py-2">
                 {options.map((item) => (
                   <Select.Item
                     key={item.value}
                     value={item.value}
-                    className="relative mx-1.5 flex cursor-pointer items-center gap-3 rounded-xl px-2.5 py-2.5 text-sm outline-none data-[highlighted]:bg-[#f0f0ee] data-[state=checked]:font-medium"
+                    className="relative mx-2 flex min-h-11 cursor-pointer items-center gap-3 rounded-lg px-3 text-base outline-none data-[highlighted]:bg-[#f5efe4] data-[state=checked]:font-semibold"
                   >
                     <Select.ItemText className="min-w-0 flex-1">{item.label}</Select.ItemText>
                     <Select.ItemIndicator className="inline-flex shrink-0 text-[#17171a]">
@@ -384,7 +478,7 @@ function SelectField({
         </Select.Portal>
       </Select.Root>
       {error ? (
-        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-700">
+        <p id={`${id}-error`} className="mt-2 text-sm font-medium text-red-800">
           {error}
         </p>
       ) : null}

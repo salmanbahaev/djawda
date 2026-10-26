@@ -55,11 +55,15 @@ export function ContactPanel({
       }
     >
       <div>
-        {lead ? <p className="max-w-md text-lg leading-relaxed text-muted">{lead}</p> : null}
-        <ul className={`${lead ? "mt-6" : ""} space-y-3 text-base`}>
+        {lead ? (
+          <p className="max-w-[680px] text-lg leading-relaxed text-pretty text-[var(--color-muted)]">
+            {lead}
+          </p>
+        ) : null}
+        <ul className={`${lead ? "mt-6" : ""} grid text-base`}>
           <li>
             <a
-              className="font-medium text-accent-faint underline decoration-accent-faint/50 underline-offset-4"
+              className="press inline-flex min-h-11 items-center font-semibold text-[#d7e4ea] underline decoration-[#d7e4ea]/50 underline-offset-4"
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
@@ -69,7 +73,7 @@ export function ContactPanel({
           </li>
           <li>
             <a
-              className="text-accent-faint underline decoration-accent-faint/50 underline-offset-4"
+              className="press inline-flex min-h-11 items-center text-[#d7e4ea] underline decoration-[#d7e4ea]/50 underline-offset-4"
               href={telegramUrl}
               target="_blank"
               rel="noreferrer"
@@ -79,7 +83,7 @@ export function ContactPanel({
           </li>
           <li>
             <a
-              className="text-accent-faint underline decoration-accent-faint/50 underline-offset-4"
+              className="press inline-flex min-h-11 items-center text-[#d7e4ea] underline decoration-[#d7e4ea]/50 underline-offset-4"
               href={instagramUrl}
               target="_blank"
               rel="noreferrer"
@@ -87,12 +91,12 @@ export function ContactPanel({
               {instagramLabel}
             </a>
           </li>
-          <li className="pt-2 text-muted">{address}</li>
+          <li className="pt-4 text-[var(--color-muted)]">{address}</li>
         </ul>
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <a
             href={routeHref}
-            className="rounded-full bg-[#f4f4f5] px-5 py-3 text-sm font-medium text-[#141416]"
+            className="press inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--paper)] px-4 text-base font-semibold text-[var(--accent)]"
             target="_blank"
             rel="noreferrer"
           >
@@ -100,7 +104,7 @@ export function ContactPanel({
           </a>
           <a
             href={mapUrl}
-            className="rounded-full border border-white/25 px-5 py-3 text-sm font-medium text-[#f4f4f5]"
+            className="press inline-flex min-h-11 items-center text-base font-semibold text-[#f5efe4] underline decoration-[#f5efe4]/50 underline-offset-4"
             target="_blank"
             rel="noreferrer"
           >
@@ -138,7 +142,7 @@ export function ContactMap({
   const iframeSrc = point ? yandexMapWidgetUrl(point) : mapEmbedUrl;
 
   return (
-    <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#18181a]">
+    <div className="overflow-hidden rounded-3xl border border-white/15 bg-[#18181a]">
       <iframe
         title={mapFrameTitle}
         src={iframeSrc}

@@ -5,11 +5,13 @@ import { ClassroomSection } from "@/components/sections/classroom";
 import { ContactsSection } from "@/components/sections/contacts";
 import { CoursesSection } from "@/components/sections/courses";
 import { FaqSection } from "@/components/sections/faq";
+import { FinalCtaSection } from "@/components/sections/final-cta";
 import { FormatsSection } from "@/components/sections/formats";
 import { HeroSection } from "@/components/sections/hero";
 import { PathSection } from "@/components/sections/path";
 import { TeachersSection } from "@/components/sections/teachers";
 import { Marquee } from "@/components/ui/marquee";
+import { Statement } from "@/components/ui/statement";
 import { getAbout, getCourses, getFormCopy, getHome, getSettings } from "@/lib/cms/content";
 import { readMapPoint } from "@/lib/maps";
 
@@ -71,6 +73,7 @@ export default async function HomePage() {
       <HeroSection home={home} settings={settings} />
       <Marquee items={courses.map((course) => course.title)} />
       <ApproachSection home={home} />
+      <Statement text={home.heroSubtitle} />
       <AudienceSection home={home} courses={courses} />
       <CoursesSection home={home} courses={courses} />
       <PathSection home={home} />
@@ -78,7 +81,8 @@ export default async function HomePage() {
       <FormatsSection home={home} />
       <ClassroomSection home={home} />
       <FaqSection home={home} />
-      <ContactsSection home={home} settings={settings} form={form} courses={courses} />
+      <ContactsSection home={home} settings={settings} />
+      <FinalCtaSection home={home} settings={settings} form={form} courses={courses} />
     </>
   );
 }

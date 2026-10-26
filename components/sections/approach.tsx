@@ -5,14 +5,18 @@ import type { HomeContent } from "@/lib/cms/content";
 
 export function ApproachSection({ home }: { home: HomeContent }) {
   return (
-    <section id="approach" data-surface="dark" className="section-glow py-24 md:py-32">
+    <section
+      id="approach"
+      data-surface="light"
+      className="surface-paper section-y border-t border-[var(--color-line)]"
+    >
       <Container>
-        <Reveal from="left">
-          <Eyebrow>{home.approachEyebrow}</Eyebrow>
-          <h2 className="mt-3 max-w-3xl text-3xl font-medium tracking-tight sm:text-5xl">
+        <Reveal>
+          <Eyebrow index={1}>{home.approachEyebrow}</Eyebrow>
+          <h2 className="mt-4 max-w-[680px] text-4xl text-balance sm:text-5xl">
             {home.approachTitle}
           </h2>
-          <p className="prose-measure mt-6 text-lg leading-relaxed text-muted">
+          <p className="mt-6 max-w-[680px] text-lg leading-relaxed text-pretty text-[var(--color-muted)]">
             {home.approachText}
           </p>
         </Reveal>

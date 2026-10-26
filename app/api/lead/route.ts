@@ -65,16 +65,21 @@ export async function POST(request: Request) {
 
   if (!sheetsOn && !telegramOn) {
     const env = getServerEnv();
+    if (env.NODE_ENV === "production") {
+      console.warn("[djawda-lead] Google Sheets и Telegram не настроены. Заявка не принята.");
+      return Response.json(
+        { ok: false, fallback: "whatsapp", message: form.errorText },
+        { status: 503 },
+      );
+    }
     console.warn(
       "[djawda-lead] Google Sheets и Telegram не настроены. Заявка принята, но никуда не отправлена.",
-      env.NODE_ENV === "production" ? { name: lead.name, course: lead.course } : lead,
+      lead,
     );
     return Response.json({
       ok: true,
       warning:
-        env.NODE_ENV === "production"
-          ? undefined
-          : "Интеграции пока не настроены: заявка не ушла в таблицу и Telegram. Подробности в консоли сервера.",
+        "Интеграции пока не настроены: заявка не ушла в таблицу и Telegram. Подробности в консоли сервера.",
     });
   }
 

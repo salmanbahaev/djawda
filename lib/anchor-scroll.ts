@@ -65,16 +65,11 @@ export function unlockPageScroll() {
   lenisLock?.start();
 }
 
-/** Sticky bar height plus a small gap. Ignores the open mobile menu, which is in normal flow. */
+/** Floating bar bottom plus a small gap. The open menu is an overlay and is not measured. */
 export function headerClearance() {
-  const header = document.querySelector("header");
-  const bar = header?.firstElementChild;
-  const barHeight = bar instanceof HTMLElement ? bar.getBoundingClientRect().height : 72;
-  const border =
-    header instanceof HTMLElement
-      ? Number.parseFloat(getComputedStyle(header).borderBottomWidth) || 0
-      : 0;
-  return barHeight + border + GAP;
+  const bar = document.querySelector("[data-header-bar]");
+  if (bar instanceof HTMLElement) return bar.getBoundingClientRect().bottom + GAP;
+  return 80 + GAP;
 }
 
 function visualAnchor(id: string): HTMLElement | null {
