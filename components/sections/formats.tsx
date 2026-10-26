@@ -16,11 +16,13 @@ function formatKind(item: FormatItem) {
 function FormatHalf({ items, tone }: { items: readonly FormatItem[]; tone: "paper" | "slate" }) {
   const paper = tone === "paper";
   return (
-    <div className={paper ? "bg-[#f5efe4] text-[#17171a]" : "bg-[#0f2f3a] text-[#f5efe4]"}>
+    <div
+      className={paper ? "bg-[var(--paper-raised)] text-[#17171a]" : "bg-[#0f2f3a] text-[#f5efe4]"}
+    >
       {items.map((item, index) => (
         <article
           key={item.title}
-          className={`px-7 py-8 sm:px-10 sm:py-12 ${
+          className={`px-6 py-8 sm:px-10 sm:py-12 ${
             index > 0 ? (paper ? "border-t border-[#0f0f10]/10" : "border-t border-white/15") : ""
           }`}
         >
@@ -50,42 +52,50 @@ export function FormatsSection({ home }: { home: HomeContent }) {
   const split = offline.length > 0 && online.length > 0;
 
   return (
-    <section id="formats" data-surface="dark" className="section-glow-left py-24 md:py-32">
+    <section
+      id="formats"
+      data-surface="light"
+      className="surface-paper section-y border-t border-[var(--color-line)]"
+    >
       <Container>
-        <Reveal from="left">
-          <Eyebrow>{home.formatsEyebrow}</Eyebrow>
-          <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">
-            {home.formatsTitle}
-          </h2>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{home.formatsLead}</p>
+        <Reveal>
+          <Eyebrow index={6}>{home.formatsEyebrow}</Eyebrow>
+          <h2 className="mt-4 text-4xl text-balance sm:text-5xl">{home.formatsTitle}</h2>
+          <p className="mt-6 max-w-[680px] text-lg leading-relaxed text-pretty text-[var(--color-muted)]">
+            {home.formatsLead}
+          </p>
         </Reveal>
-        <Reveal from="right">
+        <Reveal>
           <div
-            className={`mt-12 overflow-hidden rounded-[1.75rem] ${split ? "md:grid md:grid-cols-2" : ""}`}
+            className={`mt-12 overflow-hidden rounded-3xl border border-[var(--color-line)] ${split ? "md:grid md:grid-cols-2" : ""}`}
           >
             {offline.length > 0 ? <FormatHalf items={offline} tone="paper" /> : null}
             {online.length > 0 ? <FormatHalf items={online} tone="slate" /> : null}
           </div>
         </Reveal>
         {notes.length > 0 ? (
-          <div className="mt-10 border-t border-white/15">
+          <div className="mt-10 border-t border-[var(--color-line)]">
             {notes.map((item) => (
               <Reveal key={item.title}>
-                <div className="border-b border-white/15 py-6">
+                <div className="border-b border-[var(--color-line)] py-6">
                   <h3 className="text-lg font-medium">{item.title}</h3>
-                  <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted">{item.text}</p>
+                  <p className="mt-2 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)]">
+                    {item.text}
+                  </p>
                 </div>
               </Reveal>
             ))}
           </div>
         ) : null}
-        <Reveal from="left">
-          <div className={notes.length > 0 ? "py-8" : "mt-10 border-t border-white/15 py-8"}>
+        <Reveal>
+          <div
+            className={notes.length > 0 ? "py-8" : "mt-10 border-t border-[var(--color-line)] py-8"}
+          >
             <h3 className="text-xl font-medium">{home.enrollmentTitle}</h3>
-            <ol className="mt-6 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-5">
+            <ol className="mt-6 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-5">
               {home.enrollmentSteps.map((step, index) => (
                 <li key={step} className="text-sm leading-relaxed">
-                  <span className="mb-2 block font-display text-2xl leading-none text-accent-faint">
+                  <span className="mb-2 block font-display text-2xl leading-none text-[var(--accent)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   {step}

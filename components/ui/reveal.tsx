@@ -1,33 +1,48 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
-import type { ReactNode } from "react";
-
-const DISTANCE = 32;
+import { useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 export function Reveal({
   children,
   className = "",
   delay = 0,
-  from = "left",
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
-  from?: "left" | "right";
 }) {
   const reduce = useReducedMotion();
-  const x = from === "left" ? -DISTANCE : DISTANCE;
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    if (reduce || typeof IntersectionObserver === "undefined") {
+      node.classList.add("is-in");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        setShown(true);
+        observer.disconnect();
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [reduce]);
 
   return (
-    <motion.div
-      className={`reveal ${className}`}
-      initial={reduce ? false : { opacity: 0, x }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={reduce ? { duration: 0 } : { duration: 0.6, delay, ease: "easeOut" }}
+    <div
+      ref={ref}
+      className={`reveal${shown ? " is-in" : ""}${className ? ` ${className}` : ""}`}
+      style={shown && delay > 0 ? { transitionDelay: `${delay}s` } : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

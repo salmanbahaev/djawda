@@ -3,6 +3,7 @@
 @theme {
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-cormorant), "Iowan Old Style", Palatino, serif;
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
   --color-teal-950: #0f0f10;
   --color-teal-900: #d8d8dc;
   --color-teal-800: #b7b7bc;
@@ -28,6 +29,10 @@
   --accent-muted: #3d5c6c;
   --accent-soft: #d7e4ea;
   --accent-faint: #9eb4c2;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --eyebrow: #d7e4ea;
+  --color-muted: #d0d0d4;
+  --color-line: rgba(215, 228, 234, 0.35);
 }
 
 @theme inline {
@@ -40,9 +45,11 @@
 
 html {
   scroll-behavior: auto;
+  scroll-padding-top: 6rem;
+  scroll-padding-bottom: 5rem;
 }
 
-/* Matches the sticky bar (4.5rem + border). Clicks align the heading in JS and do not add this again. */
+/* Clears the floating bar. Anchor clicks measure the bar in JS and do not add this again. */
 #hero,
 #approach,
 #audience,
@@ -55,7 +62,7 @@ html {
 #contacts,
 #lead,
 .course-card {
-  scroll-margin-top: calc(4.5rem + 1px);
+  scroll-margin-top: 6rem;
 }
 
 body {
@@ -81,7 +88,7 @@ section {
 @media (min-width: 768px) {
   .hero-mark {
     opacity: 0.92;
-    animation: hero-mark-in 0.9s ease-out both;
+    animation: hero-mark-in 0.7s var(--ease) both;
   }
 }
 
@@ -117,8 +124,110 @@ button:disabled {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent-faint);
+  outline: 2px solid var(--accent-soft);
   outline-offset: 3px;
+}
+
+#content:focus,
+#content:focus-visible {
+  outline: none;
+}
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 80;
+  transform: translateY(-200%);
+  border-radius: 9999px;
+  background: var(--paper);
+  color: var(--accent);
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.section-y {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section-y {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.surface-dark {
+  --color-ink: #f4f4f5;
+  --color-muted: #d0d0d4;
+  --eyebrow: #d7e4ea;
+  --color-line: rgba(215, 228, 234, 0.35);
+  --accent-faint: #d7e4ea;
+  background-color: var(--ink);
+  color: var(--color-ink);
+}
+
+.surface-paper {
+  --color-ink: #17171a;
+  --color-muted: #3e4450;
+  --eyebrow: #244552;
+  --color-line: #d4cbbd;
+  --accent-faint: #244552;
+  background-color: var(--paper);
+  color: var(--color-ink);
+}
+
+.surface-paper.raised {
+  background-color: var(--paper-raised);
+}
+
+.press {
+  transition-property: background-color, color, border-color, opacity, transform;
+  transition-duration: 300ms;
+  transition-timing-function: var(--ease);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .press:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition:
+    opacity 700ms var(--ease),
+    transform 700ms var(--ease);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (scripting: none) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.statement-word {
+  /* 50% paper on ink is about 4.8:1, so unread words stay AA while the reveal still reads. */
+  color: color-mix(in srgb, var(--paper) 50%, var(--ink));
+  transition: color 500ms var(--ease);
+}
+
+.statement-word.is-on {
+  color: var(--paper);
 }
 
 .prose-measure {
@@ -183,13 +292,14 @@ button:disabled {
 
 .tone-light {
   --color-ink: #17171a;
-  --color-muted: #3f3f46;
+  --color-muted: #3e4450;
   --color-paper: #ffffff;
   --color-paper-2: #f4f4f2;
-  --color-line: #d8d8d4;
+  --color-line: #d4cbbd;
   --color-silver: #3a3a40;
-  --accent-faint: #3d5c6c;
-  background-color: #f5f5f4;
+  --accent-faint: #244552;
+  --eyebrow: #244552;
+  background-color: var(--paper);
   color: #17171a;
 }
 
@@ -208,9 +318,10 @@ button:disabled {
 
 .catalog-cream {
   --color-ink: var(--accent);
-  --color-muted: var(--accent-muted);
-  --accent-faint: var(--accent-muted);
-  --color-line: #e4d7c6;
+  --color-muted: #244552;
+  --accent-faint: #244552;
+  --eyebrow: #244552;
+  --color-line: #d4cbbd;
   background-color: var(--paper);
   color: var(--accent);
 }
@@ -224,7 +335,7 @@ button:disabled {
 .catalog-cta {
   background-color: var(--accent);
   color: var(--paper);
-  transition: background-color 200ms ease;
+  transition: background-color 300ms var(--ease);
 }
 
 .catalog-cta:hover {
@@ -232,6 +343,7 @@ button:disabled {
 }
 
 .tone-light :focus-visible,
+.surface-paper :focus-visible,
 .catalog-cream :focus-visible,
 .course-drawer :focus-visible {
   outline-color: var(--accent);
@@ -279,11 +391,11 @@ html[data-scroll-lock] {
 }
 
 .select-popover[data-state="open"] .select-popover-panel {
-  animation: select-in 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: select-in 300ms var(--ease);
 }
 
 .select-popover[data-state="closed"] .select-popover-panel {
-  animation: select-out 120ms ease;
+  animation: select-out 200ms var(--ease);
 }
 
 .field-control:focus-visible,
@@ -295,6 +407,9 @@ html[data-scroll-lock] {
 /* Classroom: warmer slate behind the photos, deep at the edges. Static paint only. */
 .classroom-section {
   position: relative;
+  --color-muted: #f5efe4;
+  --eyebrow: #f5efe4;
+  --color-line: rgba(245, 239, 228, 0.28);
   background-color: #081820;
   background-image: radial-gradient(
     ellipse 64% 78% at 74% 46%,
@@ -399,6 +514,10 @@ html[data-scroll-lock] {
   }
 }
 
+html[data-menu-open] .sticky-enroll {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;
@@ -415,10 +534,19 @@ html[data-scroll-lock] {
   }
 
   .reveal,
-  .kinetic-word {
+  .kinetic-word,
+  .statement-word,
+  .press,
+  .press:active {
     filter: none !important;
     transform: none !important;
     opacity: 1 !important;
+    transition: none !important;
+  }
+
+  .statement-word,
+  .statement-word.is-on {
+    color: var(--paper);
   }
 
   .float-label {

@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { MotionProvider } from "@/components/layout/motion-provider";
+import { StickyEnroll } from "@/components/layout/sticky-enroll";
 import { SectionProgress } from "@/components/ui/section-progress";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
 import { getFooter, getSettings } from "@/lib/cms/content";
@@ -34,10 +35,16 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
+      title: settings.defaultSeoTitle,
+      description: settings.defaultSeoDescription,
       images: image ? [image] : undefined,
     },
   };
 }
+
+export const viewport: Viewport = {
+  themeColor: "#0f0f10",
+};
 
 export default async function SiteLayout({ children }: Readonly<{ children: ReactNode }>) {
   const [settings, footer] = await Promise.all([getSettings(), getFooter()]);
@@ -45,6 +52,9 @@ export default async function SiteLayout({ children }: Readonly<{ children: Reac
   return (
     <MotionProvider>
       <SmoothScroll />
+      <a className="skip-link" href="#content">
+        К содержанию
+      </a>
       <Header
         logo={settings.logo}
         logoAlt={settings.logoAlt || ""}
@@ -54,7 +64,9 @@ export default async function SiteLayout({ children }: Readonly<{ children: Reac
         navCta={settings.navCta}
       />
       <SectionProgress />
-      <main>{children}</main>
+      <main id="content" tabIndex={-1} className="max-md:pb-20">
+        {children}
+      </main>
       <Footer
         logo={settings.logo}
         logoAlt={settings.logoAlt || ""}
@@ -71,6 +83,7 @@ export default async function SiteLayout({ children }: Readonly<{ children: Reac
         instagramLabel={settings.instagramLabel}
         address={settings.address}
       />
+      <StickyEnroll />
     </MotionProvider>
   );
 }

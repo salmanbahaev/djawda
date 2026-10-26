@@ -131,27 +131,24 @@ export function CourseList({
 
   return (
     <>
-      <ul className="mt-10 grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-5">
+      <ul className="mt-12 grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-6">
         {courses.map((course, index) => {
           const accent = courseAccent(course.accent, index);
           const facts = courseFacts(course);
           const open = openSlug === course.slug;
           return (
             <li key={course.slug} className="min-w-0">
-              <Reveal className="h-full" from="right" delay={index * 0.08}>
+              <Reveal className="h-full" delay={index * 0.08}>
                 <article
                   id={courseDomId(course.slug)}
-                  className="course-card flex h-full flex-col overflow-hidden rounded-3xl border border-accent/10 bg-[var(--paper-raised)] shadow-[0_12px_32px_rgba(15,47,58,0.05)]"
-                  style={{
-                    backgroundImage: `linear-gradient(180deg, ${accent.color}1f, transparent 5.5rem)`,
-                  }}
+                  className="course-card flex h-full flex-col overflow-hidden rounded-3xl border border-accent/10 bg-[var(--paper-raised)]"
                 >
                   <span
                     aria-hidden
                     className="h-1 w-full"
                     style={{ backgroundColor: accent.color }}
                   />
-                  <div className="flex h-full flex-col p-5 sm:p-6">
+                  <div className="flex h-full flex-col p-4 sm:p-6">
                     <CourseStatusChip status={course.status} />
                     <h3 className="mt-4 text-2xl font-medium tracking-tight text-balance text-accent">
                       {course.title}
@@ -167,7 +164,7 @@ export function CourseList({
                         {facts.map((fact) => (
                           <li
                             key={fact}
-                            className="rounded-full border border-accent/10 bg-[var(--paper)] px-2.5 py-1 text-xs leading-5 text-accent-muted"
+                            className="rounded-full border border-accent/10 bg-[var(--paper)] px-3 py-1 text-xs leading-5 text-accent-muted"
                           >
                             {fact}
                           </li>
@@ -181,7 +178,7 @@ export function CourseList({
                       <div className="mt-4 grid grid-cols-2 gap-2">
                         <button
                           type="button"
-                          className="min-h-11 rounded-full border border-accent/15 px-3 py-2.5 text-sm font-medium text-accent transition hover:bg-accent/5"
+                          className="press min-h-11 rounded-full border border-accent/15 px-3 py-3 text-sm font-semibold text-accent hover:bg-accent/5"
                           aria-haspopup="dialog"
                           aria-expanded={open}
                           aria-controls={open ? "course-dialog" : undefined}
@@ -191,7 +188,7 @@ export function CourseList({
                         </button>
                         <button
                           type="button"
-                          className="catalog-cta min-h-11 rounded-full px-3 py-2.5 text-sm font-medium"
+                          className="catalog-cta press min-h-11 rounded-full px-3 py-3 text-sm font-semibold"
                           onClick={() => requestCourse(course.slug)}
                         >
                           Записаться

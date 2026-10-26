@@ -9,28 +9,32 @@ export function ClassroomSection({ home }: { home: HomeContent }) {
   const portrait = home.classroomPortraitImage;
 
   return (
-    <section id="classroom" data-surface="dark" className="classroom-section py-24 md:py-32">
+    <section
+      id="classroom"
+      data-surface="dark"
+      className="classroom-section section-y border-t border-[var(--color-line)]"
+    >
       <Container>
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-16">
-          <Reveal from="left">
-            <Eyebrow>{home.classroomEyebrow}</Eyebrow>
-            <h2 className="mt-3 text-3xl font-medium tracking-tight text-[var(--paper)] sm:text-5xl">
+          <Reveal>
+            <Eyebrow index={7}>{home.classroomEyebrow}</Eyebrow>
+            <h2 className="mt-4 text-4xl text-balance text-[var(--paper)] sm:text-5xl">
               {home.classroomTitle}
             </h2>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-[var(--paper)]/88 sm:text-lg">
+            <p className="mt-6 max-w-md text-base leading-relaxed text-pretty text-[var(--paper)] sm:text-lg">
               {home.classroomLead}
             </p>
-            <ul className="mt-8 max-w-md space-y-5">
+            <ul className="mt-8 max-w-md space-y-6">
               {home.classroomFeatures.map((item) => (
-                <li key={item.title} className="flex gap-3.5">
-                  <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--accent-faint)]/45 text-[var(--paper)]">
+                <li key={item.title} className="flex gap-4">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[var(--paper)]/40 text-[var(--paper)]">
                     <FeatureIcon name={classroomIcon(item.icon)} />
                   </span>
                   <span>
                     <span className="block text-base font-medium text-[var(--paper)]">
                       {item.title}
                     </span>
-                    <span className="mt-1 block text-sm leading-relaxed text-[var(--accent-faint)]">
+                    <span className="mt-1 block text-sm leading-relaxed text-[var(--paper)]">
                       {item.text}
                     </span>
                   </span>
@@ -39,7 +43,7 @@ export function ClassroomSection({ home }: { home: HomeContent }) {
             </ul>
           </Reveal>
           {wide || portrait ? (
-            <Reveal from="right">
+            <Reveal>
               <ClassroomPhotos
                 wide={wide}
                 wideAlt={home.classroomWideAlt}

@@ -9,19 +9,24 @@ export async function generateMetadata(): Promise<Metadata> {
     title: page.seoTitle,
     description: page.seoDescription,
     alternates: { canonical: "/privacy" },
+    openGraph: {
+      title: page.seoTitle,
+      description: page.seoDescription,
+      url: "/privacy",
+    },
   };
 }
 
 export default async function PrivacyPage() {
   const page = await getPrivacy();
   return (
-    <section className="bg-[#0f0f10] py-16 md:py-24">
+    <section className="surface-paper pt-24 pb-16 md:pb-24">
       <Container className="max-w-3xl">
-        <h1 className="text-4xl font-medium tracking-tight sm:text-5xl">{page.title}</h1>
-        <p className="mt-6 rounded-3xl border border-accent-faint/50 bg-accent-faint/10 px-5 py-4 text-sm leading-relaxed">
+        <h1 className="text-4xl text-balance sm:text-5xl">{page.title}</h1>
+        <p className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--paper-raised)] px-4 py-4 text-sm leading-relaxed text-[#17171a]">
           {page.notice}
         </p>
-        <div className="mt-8 space-y-4 leading-relaxed text-muted">
+        <div className="mt-8 space-y-4 text-base leading-relaxed text-[#3e4450]">
           {paragraphs(page.body).map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
